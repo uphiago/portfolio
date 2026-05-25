@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Terminal copy — 8 variations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --m-ink: #0a0a0a;
+    --m-ink-soft: #585858;
+    --m-ink-faint: #909090;
+    --m-paper: #fbfaf6;
+    --m-paper-2: #f1efe8;
+    --m-line: #e4e1d8;
+    --m-line-strong: #d4d1c7;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--m-paper-2); color: var(--m-ink); }
+  body {
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 56px 40px 120px; }
+
+  .doc-head {
+    margin-bottom: 32px; padding-bottom: 20px;
+    border-bottom: 1px solid var(--m-line);
+  }
+  .doc-crumb {
+    font-family: "JetBrains Mono"; font-size: 11px;
+    color: var(--m-ink-soft); letter-spacing: 0.06em;
+    text-transform: lowercase; margin-bottom: 14px;
+  }
+  h1 {
+    font-family: "IBM Plex Sans"; font-weight: 600;
+    font-size: 28px; line-height: 1.1; letter-spacing: -0.02em;
+    margin: 0 0 10px;
+  }
+  .doc-sub {
+    font-size: 14.5px; line-height: 1.55; color: var(--m-ink-soft);
+    max-width: 660px;
+  }
+
+  .grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+  .case { display: flex; flex-direction: column; gap: 12px; }
+  .case .label {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: "JetBrains Mono"; font-size: 11px; color: var(--m-ink-soft);
+    letter-spacing: 0.04em;
+  }
+  .case .label .ti {
+    color: var(--m-ink); font-weight: 600;
+    font-family: "IBM Plex Sans"; font-size: 14px; letter-spacing: -0.005em;
+  }
+  .case .desc {
+    font-size: 12.5px; line-height: 1.5; color: var(--m-ink-soft);
+  }
+
+  /* terminal block — same look as actual midfi terminal */
+  .terminal {
+    background: #0a0a0a; color: #d0d0d0;
+    border-radius: 12px;
+    font-family: "JetBrains Mono", monospace; font-size: 12.5px;
+    padding: 16px 20px 18px; line-height: 1.65;
+    border: 1px solid #0a0a0a;
+    position: relative; overflow: hidden;
+    min-height: 280px;
+    background-image: radial-gradient(ellipse at top left, rgba(255,255,255,0.04), transparent 50%);
+  }
+  .terminal .prompt { color: #6dd49a; }
+  .terminal .accent { color: #f1efe8; font-weight: 500; }
+  .terminal .dim { color: #707070; }
+  .terminal .hash { color: #888; }
+  .terminal .kw { color: #c8b6ff; }
+  .terminal .num { color: #ffb86c; }
+  .terminal .str { color: #a8e6a3; }
+  .terminal .cursor {
+    display: inline-block; width: 7px; height: 14px;
+    background: #d0d0d0; vertical-align: -2px;
+    animation: blink 1s steps(2, end) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  .terminal .tree { color: #b0b0b0; }
+  .terminal .bar { color: #444; }
+  .terminal pre {
+    margin: 0;
+    font-family: inherit; font-size: inherit; color: inherit;
+    background: transparent;
+    white-space: pre;
+  }
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <header class="doc-head">
+    <div class="doc-crumb">$ terminal-copy --explore</div>
+    <h1>8 variações pro bloco do terminal</h1>
+    <p class="doc-sub">
+      O conteúdo atual (whoami + git log fake + focus.md) está em todo portfolio de devops desde 2018.
+      Aqui jeitos diferentes de usar o mesmo container — alguns mantêm a metáfora do bash, outros
+      trocam por algo mais próprio.
+    </p>
+  </header>
+
+  <div class="grid">
+
+    <!-- ─── OPT 1 ─── -->
+    <div class="case">
+      <div class="label">
+        <span class="ti">1 · process list (top-style)</span>
+        <span>real & verifiable</span>
+      </div>
+      <div class="terminal">
+<pre><span class="prompt">$ </span>top -u hiago | head
+
+<span class="dim">PID    PROCESS                CPU%   UPTIME</span>
+8421   <span class="accent">n8n-workflow-engine</span>    12.3   <span class="num">312d</span>
+3210   <span class="accent">k8s-multi-cluster</span>      8.1    <span class="num">847d</span>
+1124   <span class="accent">newsletter-pipeline</span>    2.0    <span class="num">96d</span>
+0042   <span class="accent">thinking-about-infra</span>   <span class="num">inf</span>    <span class="num">13y</span><span class="cursor"></span></pre>
+      </div>
+      <p class="desc">
+        Substitui git log por <code>top</code>. Lista o que ele "roda" como processo — sistemas reais
+        que ele opera. Última linha é a piada inteligente: "thinking-about-infra · inf · 13y".
+      </p>
+    </div>
+
+    <!-- ─── OPT 2 ─── -->
+    <div class="case">
+      <div class="label">
+        <span class="ti">2 · bio paragraph</span>
+        <span>sem fake commands</span>
+      </div>
+      <div class="terminal">
+<pre><span class="prompt">$ </span>cat ~/about
+
+<span class="accent">hiago felipe</span>
+platform engineer · são paulo · 13y
+
+i build infra that doesn't page you at 3am.
+deep in <span class="str">n8n</span>, <span class="str">mcp</span>, self-hosted everything.
+worked across gov, esports, fintech.
+
+currently writing more than i code.<span class="cursor"></span></pre>
+      </div>
+      <p class="desc">
+        Larga a teatralidade do bash. Um único <code>cat about</code> + parágrafo curto em primeira pessoa.
+        Menos buzzword, mais voz. A linha "doesn't page you at 3am" tem mais personalidade que qualquer keyword.
+      </p>
+    </div>
+
+    <!-- ─── OPT 3 ─── -->
+    <div class="case">
+      <div class="label">
+        <span class="ti">3 · code function</span>
+        <span>retorna um objeto</span>
+      </div>
+      <div class="terminal">
+<pre><span class="kw">function</span> <span class="accent">hiago</span>() {
+  <span class="kw">return</span> {
+    role:    <span class="str">"platform engineer"</span>,
+    based:   <span class="str">"são paulo · UTC-3"</span>,
+    years:   <span class="num">13</span>,
+    focus:   [<span class="str">"self-hosting"</span>, <span class="str">"ai workflows"</span>],
+    open:    [<span class="str">"consulting"</span>, <span class="str">"advisory"</span>],
+    note:    <span class="str">"infra w/o 3am pages"</span>,
+  };
+}<span class="cursor"></span></pre>
+      </div>
+      <p class="desc">
+        Troca shell por JS/TS. Sinaliza que ele <i>escreve código</i>, não só roda comandos.
+        Estrutura organizada (role/based/focus) é mais escaneável que git log.
+      </p>
+    </div>
+
+    <!-- ─── OPT 4 ─── -->
+    <div class="case">
+      <div class="label">
+        <span class="ti">4 · /now style</span>
+        <span>fresh & dated</span>
+      </div>
+      <div class="terminal">
+<pre><span class="prompt">$ </span>now
+
+<span class="dim">building </span> n8n self-hosting kit · <span class="dim">v2.4 this week</span>
+<span class="dim">writing  </span> mcp architectures (long-form)
+<span class="dim">reading  </span> "data-intensive apps" (3rd re-read)
+<span class="dim">based    </span> são paulo · UTC-3
+<span class="dim">open for </span> consulting · advisory
+
+<span class="dim">$ </span>updated: may 23 '26<span class="cursor"></span></pre>
+      </div>
+      <p class="desc">
+        Formato <code>/now</code> à la Sivers. Mostra o que ele está fazendo <i>esta semana</i>,
+        não keywords genéricas. Timestamp no rodapé reforça que é vivo.
+      </p>
+    </div>
+
+    <!-- ─── OPT 5 ─── -->
+    <div class="case">
+      <div class="label">
+        <span class="ti">5 · n8n workflow</span>
+        <span>own his tool</span>
+      </div>
+      <div class="terminal">
+<pre><span class="prompt">$ </span>workflow show --name=<span class="str">"my-day"</span>
+
+trigger: <span class="num">06:30</span> brt
+<span class="tree">├─</span> pull metrics from 6 clusters
+<span class="tree">├─</span> run drift checks (terraform plan)
+<span class="tree">├─</span> <span class="kw">if</span> drift &gt; <span class="num">0</span> → page slack
+<span class="tree">└─</span> post daily report at <span class="num">17h</span>
+
+<span class="dim">status:</span> <span class="str">running 312d · zero misses</span><span class="cursor"></span></pre>
+      </div>
+      <p class="desc">
+        Mostra um workflow n8n real que ele roda — sua rotina como código.
+        Comunica autoridade no tema sem ter que dizer "expert em n8n".
+      </p>
+    </div>
+
+    <!-- ─── OPT 6 ─── -->
+    <div class="case">
+      <div class="label">
+        <span class="ti">6 · README markdown</span>
+        <span>cat-style sem prompt</span>
+      </div>
+      <div class="terminal">
+<pre><span class="dim"># ~/README.md</span>
+
+<span class="accent"># hi, i'm hiago</span>
+<span class="kw">&gt;</span> platform engineer · são paulo
+
+<span class="accent">## currently</span>
+- self-hosting everything that fits on a vps
+- writing on n8n + mcp architectures
+- <span class="num">13y</span> deep in production infra
+
+<span class="accent">## not currently</span>
+- writing yaml without a generator<span class="cursor"></span></pre>
+      </div>
+      <p class="desc">
+        Formato README de github. "## not currently" no final é o tipo de humor seco que
+        senior dev usa. Estrutura familiar pra quem vê dev portfolios.
+      </p>
+    </div>
+
+    <!-- ─── OPT 7 ─── -->
+    <div class="case">
+      <div class="label">
+        <span class="ti">7 · uptime + man page</span>
+        <span>autoridade + leve humor</span>
+      </div>
+      <div class="terminal">
+<pre><span class="prompt">$ </span>uptime
+<span class="accent">13 years, 4 months</span> in production
+zero unplanned downtime
+
+<span class="prompt">$ </span>man hiago
+
+<span class="accent">HIAGO</span>(<span class="num">1</span>)              <span class="dim">User Commands</span>
+
+<span class="accent">NAME</span>
+   hiago — platform engineer, são paulo
+
+<span class="accent">SYNOPSIS</span>
+   hiago [<span class="kw">--consulting</span>] [<span class="kw">--advisory</span>]<span class="cursor"></span></pre>
+      </div>
+      <p class="desc">
+        Combina <code>uptime</code> (estabilidade da carreira) com formato <code>man page</code>
+        (autoridade). O man page é uma piada-meta que dev sênior pega na hora.
+      </p>
+    </div>
+
+    <!-- ─── OPT 8 ─── -->
+    <div class="case">
+      <div class="label">
+        <span class="ti">8 · htop hybrid</span>
+        <span>visual rico, minimal text</span>
+      </div>
+      <div class="terminal">
+<pre><span class="dim">hiago@portfolio</span> · <span class="accent">uptime 13y</span>
+
+cpu  <span class="str">▇▇▇▇▇▇▇▇▇▇</span><span class="bar">▁▁▁▁</span> <span class="num">72%</span>  ai workflows
+mem  <span class="str">▇▇▇▇▇▇</span><span class="bar">▁▁▁▁▁▁▁▁</span> <span class="num">43%</span>  self-hosting
+i/o  <span class="str">▇▇▇▇▇▇▇▇</span><span class="bar">▁▁▁▁▁▁</span> <span class="num">58%</span>  writing
+
+<span class="dim">> based   </span>são paulo · UTC-3
+<span class="dim">> open for</span>consulting · advisory<span class="cursor"></span></pre>
+      </div>
+      <p class="desc">
+        Mais visual — usa barras unicode pra mostrar "alocação" de tempo entre temas.
+        Quebra o monopólio do texto puro. Risco: pode parecer infográfico demais.
+      </p>
+    </div>
+
+  </div>
+
+  <div style="margin-top:48px; padding: 18px 22px; background: var(--m-paper); border: 1px solid var(--m-line-strong); border-radius: 10px; font-size: 13.5px; line-height: 1.6; color: var(--m-ink-soft);">
+    <b style="color: var(--m-ink)">Recomendações pessoais:</b>
+    <ul style="margin: 8px 0 0; padding-left: 18px;">
+      <li><b>Mais "sênior"</b> → 2 (bio), 7 (man page) ou 6 (readme). Largam o gimmick do bash log.</li>
+      <li><b>Mais "técnico"</b> → 1 (top) ou 5 (workflow). Comunicam o que ele opera de verdade.</li>
+      <li><b>Mais "visual"</b> → 8 (htop). Único que quebra texto puro.</li>
+      <li><b>Mais "vivo / atualizado"</b> → 4 (/now). Mostra que o site é mantido.</li>
+    </ul>
+    <p style="margin: 12px 0 0;">
+      Posso também <b>combinar duas</b> (ex.: <code>whoami</code> rápido + <code>now</code> embaixo).
+      Qual ou quais quer ver no <code>index.html</code>?
+    </p>
+  </div>
+
+</main>
+</body>
+</html>

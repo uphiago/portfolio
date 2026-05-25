@@ -1,0 +1,631 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Design Review — hiago.sh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a0a0a;
+    --ink-soft: #585858;
+    --ink-faint: #909090;
+    --paper: #fbfaf6;
+    --paper-2: #f1efe8;
+    --line: #e4e1d8;
+    --line-strong: #d4d1c7;
+    --red: #c2362a;
+    --amber: #b87a18;
+    --green: #2f7a4d;
+    --accent: #ff5b1f;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); }
+  body {
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  .mono { font-family: "JetBrains Mono", monospace; }
+
+  .wrap { max-width: 920px; margin: 0 auto; padding: 56px 40px 120px; }
+
+  /* HEADER */
+  .doc-head { border-bottom: 1px solid var(--ink); padding-bottom: 28px; margin-bottom: 40px; }
+  .doc-crumb {
+    font-family: "JetBrains Mono"; font-size: 11px;
+    color: var(--ink-soft); letter-spacing: 0.06em;
+    text-transform: lowercase; margin-bottom: 14px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .doc-crumb .right { color: var(--ink-faint); }
+  h1 {
+    font-family: "IBM Plex Sans"; font-weight: 600;
+    font-size: 38px; line-height: 1.08; letter-spacing: -0.025em;
+    margin: 0 0 14px;
+  }
+  .doc-sub {
+    font-size: 16px; line-height: 1.55; color: var(--ink-soft);
+    max-width: 640px;
+  }
+
+  /* TOC */
+  .toc {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 4px 28px;
+    background: var(--paper-2); border: 1px solid var(--line-strong);
+    border-radius: 10px; padding: 18px 22px;
+    margin-bottom: 48px;
+  }
+  .toc a {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 7px 0; text-decoration: none; color: var(--ink);
+    font-family: "JetBrains Mono"; font-size: 12px;
+    border-bottom: 1px dotted transparent;
+  }
+  .toc a:hover { border-bottom-color: var(--ink); }
+  .toc a .num { color: var(--ink-faint); margin-right: 10px; }
+  .toc a .tag {
+    font-size: 9.5px; padding: 1px 6px; border-radius: 3px;
+    background: var(--paper); border: 1px solid var(--line-strong);
+    color: var(--ink-soft);
+  }
+  .toc a .tag.p0 { background: #fde6e3; color: var(--red); border-color: #f1c7c1; }
+  .toc a .tag.p1 { background: #fbf0d8; color: var(--amber); border-color: #ead7a8; }
+  .toc a .tag.p2 { background: #e2efe4; color: var(--green); border-color: #c2dac8; }
+
+  /* SECTION */
+  section { margin-bottom: 54px; }
+  .sec-head {
+    display: flex; align-items: baseline; gap: 14px;
+    padding-bottom: 10px; border-bottom: 1px solid var(--line);
+    margin-bottom: 22px;
+  }
+  .sec-head .num {
+    font-family: "JetBrains Mono"; font-size: 13px; color: var(--ink-faint);
+    width: 32px;
+  }
+  .sec-head h2 {
+    font-family: "IBM Plex Sans"; font-weight: 600;
+    font-size: 22px; letter-spacing: -0.015em; margin: 0;
+    flex: 1;
+  }
+  .sec-head .pill {
+    font-family: "JetBrains Mono"; font-size: 10px;
+    padding: 3px 8px; border-radius: 3px; letter-spacing: 0.04em;
+  }
+  .pill.p0 { background: #fde6e3; color: var(--red); border: 1px solid #f1c7c1; }
+  .pill.p1 { background: #fbf0d8; color: var(--amber); border: 1px solid #ead7a8; }
+  .pill.p2 { background: #e2efe4; color: var(--green); border: 1px solid #c2dac8; }
+
+  .sec-intro {
+    font-size: 15px; line-height: 1.6; color: var(--ink);
+    margin: 0 0 18px;
+  }
+
+  /* OBSERVATIONS LIST */
+  .obs {
+    display: grid; grid-template-columns: 22px 1fr;
+    gap: 12px; padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .obs:last-child { border-bottom: none; }
+  .obs .ico {
+    font-family: "JetBrains Mono"; font-size: 12px;
+    color: var(--ink-faint); padding-top: 2px;
+  }
+  .obs .ico.bad { color: var(--red); }
+  .obs .ico.ok { color: var(--green); }
+  .obs h3 {
+    margin: 0 0 4px; font-family: "IBM Plex Sans";
+    font-weight: 600; font-size: 15px; letter-spacing: -0.005em;
+  }
+  .obs p {
+    margin: 4px 0; font-size: 14px; line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .obs .fix {
+    margin-top: 8px; padding: 10px 12px;
+    background: var(--paper-2); border-left: 2px solid var(--ink);
+    border-radius: 0 4px 4px 0;
+    font-size: 13.5px; color: var(--ink); line-height: 1.55;
+  }
+  .obs .fix b {
+    font-family: "JetBrains Mono"; font-weight: 600;
+    font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--ink-soft); display: block; margin-bottom: 4px;
+  }
+  .obs code {
+    font-family: "JetBrains Mono"; font-size: 12.5px;
+    background: var(--paper-2); padding: 1px 5px; border-radius: 3px;
+  }
+
+  /* SIDE-BY-SIDE before/after callout */
+  .ba {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 14px; margin: 14px 0 2px;
+  }
+  .ba .col {
+    border: 1px solid var(--line-strong);
+    border-radius: 8px; padding: 12px 14px;
+    background: var(--paper);
+  }
+  .ba .col .lbl {
+    font-family: "JetBrains Mono"; font-size: 9.5px;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-faint); margin-bottom: 6px;
+  }
+  .ba .col.before .lbl { color: var(--red); }
+  .ba .col.after .lbl { color: var(--green); }
+  .ba .col .v {
+    font-family: "JetBrains Mono"; font-size: 12.5px;
+    color: var(--ink); line-height: 1.5;
+  }
+
+  /* PRIORITY SUMMARY */
+  .summary {
+    background: var(--ink); color: var(--paper);
+    border-radius: 12px; padding: 28px 30px;
+    margin-bottom: 48px;
+  }
+  .summary h2 {
+    font-family: "IBM Plex Sans"; font-weight: 600;
+    font-size: 16px; letter-spacing: -0.005em; margin: 0 0 14px;
+    color: #f1efe8;
+  }
+  .summary .grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+  }
+  .summary .col h3 {
+    font-family: "JetBrains Mono"; font-size: 11px;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin: 0 0 10px; padding-bottom: 8px;
+    border-bottom: 1px solid #2a2a2a;
+  }
+  .summary .col.p0 h3 { color: #ff8a7a; }
+  .summary .col.p1 h3 { color: #f2c66a; }
+  .summary .col.p2 h3 { color: #87d8a3; }
+  .summary .col ul {
+    margin: 0; padding: 0; list-style: none;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .summary .col li {
+    font-size: 13px; line-height: 1.45; color: #cfcdc6;
+    padding-left: 14px; position: relative;
+  }
+  .summary .col li::before {
+    content: "→"; position: absolute; left: 0; top: 0;
+    color: #555; font-family: "JetBrains Mono";
+  }
+
+  /* FOOTER */
+  .doc-foot {
+    margin-top: 64px; padding-top: 18px;
+    border-top: 1px solid var(--line);
+    font-family: "JetBrains Mono"; font-size: 11px;
+    color: var(--ink-faint);
+    display: flex; justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <header class="doc-head">
+    <div class="doc-crumb">
+      <span>$ design-review --target=hiago.sh@midfi-v1</span>
+      <span class="right">23.may.2026 · 14 observações</span>
+    </div>
+    <h1>Estudo do projeto e refinamentos sugeridos</h1>
+    <p class="doc-sub">
+      O <b>mid-fi v1</b> já tem identidade clara — tipografia de engenharia (IBM Plex + JetBrains Mono),
+      paleta paper/ink quente, layout bento. O que segue são 14 ajustes pontuais para subir a fidelidade,
+      reduzir ruído e dar ritmo à composição.
+    </p>
+  </header>
+
+  <!-- EXECUTIVE SUMMARY -->
+  <div class="summary">
+    <h2>$ summary --by-priority</h2>
+    <div class="grid">
+      <div class="col p0">
+        <h3>P0 · Antes de qualquer coisa</h3>
+        <ul>
+          <li>Sem hero real — falta uma frase-posicionamento dominante</li>
+          <li>Terminal está fazendo trabalho de hero, headline e bio ao mesmo tempo</li>
+          <li>Conteúdo do terminal soa AI-gerado (nomes de empresas reais, jargão clichê)</li>
+          <li>Hierarquia plana: 8 cards com peso visual idêntico</li>
+        </ul>
+      </div>
+      <div class="col p1">
+        <h3>P1 · Refinamento</h3>
+        <ul>
+          <li>Excesso de prefixos <code style="color:#f2c66a">$ ◇ ⌘ ●</code> compete pela atenção</li>
+          <li>Tipografia secundária muito miúda (10.5–11px em mono)</li>
+          <li>Hover translateY(-3px) em <i>todo</i> card é cansativo</li>
+          <li>Status card mistura 2 listas heterogêneas sem separação clara</li>
+          <li>Microcopy "live every friday" / "shipping daily" / "deployed on a friday" são clichês</li>
+        </ul>
+      </div>
+      <div class="col p2">
+        <h3>P2 · Polimento</h3>
+        <ul>
+          <li>Architecture diagram no card do GitHub é pequeno demais para informar</li>
+          <li>Sparkline definido em código mas nunca renderizado</li>
+          <li>Modal de vídeo tem 4 botões — provavelmente 2 bastam</li>
+          <li>Footer over-engineered (®, super-script, emoji bandeira)</li>
+          <li>Falta um único token de hierarquia — sem destaque cromático</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOC -->
+  <nav class="toc">
+    <a href="#s1"><span><span class="num">01</span>Hero ausente</span><span class="tag p0">P0</span></a>
+    <a href="#s2"><span><span class="num">02</span>Terminal sobrecarregado</span><span class="tag p0">P0</span></a>
+    <a href="#s3"><span><span class="num">03</span>Microcopy do terminal</span><span class="tag p0">P0</span></a>
+    <a href="#s4"><span><span class="num">04</span>Hierarquia plana</span><span class="tag p0">P0</span></a>
+    <a href="#s5"><span><span class="num">05</span>Símbolos & prefixos</span><span class="tag p1">P1</span></a>
+    <a href="#s6"><span><span class="num">06</span>Escala tipográfica</span><span class="tag p1">P1</span></a>
+    <a href="#s7"><span><span class="num">07</span>Hover states</span><span class="tag p1">P1</span></a>
+    <a href="#s8"><span><span class="num">08</span>Card de status</span><span class="tag p1">P1</span></a>
+    <a href="#s9"><span><span class="num">09</span>Clichês de copy</span><span class="tag p1">P1</span></a>
+    <a href="#s10"><span><span class="num">10</span>Diagrama no repo card</span><span class="tag p2">P2</span></a>
+    <a href="#s11"><span><span class="num">11</span>Sparkline órfã</span><span class="tag p2">P2</span></a>
+    <a href="#s12"><span><span class="num">12</span>Modal de vídeo</span><span class="tag p2">P2</span></a>
+    <a href="#s13"><span><span class="num">13</span>Footer overdesigned</span><span class="tag p2">P2</span></a>
+    <a href="#s14"><span><span class="num">14</span>Token de destaque</span><span class="tag p2">P2</span></a>
+  </nav>
+
+  <!-- ============= P0 ============= -->
+
+  <section id="s1">
+    <div class="sec-head">
+      <span class="num">01</span>
+      <h2>Falta um hero real</h2>
+      <span class="pill p0">P0</span>
+    </div>
+    <p class="sec-intro">
+      O usuário chega na página e o primeiro elemento de texto grande é a logo <code>hiago.sh®</code>.
+      A frase de posicionamento — "Open to interesting problems." — está num card secundário, no canto
+      esquerdo, do mesmo tamanho de um <code>.h-card</code> (19px). Não há um momento "isto é o que ele faz".
+    </p>
+    <div class="obs">
+      <span class="ico bad">✗</span>
+      <div>
+        <h3>O olho não encontra a tese</h3>
+        <p>A composição bento entrega tudo de uma vez, sem ponto focal. Para portfolio sênior, isso custa caro: recrutador escaneia em 6 segundos e precisa identificar 1 frase.</p>
+        <div class="fix">
+          <b>recomendação</b>
+          Promover "Open to interesting problems" — ou uma headline real, tipo <code>"Platform engineer. 13 yrs. Self-hosting everything."</code> — para um bloco do tipo <code>h-hero</code> (44px+) <i>acima</i> do bento, ocupando largura total ou 9/12 da grid. Bento vira "below the fold".
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s2">
+    <div class="sec-head">
+      <span class="num">02</span>
+      <h2>Terminal está fazendo trabalho demais</h2>
+      <span class="pill p0">P0</span>
+    </div>
+    <p class="sec-intro">
+      O terminal hero contém: identidade (whoami), histórico (git log), tópicos atuais (focus.md), e cursor animado.
+      É bonito, mas o leitor precisa parsear ~9 linhas de texto monoespaçado pra extrair 3 fatos:
+      <i>quem ele é, no que trabalha, no que está focado agora</i>.
+    </p>
+    <div class="obs">
+      <span class="ico bad">✗</span>
+      <div>
+        <h3>Densidade alta + fonte mono = atrito de leitura</h3>
+        <p>Mono em 12.5px com line-height 1.65 e 6+ linhas vira "muro de código" antes mesmo do leitor decidir se quer ler.</p>
+        <div class="ba">
+          <div class="col before">
+            <div class="lbl">hoje</div>
+            <div class="v">$ whoami<br>hiago felipe · devops…<br>$ git log --oneline -n 3<br>a8c2f1e feat: n8n…<br>3d99e22 fix: gitops…<br>7b2e90c docs: mcp…<br>$ cat focus.md<br>n8n · mcp · tool-calling…</div>
+          </div>
+          <div class="col after">
+            <div class="lbl">proposta</div>
+            <div class="v">$ whoami<br><b style="color:#0a0a0a">hiago felipe</b><br>devops &amp; platform · 13 yrs<br><br>$ focus<br>n8n · mcp · tool-calling · gitops<span style="background:#0a0a0a;color:#fbfaf6;padding:0 2px">_</span></div>
+          </div>
+        </div>
+        <div class="fix">
+          <b>recomendação</b>
+          Cortar o <code>git log</code> — ele tenta provar "estou ativo" mas é a parte mais densa e menos informativa. Manter apenas <code>whoami</code> + <code>focus</code>. O sinal de atividade pode vir do card de status (já existe).
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s3">
+    <div class="sec-head">
+      <span class="num">03</span>
+      <h2>Microcopy do terminal soa fabricado</h2>
+      <span class="pill p0">P0</span>
+    </div>
+    <p class="sec-intro">
+      Linhas como <code>feat: n8n pipeline for nubank ops</code> ou <code>fix: gitops drift on k8s prod</code> citam
+      empresas/produtos reais sem contexto verificável. Para um portfolio público, isso pode:
+      (a) gerar problemas de NDA, (b) soar como nome-dropping, (c) ser identificado como AI-gerado.
+    </p>
+    <div class="obs">
+      <span class="ico bad">✗</span>
+      <div>
+        <h3>Commits fake quebram a credibilidade que o portfolio quer construir</h3>
+        <p>Se o git log for real, idealmente puxe de uma API de fato (GitHub events). Se for ilustrativo, troque por algo claramente genérico ou anônimo.</p>
+        <div class="fix">
+          <b>recomendação</b>
+          Duas opções: (1) Plugar <code>fetch("https://api.github.com/users/hiago/events")</code> e mostrar 3 eventos reais. (2) Trocar por nomes neutros: <code>feat: n8n trigger refactor</code> · <code>fix: drift on prod cluster</code> · <code>docs: mcp guide v2</code>.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s4">
+    <div class="sec-head">
+      <span class="num">04</span>
+      <h2>Hierarquia plana — 8 cards com mesmo peso</h2>
+      <span class="pill p0">P0</span>
+    </div>
+    <p class="sec-intro">
+      Terminal, status, contato, vídeo, repo, write-ups, newsletter, eventos — todos com a mesma borda
+      <code>1px solid #0a0a0a</code>, raio <code>10px</code>, padding <code>16px</code>. Para o olho, tudo é prioridade igual.
+    </p>
+    <div class="obs">
+      <span class="ico bad">✗</span>
+      <div>
+        <h3>Sem rítmo, sem tier</h3>
+        <p>Boas composições bento variam densidade: 1–2 cards "alpha" (maiores, mais ar, tipografia maior), 3–4 "beta" (médios, conteúdo equilibrado), 2–3 "gamma" (pequenos, densos, suportam os alpha).</p>
+        <div class="fix">
+          <b>recomendação</b>
+          Definir 3 tiers visuais. Sugestão concreta:
+          <ul style="margin:8px 0 0; padding-left: 18px;">
+            <li><b>α (alpha)</b> — Hero + Video. Sem borda, fundo paper-2 ou dark, padding 28px, tipografia +1 escala.</li>
+            <li><b>β (beta)</b> — Write-ups + Featured repo. Borda 1px, padding 18px (atual).</li>
+            <li><b>γ (gamma)</b> — Status, Events, Newsletter. Sem borda, fundo paper-2, padding 14px, conteúdo denso em mono.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============= P1 ============= -->
+
+  <section id="s5">
+    <div class="sec-head">
+      <span class="num">05</span>
+      <h2>Inflação de prefixos e símbolos</h2>
+      <span class="pill p1">P1</span>
+    </div>
+    <p class="sec-intro">
+      Conto: <code>$ video</code>, <code>$ stack</code>, <code>$ subscribe</code>, <code>$ contact</code>, <code>◇ next events</code>,
+      <code>◇ github</code>, <code>⌘ latest write-ups</code>, <code>● status</code>, <code>▶ youtube</code>, <code>◇ shorts</code>.
+      Cinco símbolos diferentes (<code>$ ◇ ⌘ ● ▶</code>), aplicados sem regra clara.
+    </p>
+    <div class="obs">
+      <span class="ico bad">✗</span>
+      <div>
+        <h3>Símbolo sem sistema é decoração</h3>
+        <div class="fix">
+          <b>recomendação</b>
+          Escolher <i>um</i> símbolo por categoria semântica. Ex.: <code>$ </code> só para ações/comandos invocáveis (<code>$ contact</code>, <code>$ subscribe</code>). <code>◇ </code> só para metadados/labels (<code>◇ status</code>, <code>◇ next events</code>, <code>◇ latest write-ups</code>). Eliminar <code>⌘ ● ▶</code> dos labels.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s6">
+    <div class="sec-head">
+      <span class="num">06</span>
+      <h2>Escala tipográfica comprimida</h2>
+      <span class="pill p1">P1</span>
+    </div>
+    <p class="sec-intro">
+      Os tamanhos atuais: 44, 19, 16, 14.5, 13.5, 12.5, 12, 11.5, 11, 10.5, 10, 9.5. Doze degraus,
+      muitos deles separados por meio-ponto. O olho não distingue 10.5 de 11, mas o sistema fica frágil
+      de manter.
+    </p>
+    <div class="obs">
+      <span class="ico bad">✗</span>
+      <div>
+        <h3>Type scale precisa de menos passos</h3>
+        <div class="fix">
+          <b>recomendação</b>
+          Reduzir para 6 passos com razão clara (~1.25): <code>44 · 24 · 18 · 14 · 12 · 10</code>. Mono 12 para meta/labels, mono 10 só para captions de imagem. Body sans 14 universal.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s7">
+    <div class="sec-head">
+      <span class="num">07</span>
+      <h2>Hover translateY em todo card</h2>
+      <span class="pill p1">P1</span>
+    </div>
+    <p class="sec-intro">
+      <code>.card:hover { transform: translateY(-3px); box-shadow: 0 10px 0 -3px ... }</code> aplicado em
+      <i>todos</i> os cards, inclusive aqueles que não são clicáveis (status, newsletter form).
+    </p>
+    <div class="obs">
+      <span class="ico bad">✗</span>
+      <div>
+        <h3>Affordance falsa</h3>
+        <p>Card que levanta no hover sugere "clique aqui". Quando metade dos cards não é clicável, vira ruído tátil.</p>
+        <div class="fix">
+          <b>recomendação</b>
+          Aplicar lift só em containers genuinamente clicáveis (write-up rows, video tiles, featured repo). Status e newsletter ficam estáticos — o hover relevante deles é no botão/link interno.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s8">
+    <div class="sec-head">
+      <span class="num">08</span>
+      <h2>Status card mistura dois conceitos</h2>
+      <span class="pill p1">P1</span>
+    </div>
+    <p class="sec-intro">
+      O card "status" tem: (a) flags de disponibilidade ("open · remote", "shipping daily", "live every friday")
+      e (b) lista de eventos futuros ("nov '26 Web Summit"). São duas listas distintas separadas só por
+      um <code>border-top</code> fino.
+    </p>
+    <div class="obs">
+      <span class="ico bad">✗</span>
+      <div>
+        <h3>Dois conceitos em um container</h3>
+        <div class="fix">
+          <b>recomendação</b>
+          Separar em dois γ-cards (gamma): "status" e "speaking · 2026". Liberam espaço pra hero crescer, e cada um fica com função clara.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s9">
+    <div class="sec-head">
+      <span class="num">09</span>
+      <h2>Microcopy escorrega em clichês</h2>
+      <span class="pill p1">P1</span>
+    </div>
+    <p class="sec-intro">
+      "shipping daily" · "live every friday" · "self-hosted, deployed on a friday" · "no spam, just notes" ·
+      "open to interesting problems" — frases que aparecem em milhares de portfolios de devs/founders.
+    </p>
+    <div class="obs">
+      <span class="ico">⚠</span>
+      <div>
+        <h3>Não diferenciam, então não comunicam</h3>
+        <div class="fix">
+          <b>recomendação</b>
+          Trocar por fatos específicos. "shipping daily" → "47 commits · 7d". "live every friday" → "next live: 28.may · 20h BRT". "no spam, just notes" → "1 email · primeira sexta do mês". Tudo verificável vira credibilidade.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============= P2 ============= -->
+
+  <section id="s10">
+    <div class="sec-head">
+      <span class="num">10</span>
+      <h2>Diagrama do repo é pequeno demais</h2>
+      <span class="pill p2">P2</span>
+    </div>
+    <p class="sec-intro">
+      O <code>&lt;ArchDiagram /&gt;</code> tem 240×60 e mostra 5 caixas com texto de 8px. Em viewport real, é
+      ilegível — funciona como textura, não como informação.
+    </p>
+    <div class="obs">
+      <span class="ico">⚠</span>
+      <div>
+        <h3>Decorativo demais ou pequeno demais — escolher um</h3>
+        <div class="fix">
+          <b>recomendação</b>
+          Duas opções: (a) Aumentar pro card inteiro, virar a feature visual do repo card (label "open repo →" embaixo). (b) Substituir por screenshot de UI real do n8n workflow — mais reconhecível do que um diagrama abstrato.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s11">
+    <div class="sec-head">
+      <span class="num">11</span>
+      <h2>Sparkline definido mas nunca usado</h2>
+      <span class="pill p2">P2</span>
+    </div>
+    <p class="sec-intro">
+      <code>Sparkline2</code> está declarado em <code>midfi-v1.jsx</code> mas não é renderizado em lugar nenhum.
+      Código morto.
+    </p>
+    <div class="obs">
+      <span class="ico">⚠</span>
+      <div>
+        <h3>Remover ou aproveitar</h3>
+        <div class="fix">
+          <b>recomendação</b>
+          Cabe perfeitamente no card de Newsletter mostrando crescimento de assinantes — ou no card de repo mostrando stars over time. Já está pronto. Se não for usar nas próximas iterações, deletar.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s12">
+    <div class="sec-head">
+      <span class="num">12</span>
+      <h2>Modal de vídeo: 4 botões é muito</h2>
+      <span class="pill p2">P2</span>
+    </div>
+    <p class="sec-intro">
+      <code>watch full · save · share · transcript</code> — quatro ações para uma única decisão (assistir).
+      "Save" sem login? "Transcript" abre o quê?
+    </p>
+    <div class="obs">
+      <span class="ico">⚠</span>
+      <div>
+        <h3>Reduzir à ação primária</h3>
+        <div class="fix">
+          <b>recomendação</b>
+          Manter apenas <code>watch on youtube ↗</code> como primary e <code>copy link</code> como secondary. Save/transcript só fazem sentido se a feature existe de verdade.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s13">
+    <div class="sec-head">
+      <span class="num">13</span>
+      <h2>Footer overdesigned</h2>
+      <span class="pill p2">P2</span>
+    </div>
+    <p class="sec-intro">
+      <code>© 2026 hiago.sh® · self-hosted, deployed on a friday · 🇧🇷 SP · UTC−3 · hey@hiago.sh</code>.
+      Tem ®, super-script, emoji de bandeira, copy clichê e duas formas de contato (footer + topbar social).
+    </p>
+    <div class="obs">
+      <span class="ico">⚠</span>
+      <div>
+        <h3>Diminuir, tirar o ®, tirar a piada</h3>
+        <div class="fix">
+          <b>recomendação</b>
+          <code>hiago.sh · são paulo · hey@hiago.sh · 2026</code>. Quatro itens, sem floreio. ® num site pessoal soa irônico mas custa charme.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s14">
+    <div class="sec-head">
+      <span class="num">14</span>
+      <h2>Falta um token cromático de destaque</h2>
+      <span class="pill p2">P2</span>
+    </div>
+    <p class="sec-intro">
+      A paleta é paper/ink/red(live)/green(terminal). Tudo P&amp;B exceto a bolinha vermelha "live" e o
+      verde do <code>$</code> prompt. Não há um <i>accent</i> consistente que ancore a marca.
+    </p>
+    <div class="obs">
+      <span class="ico ok">✓</span>
+      <div>
+        <h3>Definir 1 cor de marca</h3>
+        <p>Pode ser o próprio verde do terminal (<code>#6dd49a</code>) ou um ink azul-noite frio. Aparece em: hover de link primary, underline em palavras-chave, pill de "open to work".</p>
+        <div class="fix">
+          <b>recomendação</b>
+          Eleger uma cor. Usar com parcimônia (no máx. 3 ocorrências por viewport). Documentar como <code>--brand</code> no design token, separado de <code>--live</code> (semântico) e <code>--green</code> (terminal).
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="doc-foot">
+    <span>review v1 · 14 obs · 4 P0 · 5 P1 · 5 P2</span>
+    <span>next: implementar P0 numa v2 paralela</span>
+  </footer>
+
+</main>
+</body>
+</html>

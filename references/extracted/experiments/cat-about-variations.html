@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>cat ~/about — bio variations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --m-ink: #0a0a0a;
+    --m-ink-soft: #585858;
+    --m-ink-faint: #909090;
+    --m-paper: #fbfaf6;
+    --m-paper-2: #f1efe8;
+    --m-line: #e4e1d8;
+    --m-line-strong: #d4d1c7;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--m-paper-2); color: var(--m-ink); }
+  body {
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 56px 40px 120px; }
+
+  .doc-head {
+    margin-bottom: 32px; padding-bottom: 20px;
+    border-bottom: 1px solid var(--m-line);
+  }
+  .doc-crumb {
+    font-family: "JetBrains Mono"; font-size: 11px;
+    color: var(--m-ink-soft); letter-spacing: 0.06em;
+    text-transform: lowercase; margin-bottom: 14px;
+  }
+  h1 {
+    font-family: "IBM Plex Sans"; font-weight: 600;
+    font-size: 28px; line-height: 1.1; letter-spacing: -0.02em;
+    margin: 0 0 10px;
+  }
+  .doc-sub {
+    font-size: 14.5px; line-height: 1.55; color: var(--m-ink-soft);
+    max-width: 660px;
+  }
+
+  .grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+  .case { display: flex; flex-direction: column; gap: 12px; }
+  .case .label {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: "JetBrains Mono"; font-size: 11px; color: var(--m-ink-soft);
+    letter-spacing: 0.04em;
+  }
+  .case .label .ti {
+    color: var(--m-ink); font-weight: 600;
+    font-family: "IBM Plex Sans"; font-size: 14px; letter-spacing: -0.005em;
+  }
+  .case .desc {
+    font-size: 12.5px; line-height: 1.5; color: var(--m-ink-soft);
+  }
+  .case .desc b { color: var(--m-ink); }
+
+  /* terminal block — same look as actual midfi terminal */
+  .terminal {
+    background: #0a0a0a; color: #d0d0d0;
+    border-radius: 12px;
+    font-family: "JetBrains Mono", monospace; font-size: 12.5px;
+    padding: 16px 20px 18px; line-height: 1.65;
+    border: 1px solid #0a0a0a;
+    position: relative; overflow: hidden;
+    min-height: 240px;
+    background-image: radial-gradient(ellipse at top left, rgba(255,255,255,0.04), transparent 50%);
+  }
+  .terminal .prompt { color: #6dd49a; }
+  .terminal .accent { color: #f1efe8; font-weight: 500; }
+  .terminal .dim { color: #707070; }
+  .terminal .str { color: #a8e6a3; }
+  .terminal .num { color: #ffb86c; }
+  .terminal .cursor {
+    display: inline-block; width: 7px; height: 14px;
+    background: #d0d0d0; vertical-align: -2px;
+    animation: blink 1s steps(2, end) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  .terminal pre {
+    margin: 0;
+    font-family: inherit; font-size: inherit; color: inherit;
+    background: transparent;
+    white-space: pre-wrap;
+  }
+
+  .pick-note {
+    margin-top: 56px; padding: 18px 22px;
+    background: var(--m-paper); border: 1px solid var(--m-line-strong);
+    border-radius: 10px;
+    font-size: 13.5px; line-height: 1.6; color: var(--m-ink-soft);
+  }
+  .pick-note b { color: var(--m-ink); }
+  .pick-note ul { margin: 8px 0 0; padding-left: 18px; }
+  .pick-note ul li { margin-bottom: 4px; }
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <header class="doc-head">
+    <div class="doc-crumb">$ cat ~/about --variations</div>
+    <h1>8 versões do bio</h1>
+    <p class="doc-sub">
+      Mesma estrutura — <code>cat ~/about</code> + nome + 1 linha de role + 2–3 linhas de texto.
+      Varia o <b>tom</b>, o <b>ângulo</b> e o que cada uma quer comunicar.
+    </p>
+  </header>
+
+  <div class="grid">
+
+    <!-- ─── A · technical confidence ─── -->
+    <div class="case">
+      <div class="label">
+        <span class="ti">A · technical confidence</span>
+        <span>foco no que ele faz, sem floreio</span>
+      </div>
+      <div class="terminal">
+<pre><span class="prompt">$ </span>cat ~/about
+
+<span class="accent">hiago felipe</span>
+platform engineer · são paulo · <span class="num">13y</span>
+
+i build infra that doesn't page you at 3am.
+deep in <span class="str">n8n</span>, <span class="str">mcp</span>, self-hosting everything.
+gov, esports, fintech — all production.<span class="cursor"></span></pre>
+      </div>
+      <p class="desc">
+        Tom direto, foco em <b>confiabilidade</b>. "Doesn't page you at 3am" comunica senioridade
+        sem dizer "sênior". Lista de domínios reforça experiência variada.
+      </p>
+    </div>
+
+    <!-- ─── B · short & punchy ─── -->
+    <div class="case">
+      <div class="label">
+        <span class="ti">B · short & punchy</span>
+        <span>máximo impacto em mínimas linhas</span>
+      </div>
+      <div class="terminal">
+<pre><span class="prompt">$ </span>cat ~/about
+
+<span class="accent">hiago felipe</span>
+platform engineer · são paulo
+
+<span class="num">13</span> years.
+<span class="num">0</span> incidents at 3am.
+<span class="num">1</span> rule: self-host everything.<span class="cursor"></span></pre>
+      </div>
+      <p class="desc">
+        Tríade numerada. <b>Lê em 3 segundos</b>. Funciona porque cada linha tem um número
+        + uma afirmação. Cinco linhas só, mas comunica posicionamento inteiro.
+      </p>
+    </div>
+
+    <!-- ─── C · warmer, human ─── -->
+    <div class="case">
+      <div class="label">
+        <span class="ti">C · warmer, human</span>
+        <span>tom de pessoa, não de currículo</span>
+      </div>
+      <div class="terminal">
+<pre><span class="prompt">$ </span>cat ~/about
+
+<span class="accent">hiago felipe</span>
+são paulo · <span class="num">13</span> years building things in prod
+
+i like infra that's boring on purpose —
+the kind that wakes up before you do.
+
+these days: <span class="str">n8n</span> for ops, <span class="str">mcp</span> for agents,
+and a writing habit i'm proud of.<span class="cursor"></span></pre>
+      </div>
+      <p class="desc">
+        Mais <b>caloroso</b>. "Boring on purpose" e "writing habit i'm proud of" mostram
+        personalidade. Menos buzzword, mais voz. Funciona se quiser conexão sobre status.
+      </p>
+    </div>
+
+    <!-- ─── D · contrarian ─── -->
+    <div class="case">
+      <div class="label">
+        <span class="ti">D · contrarian</span>
+        <span>posicionamento por contraste</span>
+      </div>
+      <div class="terminal">
+<pre><span class="prompt">$ </span>cat ~/about
+
+<span class="accent">hiago felipe</span>
+platform engineer · são paulo
+
+<span class="dim">while everyone moves to the cloud,</span>
+<span class="dim">i'm moving things back.</span>
+
+<span class="num">13</span> years of production infra,
+mostly self-hosted, mostly boring,
+mostly working at <span class="num">3am</span>.<span class="cursor"></span></pre>
+      </div>
+      <p class="desc">
+        Posiciona por <b>contraste</b>. "Everyone moves to the cloud, i'm moving things back"
+        é uma frase memorável. Mais opinativa — vai atrair quem concorda, repelir quem não.
+        Bom pra um portfolio que quer filtrar.
+      </p>
+    </div>
+
+    <!-- ─── E · journey ─── -->
+    <div class="case">
+      <div class="label">
+        <span class="ti">E · journey</span>
+        <span>arco profissional em 4 linhas</span>
+      </div>
+      <div class="terminal">
+<pre><span class="prompt">$ </span>cat ~/about
+
+<span class="accent">hiago felipe</span>
+platform engineer · são paulo
+
+<span class="num">2013</span>: started running servers for gov.
+<span class="num">2018</span>: scaled esports infra to millions.
+<span class="num">2024</span>: ai workflows for fintech ops.
+<span class="num">2026</span>: writing what i wish i'd read.<span class="cursor"></span></pre>
+      </div>
+      <p class="desc">
+        <b>Storytelling cronológico</b>. Cada linha = um ano + uma virada. Termina com
+        "writing what i wish i'd read" que ancora o presente. Mostra trajetória sem CV formal.
+      </p>
+    </div>
+
+    <!-- ─── F · field-guide ─── -->
+    <div class="case">
+      <div class="label">
+        <span class="ti">F · field guide</span>
+        <span>formato manual / spec</span>
+      </div>
+      <div class="terminal">
+<pre><span class="prompt">$ </span>cat ~/about
+
+<span class="accent">hiago felipe</span>
+<span class="dim">based</span>    são paulo · UTC<span class="num">-3</span>
+<span class="dim">since</span>    <span class="num">2013</span>
+<span class="dim">stack</span>    self-hosted, n8n, mcp, k8s
+<span class="dim">domain</span>   infra that sleeps when you do
+<span class="dim">writes</span>   long-form on systems thinking<span class="cursor"></span></pre>
+      </div>
+      <p class="desc">
+        Estrutura <b>tipo spec / passport stamp</b>. Cada linha tem chave + valor.
+        Cabe muita info em pouco espaço. Mais escaneável que parágrafo, mais humano que JSON.
+      </p>
+    </div>
+
+    <!-- ─── G · invitation ─── -->
+    <div class="case">
+      <div class="label">
+        <span class="ti">G · invitation</span>
+        <span>termina puxando conversa</span>
+      </div>
+      <div class="terminal">
+<pre><span class="prompt">$ </span>cat ~/about
+
+<span class="accent">hiago felipe</span>
+platform engineer · são paulo · <span class="num">13y</span>
+
+i help teams self-host the stuff
+they're overpaying SaaS for.
+
+if that sounds like your problem,
+<span class="str">hey@hiago.sh</span> is open.<span class="cursor"></span></pre>
+      </div>
+      <p class="desc">
+        <b>Termina com CTA</b>. Diz exatamente quem deveria escrever ("if that sounds
+        like your problem"). Bom se objetivo do site é gerar leads de consultoria.
+        Email visível dentro do terminal.
+      </p>
+    </div>
+
+    <!-- ─── H · current chapter ─── -->
+    <div class="case">
+      <div class="label">
+        <span class="ti">H · current chapter</span>
+        <span>o "agora" mais que o "histórico"</span>
+      </div>
+      <div class="terminal">
+<pre><span class="prompt">$ </span>cat ~/about
+
+<span class="accent">hiago felipe</span>
+platform engineer · são paulo
+
+<span class="dim">past:    </span>gov, esports, fintech (13y)
+<span class="dim">present: </span>self-hosted ai workflows
+<span class="dim">writing: </span>n8n field notes, weekly
+<span class="dim">curious: </span>about teams who outgrew their stack<span class="cursor"></span></pre>
+      </div>
+      <p class="desc">
+        Triplica em <b>tempo verbal</b>: past · present · writing · curious. Mostra que ele
+        é alguém em movimento, não só CV. "curious about" no fim sugere abertura sem dizer
+        "open to opportunities".
+      </p>
+    </div>
+
+  </div>
+
+  <div class="pick-note">
+    <b>Mini-guia de escolha:</b>
+    <ul>
+      <li><b>A · technical confidence</b> — default seguro, equilibra técnico + voz.</li>
+      <li><b>B · short & punchy</b> — se quer máximo impacto e o bento já tá denso.</li>
+      <li><b>C · warmer, human</b> — se o resto da página é frio (terminal/grid/mono).</li>
+      <li><b>D · contrarian</b> — se quer um site memorável + filtra clientes wrong-fit.</li>
+      <li><b>E · journey</b> — se carreira longa é o ativo principal.</li>
+      <li><b>F · field guide</b> — máximo de info em mínimo espaço.</li>
+      <li><b>G · invitation</b> — se prioridade é converter visitantes em leads.</li>
+      <li><b>H · current chapter</b> — se quer mostrar "estou em movimento, não parado".</li>
+    </ul>
+    <p style="margin: 12px 0 0;">
+      Manda o número (ou os números) e eu instalo no <code>index.html</code> no lugar do
+      conteúdo atual do terminal.
+    </p>
+  </div>
+
+</main>
+</body>
+</html>

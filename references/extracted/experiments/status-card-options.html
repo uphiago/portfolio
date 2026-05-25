@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Status card — 4 directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --m-ink: #0a0a0a;
+    --m-ink-soft: #585858;
+    --m-ink-faint: #909090;
+    --m-paper: #fbfaf6;
+    --m-paper-2: #f1efe8;
+    --m-line: #e4e1d8;
+    --m-line-strong: #d4d1c7;
+    --m-rule: #0a0a0a;
+    --m-live: #e1372a;
+    --m-green: #5fb784;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--m-paper-2); color: var(--m-ink); }
+  body {
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  .mono { font-family: "JetBrains Mono", monospace; }
+
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 56px 40px 120px; }
+
+  .doc-head {
+    margin-bottom: 32px; padding-bottom: 20px;
+    border-bottom: 1px solid var(--m-line);
+  }
+  .doc-crumb {
+    font-family: "JetBrains Mono"; font-size: 11px;
+    color: var(--m-ink-soft); letter-spacing: 0.06em;
+    text-transform: lowercase; margin-bottom: 14px;
+  }
+  h1 {
+    font-family: "IBM Plex Sans"; font-weight: 600;
+    font-size: 28px; line-height: 1.1; letter-spacing: -0.02em;
+    margin: 0 0 10px;
+  }
+  .doc-sub {
+    font-size: 14.5px; line-height: 1.55; color: var(--m-ink-soft);
+    max-width: 640px;
+  }
+
+  .grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+  .case {
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .case .label {
+    font-family: "JetBrains Mono"; font-size: 11px;
+    color: var(--m-ink-soft); letter-spacing: 0.04em;
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .case .label .ti {
+    color: var(--m-ink); font-weight: 600;
+    font-family: "IBM Plex Sans"; font-size: 14px; letter-spacing: -0.005em;
+  }
+  .case .desc {
+    font-size: 13px; line-height: 1.5; color: var(--m-ink-soft);
+    padding: 0 2px;
+  }
+
+  /* ───── shared card chrome (matches midfi) ───── */
+  .card {
+    background: var(--m-paper);
+    border: 1px solid var(--m-rule);
+    border-radius: 10px;
+    padding: 16px;
+    position: relative;
+    height: 330px;
+    width: 100%;
+    max-width: 480px;
+    display: flex; flex-direction: column;
+  }
+  .card.dark {
+    background: #0a0a0a; color: #f1efe8; border-color: #0a0a0a;
+    background-image: radial-gradient(circle at 0% 0%, rgba(255,255,255,0.04), transparent 60%);
+  }
+  .eyebrow {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10.5px; letter-spacing: 0.06em;
+    color: var(--m-ink-soft); text-transform: lowercase;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .eyebrow.on-dark { color: #9a9a9a; }
+  .h-card {
+    font-family: "IBM Plex Sans"; font-weight: 600;
+    font-size: 19px; line-height: 1.25; letter-spacing: -0.015em;
+    margin: 0;
+  }
+  .h-mono {
+    font-family: "JetBrains Mono"; font-weight: 500;
+    font-size: 15px; letter-spacing: -0.02em; margin: 0;
+  }
+  .meta {
+    font-family: "JetBrains Mono"; font-size: 10.5px;
+    color: var(--m-ink-faint); letter-spacing: 0.01em;
+  }
+  .meta.on-dark { color: #707070; }
+
+  /* ───────────── OPTION A · Now (Sivers-style) ───────────── */
+  .now-eye { margin-bottom: 14px; display: flex; justify-content: space-between; }
+  .now-eye .upd { color: var(--m-ink-faint); }
+  .now-title { font-size: 17px; font-weight: 600; letter-spacing: -0.015em; margin: 0 0 12px; }
+  .now-block { margin-bottom: 14px; }
+  .now-block .k {
+    font-family: "JetBrains Mono"; font-size: 10px;
+    color: var(--m-ink-faint); letter-spacing: 0.05em;
+    text-transform: uppercase; margin-bottom: 4px;
+  }
+  .now-block .v {
+    font-size: 13.5px; line-height: 1.55; color: var(--m-ink);
+  }
+  .now-block .v .accent { color: var(--m-ink); font-weight: 500; border-bottom: 1px dotted var(--m-ink-faint); }
+  .now-foot {
+    margin-top: auto; padding-top: 12px;
+    border-top: 1px solid var(--m-line);
+    font-family: "JetBrains Mono"; font-size: 10.5px;
+    color: var(--m-ink-faint);
+    display: flex; justify-content: space-between;
+  }
+
+  /* ───────────── OPTION B · 365d activity ───────────── */
+  .activity-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 12px;
+  }
+  .activity-title {
+    font-family: "IBM Plex Sans"; font-weight: 600;
+    font-size: 16px; letter-spacing: -0.015em; margin: 0;
+  }
+  .activity-sub { font-family: "JetBrains Mono"; font-size: 10.5px; color: var(--m-ink-faint); }
+  .heat {
+    display: grid; grid-template-rows: repeat(7, 1fr);
+    grid-auto-flow: column;
+    gap: 3px;
+    flex: 1;
+    margin: 6px 0 10px;
+  }
+  .heat .cell {
+    width: 100%; aspect-ratio: 1;
+    border-radius: 2px;
+    background: var(--m-paper-2);
+  }
+  .heat .cell.l1 { background: #d4ead9; }
+  .heat .cell.l2 { background: #9fd3b3; }
+  .heat .cell.l3 { background: #5fb784; }
+  .heat .cell.l4 { background: #2f7a4d; }
+  .activity-foot {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 12px; border-top: 1px solid var(--m-line);
+    font-family: "JetBrains Mono"; font-size: 10.5px; color: var(--m-ink-soft);
+  }
+  .legend { display: inline-flex; gap: 4px; align-items: center; }
+  .legend .sq { width: 9px; height: 9px; border-radius: 2px; }
+
+  /* ───────────── OPTION C · Speaking calendar (focus) ───────────── */
+  .cal-head { display: flex; justify-content: space-between; margin-bottom: 14px; }
+  .cal-row {
+    display: grid; grid-template-columns: 56px 1fr auto;
+    gap: 12px; align-items: baseline;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--m-line);
+    cursor: pointer;
+  }
+  .cal-row:last-of-type { border-bottom: none; }
+  .cal-row:hover .cal-arr { transform: translateX(3px); color: var(--m-ink); }
+  .cal-date {
+    font-family: "JetBrains Mono"; font-size: 11px;
+    color: var(--m-ink); text-align: left;
+    display: flex; flex-direction: column;
+  }
+  .cal-date .day { font-size: 19px; font-weight: 600; line-height: 1; letter-spacing: -0.02em; }
+  .cal-date .month {
+    font-size: 10px; color: var(--m-ink-faint);
+    text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px;
+  }
+  .cal-info .name {
+    font-family: "IBM Plex Sans"; font-weight: 500;
+    font-size: 14px; line-height: 1.3; letter-spacing: -0.005em;
+  }
+  .cal-info .loc {
+    font-family: "JetBrains Mono"; font-size: 10.5px;
+    color: var(--m-ink-faint); margin-top: 4px;
+  }
+  .cal-info .loc .role { color: var(--m-ink-soft); }
+  .cal-arr {
+    font-family: "JetBrains Mono"; font-size: 12px;
+    color: var(--m-ink-faint);
+    transition: transform .15s ease, color .15s ease;
+  }
+  .cal-cta {
+    padding-top: 10px; margin-top: auto;
+    border-top: 1px solid var(--m-line);
+    font-family: "JetBrains Mono"; font-size: 10.5px;
+    color: var(--m-ink-soft);
+    display: flex; justify-content: space-between;
+  }
+
+  /* ───────────── OPTION D · Pulse metrics (dark) ───────────── */
+  .pulse-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 14px;
+  }
+  .pulse-head .ti { font-family: "JetBrains Mono"; font-size: 13px; color: #f1efe8; }
+  .pulse-head .live {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: "JetBrains Mono"; font-size: 9.5px;
+    color: var(--m-live); letter-spacing: 0.08em;
+  }
+  .pulse-head .live::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--m-live); animation: pulse 1.5s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+  }
+  .kpi-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+    background: #1f1f1f;
+    border: 1px solid #1f1f1f;
+    border-radius: 6px;
+    overflow: hidden;
+    flex: 1;
+  }
+  .kpi {
+    background: #0a0a0a;
+    padding: 14px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .kpi .k {
+    font-family: "JetBrains Mono"; font-size: 9.5px;
+    color: #8a8a8a; letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .kpi .v {
+    font-family: "JetBrains Mono"; font-weight: 600;
+    font-size: 28px; color: #f1efe8;
+    letter-spacing: -0.02em; line-height: 1;
+    margin: 8px 0 6px;
+  }
+  .kpi .d {
+    font-family: "JetBrains Mono"; font-size: 9.5px;
+    color: var(--m-green); letter-spacing: 0.02em;
+  }
+  .kpi .d.flat { color: #8a8a8a; }
+  .pulse-foot {
+    margin-top: 12px; padding-top: 0;
+    font-family: "JetBrains Mono"; font-size: 10px;
+    color: #707070;
+    display: flex; justify-content: space-between;
+  }
+
+  /* ───────────── OPTION E · Field log (chronological) ───────────── */
+  .log-head {
+    display: flex; justify-content: space-between; margin-bottom: 10px;
+  }
+  .log-list {
+    flex: 1; overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .log-row {
+    display: grid; grid-template-columns: 56px 16px 1fr;
+    gap: 10px; align-items: baseline;
+    padding: 10px 0;
+    border-bottom: 1px dotted var(--m-line);
+    font-family: "JetBrains Mono"; font-size: 11.5px;
+  }
+  .log-row:last-of-type { border-bottom: none; }
+  .log-row .date { color: var(--m-ink-faint); }
+  .log-row .tag {
+    width: 16px; height: 16px; border-radius: 4px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 600; color: var(--m-paper);
+  }
+  .log-row .tag.t-w { background: #0a0a0a; }      /* write */
+  .log-row .tag.t-v { background: var(--m-live); }/* video */
+  .log-row .tag.t-c { background: var(--m-green); color: #0a0a0a; } /* code */
+  .log-row .tag.t-s { background: #b87a18; }      /* speak */
+  .log-row .what {
+    color: var(--m-ink); font-family: "IBM Plex Sans";
+    font-size: 13px; line-height: 1.35;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .log-foot {
+    padding-top: 10px; margin-top: auto;
+    border-top: 1px solid var(--m-line);
+    font-family: "JetBrains Mono"; font-size: 10.5px;
+    color: var(--m-ink-soft);
+    display: flex; justify-content: space-between;
+  }
+  .log-legend { display: flex; gap: 10px; }
+  .log-legend span {
+    display: inline-flex; align-items: center; gap: 4px;
+    color: var(--m-ink-faint);
+  }
+  .log-legend span .sq {
+    width: 8px; height: 8px; border-radius: 2px;
+  }
+
+  /* compare note */
+  .compare-note {
+    margin-top: 56px; padding: 18px 22px;
+    background: var(--m-paper); border: 1px solid var(--m-line-strong);
+    border-radius: 10px;
+    font-size: 13.5px; line-height: 1.6; color: var(--m-ink-soft);
+  }
+  .compare-note b { color: var(--m-ink); font-weight: 600; }
+  .compare-note ul { margin: 8px 0 0; padding-left: 18px; }
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <header class="doc-head">
+    <div class="doc-crumb">$ status-card --explore</div>
+    <h1>O que esse quadro deveria ser?</h1>
+    <p class="doc-sub">
+      Hoje ele mistura "estou ativo" + "vou estar nesses eventos" — duas mensagens diferentes
+      num container só. Aqui 4 direções, cada uma com um trabalho claro.
+    </p>
+  </header>
+
+  <div class="grid">
+
+    <!-- OPTION A -->
+    <div class="case">
+      <div class="label">
+        <span class="ti">A · /now</span>
+        <span>narrativa pessoal</span>
+      </div>
+      <div class="card">
+        <div class="now-eye eyebrow">
+          <span>◇ now</span>
+          <span class="upd">updated 3d ago</span>
+        </div>
+        <h3 class="now-title">What I'm up to</h3>
+        <div class="now-block">
+          <div class="k">building</div>
+          <div class="v">An <span class="accent">n8n workflows library</span> for self-hosted ops — open source, v2.4 shipping this week.</div>
+        </div>
+        <div class="now-block">
+          <div class="k">writing</div>
+          <div class="v">Long-form piece on <span class="accent">MCP architectures</span> for tool-calling agents.</div>
+        </div>
+        <div class="now-block">
+          <div class="k">next</div>
+          <div class="v">Web Summit Lisbon · nov '26</div>
+        </div>
+        <div class="now-foot">
+          <span>read full /now →</span>
+          <span>3 of 5</span>
+        </div>
+      </div>
+      <p class="desc">
+        Substitui status genérico por uma página /now estilo Derek Sivers. Diz exatamente
+        no que está trabalhando <i>esta semana</i>. Concreto, datado, sem clichês.
+      </p>
+    </div>
+
+    <!-- OPTION B -->
+    <div class="case">
+      <div class="label">
+        <span class="ti">B · 365d activity</span>
+        <span>prova quantitativa</span>
+      </div>
+      <div class="card">
+        <div class="activity-head">
+          <div>
+            <h3 class="activity-title">365d shipping</h3>
+            <div class="activity-sub" style="margin-top:4px">1,248 commits · 47 articles · 28 streams</div>
+          </div>
+          <div class="eyebrow">◇ pulse</div>
+        </div>
+        <div class="heat" id="heat-grid"></div>
+        <div class="activity-foot">
+          <div class="legend">
+            less
+            <span class="sq" style="background:var(--m-paper-2)"></span>
+            <span class="sq" style="background:#d4ead9"></span>
+            <span class="sq" style="background:#9fd3b3"></span>
+            <span class="sq" style="background:#5fb784"></span>
+            <span class="sq" style="background:#2f7a4d"></span>
+            more
+          </div>
+          <span>↗ longest streak: 23d</span>
+        </div>
+      </div>
+      <p class="desc">
+        Heatmap estilo GitHub — 7×52 células de atividade real (commits, posts, streams, qualquer evento).
+        Para de <i>dizer</i> "shipping daily" e passa a <i>mostrar</i>. Auto-atualizável.
+      </p>
+    </div>
+
+    <!-- OPTION C -->
+    <div class="case">
+      <div class="label">
+        <span class="ti">C · speaking</span>
+        <span>agenda de eventos como foco</span>
+      </div>
+      <div class="card">
+        <div class="cal-head">
+          <span class="eyebrow">◇ speaking · 2026</span>
+          <span class="meta">3 confirmed</span>
+        </div>
+        <div class="cal-row">
+          <div class="cal-date">
+            <span class="day">12</span>
+            <span class="month">nov '26</span>
+          </div>
+          <div class="cal-info">
+            <div class="name">Web Summit Lisbon</div>
+            <div class="loc"><span class="role">talk</span> · self-hosted CI/CD at scale</div>
+          </div>
+          <span class="cal-arr">↗</span>
+        </div>
+        <div class="cal-row">
+          <div class="cal-date">
+            <span class="day">28</span>
+            <span class="month">nov '26</span>
+          </div>
+          <div class="cal-info">
+            <div class="name">Blockchain Rio</div>
+            <div class="loc"><span class="role">panel</span> · infra for crypto products</div>
+          </div>
+          <span class="cal-arr">↗</span>
+        </div>
+        <div class="cal-row">
+          <div class="cal-date">
+            <span class="day">05</span>
+            <span class="month">dec '26</span>
+          </div>
+          <div class="cal-info">
+            <div class="name">Tokenation SP</div>
+            <div class="loc"><span class="role">workshop</span> · n8n for crypto teams</div>
+          </div>
+          <span class="cal-arr">↗</span>
+        </div>
+        <div class="cal-cta">
+          <span>full calendar →</span>
+          <span>invite to speak ↗</span>
+        </div>
+      </div>
+      <p class="desc">
+        Cai o "status" — eventos viram o conteúdo principal do card.
+        Cada evento ganha data destacada, tipo (talk/panel/workshop) e título da apresentação.
+        Comunica autoridade no tema.
+      </p>
+    </div>
+
+    <!-- OPTION D -->
+    <div class="case">
+      <div class="label">
+        <span class="ti">D · live pulse</span>
+        <span>KPIs em tempo real (dark)</span>
+      </div>
+      <div class="card dark">
+        <div class="pulse-head">
+          <span class="ti">$ pulse --live</span>
+          <span class="live">LIVE</span>
+        </div>
+        <div class="kpi-grid">
+          <div class="kpi">
+            <span class="k">commits · 30d</span>
+            <span class="v">147</span>
+            <span class="d">↑ +12% mom</span>
+          </div>
+          <div class="kpi">
+            <span class="k">subscribers</span>
+            <span class="v">3.2k</span>
+            <span class="d">↑ +84 · 7d</span>
+          </div>
+          <div class="kpi">
+            <span class="k">stream hrs</span>
+            <span class="v">22h</span>
+            <span class="d flat">→ steady</span>
+          </div>
+          <div class="kpi">
+            <span class="k">articles · ytd</span>
+            <span class="v">12</span>
+            <span class="d">↑ +3 · 30d</span>
+          </div>
+        </div>
+        <div class="pulse-foot">
+          <span>updated 4m ago · auto</span>
+          <span>full dashboard →</span>
+        </div>
+      </div>
+      <p class="desc">
+        Card escuro com 4 KPIs reais. Posiciona como engenheiro orientado a métricas.
+        Delta % ao lado de cada número (↑ +12% mom) faz parecer dashboard de produção.
+      </p>
+    </div>
+
+    <!-- OPTION E (bonus) -->
+    <div class="case" style="grid-column: span 2; max-width: 480px; margin: 0 auto;">
+      <div class="label">
+        <span class="ti">E · field log (bonus)</span>
+        <span>changelog público</span>
+      </div>
+      <div class="card">
+        <div class="log-head">
+          <span class="eyebrow">⌘ field log · last 8</span>
+          <span class="meta">live feed →</span>
+        </div>
+        <div class="log-list">
+          <div class="log-row">
+            <span class="date">today</span>
+            <span class="tag t-c">c</span>
+            <span class="what">n8n-workflows · merged PR #84</span>
+          </div>
+          <div class="log-row">
+            <span class="date">yest.</span>
+            <span class="tag t-w">w</span>
+            <span class="what">published: MCP architectures (11 min)</span>
+          </div>
+          <div class="log-row">
+            <span class="date">2d</span>
+            <span class="tag t-v">v</span>
+            <span class="what">shipped short · n8n in 40s · 31k views</span>
+          </div>
+          <div class="log-row">
+            <span class="date">4d</span>
+            <span class="tag t-c">c</span>
+            <span class="what">opened RFC · multi-cloud net module</span>
+          </div>
+          <div class="log-row">
+            <span class="date">7d</span>
+            <span class="tag t-s">s</span>
+            <span class="what">confirmed · Web Summit nov '26</span>
+          </div>
+        </div>
+        <div class="log-foot">
+          <div class="log-legend">
+            <span><span class="sq" style="background:var(--m-green)"></span>code</span>
+            <span><span class="sq" style="background:#0a0a0a"></span>write</span>
+            <span><span class="sq" style="background:var(--m-live)"></span>video</span>
+            <span><span class="sq" style="background:#b87a18"></span>speak</span>
+          </div>
+          <span>all →</span>
+        </div>
+      </div>
+      <p class="desc" style="text-align:center;">
+        Mistura código, escrita, vídeo e talks num feed cronológico estilo git log humano.
+        Categorias coloridas. Funciona como o "now" + "status" + "events" colapsados em um só lugar.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="compare-note">
+    <b>Como decidir:</b>
+    <ul>
+      <li><b>A · Now</b> — se quer narrativa pessoal e tom mais "blog do criador".</li>
+      <li><b>B · 365d</b> — se a tese é "trabalho duro e consistente, números falam por mim".</li>
+      <li><b>C · Speaking</b> — se posicionamento como palestrante/autoridade é prioridade.</li>
+      <li><b>D · Pulse</b> — se quer projetar imagem de "engenheiro de plataforma orientado a métricas".</li>
+      <li><b>E · Field log</b> — se quer condensar tudo num único feed verificável (mais ambicioso, vira a feature do site).</li>
+    </ul>
+  </div>
+
+</main>
+
+<script>
+  // generate 365 cells with random-ish density for option B
+  (function() {
+    const grid = document.getElementById('heat-grid');
+    if (!grid) return;
+    const seed = (n) => {
+      const x = Math.sin(n * 13.37) * 10000;
+      return x - Math.floor(x);
+    };
+    for (let i = 0; i < 7 * 26; i++) {
+      const r = seed(i + 1);
+      let cls = '';
+      if (r > 0.85) cls = 'l4';
+      else if (r > 0.7) cls = 'l3';
+      else if (r > 0.5) cls = 'l2';
+      else if (r > 0.3) cls = 'l1';
+      const div = document.createElement('div');
+      div.className = 'cell ' + cls;
+      grid.appendChild(div);
+    }
+  })();
+</script>
+</body>
+</html>

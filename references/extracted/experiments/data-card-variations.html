@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Data card — 4 variations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --m-ink: #0a0a0a;
+    --m-ink-soft: #585858;
+    --m-ink-faint: #909090;
+    --m-paper: #fbfaf6;
+    --m-paper-2: #f1efe8;
+    --m-line: #e4e1d8;
+    --m-line-strong: #d4d1c7;
+    --m-green: #5fb784;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--m-paper-2); color: var(--m-ink); }
+  body {
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 56px 40px 120px; }
+
+  .doc-head {
+    margin-bottom: 32px; padding-bottom: 20px;
+    border-bottom: 1px solid var(--m-line);
+  }
+  .doc-crumb {
+    font-family: "JetBrains Mono"; font-size: 11px;
+    color: var(--m-ink-soft); letter-spacing: 0.06em;
+    text-transform: lowercase; margin-bottom: 14px;
+  }
+  h1 {
+    font-family: "IBM Plex Sans"; font-weight: 600;
+    font-size: 28px; line-height: 1.1; letter-spacing: -0.02em;
+    margin: 0 0 10px;
+  }
+  .doc-sub {
+    font-size: 14.5px; line-height: 1.55; color: var(--m-ink-soft);
+    max-width: 640px;
+  }
+
+  .grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+  .case { display: flex; flex-direction: column; gap: 14px; }
+  .case .label {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: "JetBrains Mono"; font-size: 11px; color: var(--m-ink-soft);
+    letter-spacing: 0.04em;
+  }
+  .case .label .ti {
+    color: var(--m-ink); font-weight: 600;
+    font-family: "IBM Plex Sans"; font-size: 14px; letter-spacing: -0.005em;
+  }
+  .case .desc {
+    font-size: 13px; line-height: 1.5; color: var(--m-ink-soft);
+  }
+
+  .card {
+    background: #0a0a0a; color: #f1efe8;
+    border: 1px solid #0a0a0a; border-radius: 10px;
+    padding: 18px; position: relative;
+    height: 330px; width: 100%; max-width: 480px;
+    display: flex; flex-direction: column;
+    background-image: radial-gradient(circle at 0% 0%, rgba(255,255,255,0.04), transparent 60%);
+  }
+  .card.light {
+    background: var(--m-paper); color: var(--m-ink);
+    border: 1px solid var(--m-ink);
+    background-image: none;
+  }
+
+  .eyebrow {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10.5px; letter-spacing: 0.06em;
+    color: #9a9a9a; text-transform: lowercase;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .card.light .eyebrow { color: var(--m-ink-soft); }
+  .meta { font-family: "JetBrains Mono"; font-size: 10.5px; color: #707070; }
+  .card.light .meta { color: var(--m-ink-faint); }
+
+  /* ═════════════════ V1 · One big number + breakdown ═════════════════ */
+  .v1 .head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 6px;
+  }
+  .v1 .hero {
+    margin: 8px 0 2px;
+  }
+  .v1 .hero .n {
+    font-family: "JetBrains Mono"; font-weight: 600;
+    font-size: 56px; line-height: 1; letter-spacing: -0.03em;
+    color: #f1efe8;
+  }
+  .v1 .hero .unit {
+    font-family: "JetBrains Mono"; font-size: 14px;
+    color: #8a8a8a; margin-left: 4px;
+  }
+  .v1 .hero .lbl {
+    font-family: "IBM Plex Sans"; font-size: 13px;
+    color: #c8c8c8; margin-top: 4px;
+  }
+  .v1 .breakdown {
+    margin-top: auto;
+    border-top: 1px solid #1a1a1a;
+    padding-top: 12px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px;
+  }
+  .v1 .b-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: "JetBrains Mono"; font-size: 11px;
+  }
+  .v1 .b-row .k { color: #8a8a8a; }
+  .v1 .b-row .v { color: #f1efe8; font-weight: 500; }
+  .v1 .foot {
+    margin-top: 12px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: "JetBrains Mono"; font-size: 10px; color: #707070;
+  }
+  .v1 .delta { color: var(--m-green); }
+
+  /* ═════════════════ V2 · 4-up KPI grid (no live) ═════════════════ */
+  .v2 .head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 14px;
+  }
+  .v2 .kpi-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+    background: #1a1a1a;
+    border: 1px solid #1a1a1a;
+    border-radius: 6px;
+    overflow: hidden;
+    flex: 1;
+  }
+  .v2 .kpi {
+    background: #0a0a0a;
+    padding: 16px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .v2 .kpi .k {
+    font-family: "JetBrains Mono"; font-size: 9.5px;
+    color: #8a8a8a; letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .v2 .kpi .v {
+    font-family: "JetBrains Mono"; font-weight: 600;
+    font-size: 30px; color: #f1efe8;
+    letter-spacing: -0.025em; line-height: 1;
+    margin: 6px 0 4px;
+  }
+  .v2 .kpi .v .unit { font-size: 13px; color: #8a8a8a; margin-left: 2px; }
+  .v2 .kpi .d {
+    font-family: "JetBrains Mono"; font-size: 10px;
+    color: var(--m-green); letter-spacing: 0.02em;
+  }
+  .v2 .kpi .d.muted { color: #8a8a8a; }
+  .v2 .foot {
+    margin-top: 12px;
+    font-family: "JetBrains Mono"; font-size: 10px; color: #707070;
+    display: flex; justify-content: space-between;
+  }
+
+  /* ═════════════════ V3 · Distribution bars ═════════════════ */
+  .v3 .head { display: flex; justify-content: space-between; margin-bottom: 8px; }
+  .v3 .hero {
+    font-family: "JetBrains Mono"; font-weight: 600;
+    font-size: 42px; letter-spacing: -0.025em; line-height: 1;
+    margin: 4px 0 2px;
+    color: #f1efe8;
+  }
+  .v3 .hero-lbl {
+    font-family: "IBM Plex Sans"; font-size: 12.5px; color: #b0b0b0;
+    margin-bottom: 18px;
+  }
+  .v3 .bars {
+    display: flex; flex-direction: column; gap: 10px;
+    flex: 1;
+  }
+  .v3 .bar-row {
+    display: grid; grid-template-columns: 78px 1fr 56px;
+    gap: 12px; align-items: center;
+    font-family: "JetBrains Mono"; font-size: 10.5px;
+  }
+  .v3 .bar-row .k { color: #b0b0b0; }
+  .v3 .bar-row .v { color: #f1efe8; text-align: right; font-weight: 500; }
+  .v3 .bar-track {
+    height: 8px; background: #1a1a1a; border-radius: 2px; overflow: hidden;
+    position: relative;
+  }
+  .v3 .bar-fill {
+    height: 100%; background: #f1efe8;
+    border-radius: 2px;
+    transition: width .4s ease;
+  }
+  .v3 .foot {
+    margin-top: 12px; padding-top: 12px;
+    border-top: 1px solid #1a1a1a;
+    font-family: "JetBrains Mono"; font-size: 10px; color: #707070;
+    display: flex; justify-content: space-between;
+  }
+
+  /* ═════════════════ V4 · Career snapshot (light, biographical) ═════════════════ */
+  .v4 .head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 6px;
+  }
+  .v4 .stat-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0;
+    flex: 1;
+  }
+  .v4 .stat {
+    padding: 16px 14px 16px 0;
+    border-bottom: 1px solid var(--m-line);
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .v4 .stat:nth-child(odd) {
+    padding-left: 0;
+  }
+  .v4 .stat:nth-child(even) {
+    padding-left: 18px;
+    border-left: 1px solid var(--m-line);
+  }
+  .v4 .stat:nth-last-child(-n+2) { border-bottom: none; }
+  .v4 .stat .n {
+    font-family: "JetBrains Mono"; font-weight: 600;
+    font-size: 34px; line-height: 1; letter-spacing: -0.025em;
+    color: var(--m-ink);
+  }
+  .v4 .stat .n .unit { font-size: 14px; color: var(--m-ink-faint); margin-left: 2px; }
+  .v4 .stat .k {
+    font-family: "JetBrains Mono"; font-size: 10px;
+    color: var(--m-ink-soft); letter-spacing: 0.05em; text-transform: uppercase;
+    margin-top: 4px;
+  }
+  .v4 .stat .sub {
+    font-family: "IBM Plex Sans"; font-size: 12px;
+    color: var(--m-ink-faint); margin-top: 2px;
+  }
+  .v4 .foot {
+    margin-top: 14px; padding-top: 12px;
+    border-top: 1px solid var(--m-line);
+    font-family: "JetBrains Mono"; font-size: 10.5px; color: var(--m-ink-soft);
+    display: flex; justify-content: space-between;
+  }
+
+  /* compare note */
+  .compare-note {
+    margin-top: 56px; padding: 18px 22px;
+    background: var(--m-paper); border: 1px solid var(--m-line-strong);
+    border-radius: 10px;
+    font-size: 13.5px; line-height: 1.6; color: var(--m-ink-soft);
+  }
+  .compare-note b { color: var(--m-ink); font-weight: 600; }
+  .compare-note ul { margin: 8px 0 0; padding-left: 18px; }
+  .compare-note ul li { margin-bottom: 4px; }
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <header class="doc-head">
+    <div class="doc-crumb">$ data-card --explore --no-live</div>
+    <h1>4 jeitos de mostrar números agregados</h1>
+    <p class="doc-sub">
+      Mantém a essência do "live pulse" (densidade de dados, card escuro), mas troca o teatro
+      do <i>LIVE</i> por foco em <b>números reais</b>. Soma de redes, distribuição, snapshot de carreira.
+    </p>
+  </header>
+
+  <div class="grid">
+
+    <!-- V1 · One big number + breakdown -->
+    <div class="case">
+      <div class="label">
+        <span class="ti">V1 · audience</span>
+        <span>soma + breakdown</span>
+      </div>
+      <div class="card v1">
+        <div class="head">
+          <span class="eyebrow">◇ audience · all channels</span>
+          <span class="meta">jan–may '26</span>
+        </div>
+        <div class="hero">
+          <span class="n">12.4</span><span class="unit">k</span>
+          <div class="lbl">people across 6 networks</div>
+        </div>
+        <div class="breakdown">
+          <div class="b-row"><span class="k">▶ youtube</span><span class="v">5,240</span></div>
+          <div class="b-row"><span class="k">◇ tiktok</span><span class="v">3,120</span></div>
+          <div class="b-row"><span class="k">𝕏 / twitter</span><span class="v">2,440</span></div>
+          <div class="b-row"><span class="k">in linkedin</span><span class="v">1,180</span></div>
+          <div class="b-row"><span class="k">☉ instagram</span><span class="v">480</span></div>
+          <div class="b-row"><span class="k">◇ newsletter</span><span class="v">— soon</span></div>
+        </div>
+        <div class="foot">
+          <span><span class="delta">↑ +312</span> · last 30d</span>
+          <span>see all →</span>
+        </div>
+      </div>
+      <p class="desc">
+        <b>1 número grande</b> ("12.4k") como hero + breakdown discreto por plataforma.
+        Funciona se o objetivo for projetar alcance total. O número grande puxa o olho de longe.
+      </p>
+    </div>
+
+    <!-- V2 · 4-up grid -->
+    <div class="case">
+      <div class="label">
+        <span class="ti">V2 · stats grid</span>
+        <span>4 KPIs sem o "LIVE"</span>
+      </div>
+      <div class="card v2">
+        <div class="head">
+          <span class="eyebrow">◇ pulse · last 30d</span>
+          <span class="meta">auto · updated 4h</span>
+        </div>
+        <div class="kpi-grid">
+          <div class="kpi">
+            <span class="k">audience · total</span>
+            <span class="v">12.4<span class="unit">k</span></span>
+            <span class="d">↑ +312 mom</span>
+          </div>
+          <div class="kpi">
+            <span class="k">commits · 30d</span>
+            <span class="v">147</span>
+            <span class="d">↑ +12% mom</span>
+          </div>
+          <div class="kpi">
+            <span class="k">views · 30d</span>
+            <span class="v">84<span class="unit">k</span></span>
+            <span class="d">↑ +28% mom</span>
+          </div>
+          <div class="kpi">
+            <span class="k">articles · ytd</span>
+            <span class="v">12</span>
+            <span class="d muted">→ on track</span>
+          </div>
+        </div>
+        <div class="foot">
+          <span>updated 4h ago</span>
+          <span>full dashboard →</span>
+        </div>
+      </div>
+      <p class="desc">
+        <b>Grid 2×2 igual ao Live Pulse</b>, mas eyebrow vira "pulse · last 30d" (período fixo, sem live).
+        Cada KPI mostra valor + delta. Mistura audience, code, conteúdo. Versátil.
+      </p>
+    </div>
+
+    <!-- V3 · Distribution bars -->
+    <div class="case">
+      <div class="label">
+        <span class="ti">V3 · distribution</span>
+        <span>barras horizontais por canal</span>
+      </div>
+      <div class="card v3">
+        <div class="head">
+          <span class="eyebrow">◇ reach · last 30d</span>
+          <span class="meta">84k impressions</span>
+        </div>
+        <div class="hero">84<span style="font-size:24px;color:#8a8a8a">k</span></div>
+        <div class="hero-lbl">total reach across all channels</div>
+        <div class="bars">
+          <div class="bar-row">
+            <span class="k">tiktok</span>
+            <div class="bar-track"><div class="bar-fill" style="width:78%"></div></div>
+            <span class="v">42k · 50%</span>
+          </div>
+          <div class="bar-row">
+            <span class="k">youtube</span>
+            <div class="bar-track"><div class="bar-fill" style="width:48%"></div></div>
+            <span class="v">26k · 31%</span>
+          </div>
+          <div class="bar-row">
+            <span class="k">x</span>
+            <div class="bar-track"><div class="bar-fill" style="width:18%"></div></div>
+            <span class="v">10k · 12%</span>
+          </div>
+          <div class="bar-row">
+            <span class="k">linkedin</span>
+            <div class="bar-track"><div class="bar-fill" style="width:9%"></div></div>
+            <span class="v">4.8k · 6%</span>
+          </div>
+          <div class="bar-row">
+            <span class="k">instagram</span>
+            <div class="bar-track"><div class="bar-fill" style="width:3%"></div></div>
+            <span class="v">1.2k · 1%</span>
+          </div>
+        </div>
+        <div class="foot">
+          <span>↑ +28% vs prev. 30d</span>
+          <span>analytics →</span>
+        </div>
+      </div>
+      <p class="desc">
+        <b>Hero numérico + distribuição visual</b> por canal. Útil para mostrar onde o conteúdo
+        performa melhor. Cada barra tem valor absoluto + porcentagem. Mais "analytics-y".
+      </p>
+    </div>
+
+    <!-- V4 · Career snapshot (light) -->
+    <div class="case">
+      <div class="label">
+        <span class="ti">V4 · snapshot</span>
+        <span>biográfico, light, sem deltas</span>
+      </div>
+      <div class="card light v4">
+        <div class="head">
+          <span class="eyebrow">◇ snapshot</span>
+          <span class="meta">since 2013</span>
+        </div>
+        <div class="stat-grid">
+          <div class="stat">
+            <span class="n">13<span class="unit">yrs</span></span>
+            <span class="k">in infra</span>
+            <span class="sub">gov · esports · fintech</span>
+          </div>
+          <div class="stat">
+            <span class="n">12.4<span class="unit">k</span></span>
+            <span class="k">audience</span>
+            <span class="sub">across 6 networks</span>
+          </div>
+          <div class="stat">
+            <span class="n">47</span>
+            <span class="k">articles</span>
+            <span class="sub">long-form · open access</span>
+          </div>
+          <div class="stat">
+            <span class="n">28</span>
+            <span class="k">talks · ytd</span>
+            <span class="sub">stage + online</span>
+          </div>
+        </div>
+        <div class="foot">
+          <span>updated may '26</span>
+          <span>read more →</span>
+        </div>
+      </div>
+      <p class="desc">
+        <b>Versão clara</b>, biográfica. Sem deltas — só números cumulativos da carreira.
+        4 stats grandes em grid 2×2. Cabe melhor entre cards claros (sem virar mancha escura no bento).
+      </p>
+    </div>
+
+  </div>
+
+  <div class="compare-note">
+    <b>Como escolher:</b>
+    <ul>
+      <li><b>V1 · audience</b> → quando "tamanho da audiência" é o ponto. 1 número enorme + lista pra detalhar.</li>
+      <li><b>V2 · stats grid</b> → quando quer mostrar dimensões variadas (audience + code + content). Mais flexível.</li>
+      <li><b>V3 · distribution</b> → quando o ângulo é "minha presença é multi-canal e desbalanceada". Mais analítico.</li>
+      <li><b>V4 · snapshot</b> → versão clara, biográfica. Cabe melhor no bento se já tem cards escuros suficientes (terminal + newsletter).</li>
+    </ul>
+    <p style="margin:10px 0 0">
+      <b>Combo recomendado pro seu caso:</b> V1 (hero "12.4k") ou V4 (snapshot claro). V2 fica visualmente
+      redundante com o terminal preto vizinho; V3 carrega muita informação pro tamanho do slot.
+    </p>
+  </div>
+
+</main>
+</body>
+</html>
