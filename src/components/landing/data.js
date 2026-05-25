@@ -1,0 +1,173 @@
+export const VIDEOS = {
+  yt: [
+    {
+      id: "yt1",
+      title: "Self-hosted CI/CD with n8n — replacing $$$ SaaS",
+      meta: "8.2k views · 3 days ago · 22:14",
+      duration: "22:14",
+      thumb: "https://picsum.photos/seed/n8n-cicd-2026/800/450",
+      desc: "Walk-through of the n8n-based CI/CD I run for my own projects. From webhook to deploy, no GitHub Actions minutes burned.",
+    },
+    {
+      id: "yt2",
+      title: "MCP architectures & tool-calling agents",
+      meta: "5.4k views · 2 weeks ago · 17:42",
+      duration: "17:42",
+      thumb: "https://picsum.photos/seed/mcp-agents-2026/800/450",
+      desc: "Deep-dive on Model Context Protocol — what it solves, how to write an MCP server, and patterns for tool-calling LLM agents.",
+    },
+    {
+      id: "yt3",
+      title: "GitOps drift checks that don't wake you up",
+      meta: "3.1k views · 1 month ago · 14:08",
+      duration: "14:08",
+      thumb: "https://picsum.photos/seed/gitops-drift-2026/800/450",
+      desc: "A practical drift detection setup for Kubernetes clusters, with alerts that only fire when a human needs to act.",
+    },
+    {
+      id: "yt4",
+      title: "Homelab monitoring stack from scratch",
+      meta: "2.8k views · 2 months ago · 19:36",
+      duration: "19:36",
+      thumb: "https://picsum.photos/seed/homelab-observability-2026/800/450",
+      desc: "Prometheus, Grafana, logs, uptime checks, and a simple incident dashboard for a small self-hosted environment.",
+    },
+  ],
+  shorts: [
+    {
+      id: "s1",
+      title: "n8n flow in 40 sec",
+      meta: "31k · trending",
+      duration: "0:42",
+      thumb: "https://picsum.photos/seed/n8n-tip-2026/400/720",
+      desc: "Drop-in n8n workflow that watches a Slack channel for keywords and triages incidents. Forty seconds, zero fluff.",
+    },
+    {
+      id: "s2",
+      title: "Terraform tip · GitOps",
+      meta: "22k · last week",
+      duration: "0:58",
+      thumb: "https://picsum.photos/seed/tf-tip-2026/400/720",
+      desc: "Terraform module pattern I use across every multi-cloud project. Drift-resistant, GitOps-friendly, painfully simple.",
+    },
+    {
+      id: "s3",
+      title: "Docker cleanup alias",
+      meta: "18k · quick tip",
+      duration: "0:31",
+      thumb: "https://picsum.photos/seed/docker-cleanup-2026/400/720",
+      desc: "The cleanup alias I use before every demo box gets out of hand.",
+    },
+    {
+      id: "s4",
+      title: "One-line k8s context check",
+      meta: "14k · saved",
+      duration: "0:27",
+      thumb: "https://picsum.photos/seed/k8s-context-2026/400/720",
+      desc: "Tiny shell prompt check that prevents deploying to the wrong Kubernetes context.",
+    },
+    {
+      id: "s5",
+      title: "n8n retry pattern",
+      meta: "11k · automation",
+      duration: "0:45",
+      thumb: "https://picsum.photos/seed/n8n-retry-2026/400/720",
+      desc: "A compact retry pattern for n8n workflows that call flaky external APIs.",
+    },
+  ],
+};
+
+export const FEATURED_REPO = {
+  name: "obra/superpowers",
+  version: "v1.0.0",
+  description: "An agentic skills framework & software development methodology that works.",
+  stars: "206k",
+  growth: "18.3k forks",
+  status: "updated May 25, 2026",
+  stack: ["agents", "shell", "framework", "ai"],
+  note: "A repo worth studying when the process matters as much as the code.",
+  url: "https://github.com/obra/superpowers",
+  language: "Shell",
+  visibility: "public",
+  license: "MIT",
+  branch: "main",
+  issues: "280 issues",
+  readme: [
+    "An agentic skills framework & software development methodology that works.",
+    "This repo provides tools and structure for AI agent collaboration.",
+  ],
+};
+
+export function mergeFeaturedRepo(repo) {
+  return {
+    ...FEATURED_REPO,
+    ...repo,
+    stack: repo?.stack?.length ? repo.stack : FEATURED_REPO.stack,
+    readme: repo?.readme?.length ? repo.readme : FEATURED_REPO.readme,
+    note: repo?.note || FEATURED_REPO.note,
+  };
+}
+
+export const ARTICLES = [
+  {
+    id: "01",
+    title: "Self-hosted CI/CD with n8n — replacing $$$ SaaS",
+    meta: "9 min · set 2026",
+    tags: ["n8n", "self-hosted", "ci/cd"],
+    body: [
+      { t: "h", v: "Why self-host CI/CD" },
+      { t: "p", v: "After a year paying four figures a month for hosted CI, I rebuilt the same flows on n8n + a single VPS. Costs dropped 92% and reliability went up." },
+      { t: "p", v: "This post walks through the architecture, the trade-offs, and the n8n nodes I lean on the most." },
+      { t: "h", v: "The architecture" },
+      { t: "code", v: "github-webhook → n8n → docker-build → registry → argo-deploy" },
+      { t: "p", v: "n8n handles the orchestration. GitHub Actions still runs unit tests, but everything past that lives on our side." },
+      { t: "h", v: "What I learned" },
+      { t: "ul", v: ["self-hosting isn't scary — it's mostly observability","most SaaS CI features are just sugar","you can rebuild any of them in a weekend"] },
+      { t: "p", v: "The repo is open source. PRs welcome." },
+    ],
+  },
+  {
+    id: "02",
+    title: "MCP architectures & tool-calling agents",
+    meta: "11 min · ago 2026",
+    tags: ["ai", "mcp", "agents"],
+    body: [
+      { t: "h", v: "What MCP solves" },
+      { t: "p", v: "Model Context Protocol gives LLMs a structured way to call tools — APIs, file systems, databases — without prompt-engineering the schema every time." },
+      { t: "h", v: "A minimal MCP server" },
+      { t: "code", v: "// tools.ts\nexport const tools = {\n  query_db: { schema, handler },\n  fetch_logs: { schema, handler },\n};" },
+      { t: "p", v: "From there, any LLM client that speaks MCP can discover and invoke your tools — Claude Desktop, custom agents, n8n nodes." },
+      { t: "h", v: "Patterns that work" },
+      { t: "ul", v: ["narrow tools beat wide tools","return structured errors","cache aggressively, the LLM will retry"] },
+    ],
+  },
+  {
+    id: "03",
+    title: "Multi-cloud networking — AWS, GCP & Azure",
+    meta: "8 min · jul 2026",
+    tags: ["cloud", "networking", "terraform"],
+    body: [
+      { t: "h", v: "The real cost of multi-cloud" },
+      { t: "p", v: "It's not the compute — it's the network. Egress fees, peering, DNS, latency. Plan the network first, services second." },
+      { t: "h", v: "VPN mesh vs interconnect" },
+      { t: "p", v: "For < 1 Gbps steady traffic, a Tailscale or Wireguard mesh is fine. Past that, dedicated interconnect pays for itself in egress savings inside the first quarter." },
+      { t: "h", v: "Terraform patterns" },
+      { t: "code", v: "module \"network\" {\n  source = \"./modules/multi-cloud-net\"\n  providers = { aws, gcp, azurerm }\n}" },
+      { t: "p", v: "One module, three providers, shared variables. The repo has the full source." },
+    ],
+  },
+  {
+    id: "04",
+    title: "13 years in infrastructure — what I'd do differently",
+    meta: "6 min · jun 2026",
+    tags: ["retrospective", "career"],
+    body: [
+      { t: "p", v: "Half-baked retrospective from a Sunday evening. Not advice, just notes." },
+      { t: "h", v: "Three things I'd start sooner" },
+      { t: "ul", v: ["self-host earlier — SaaS is a tax on inertia","write more, ship more public code","say no to one-off heroics"] },
+      { t: "h", v: "Three things I'm glad I did" },
+      { t: "ul", v: ["went deep on networking before going wide on cloud","worked across three industries (gov, esports, fintech)","kept a personal lab running for 10 years"] },
+      { t: "p", v: "The pattern: every long-term win came from controlling my own stack." },
+    ],
+  },
+];

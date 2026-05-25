@@ -1,4 +1,5 @@
 import { MidfiV1 } from "@/src/components/landing/MidfiV1";
+import "@/src/components/landing/MidfiV1.css";
 import { fetchFeaturedGitHubRepo } from "@/src/lib/githubRepo";
 
 export default async function Page() {
