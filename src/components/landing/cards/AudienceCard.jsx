@@ -2,45 +2,36 @@ import React from "react";
 
 export function AudienceCard() {
   return (
-    <div className="card" style={{gridColumn:"span 5", gridRow:"span 5", display:"flex", flexDirection:"column"}}>
+    <div className="card audience-card" style={{gridColumn:"span 4", gridRow:"span 4"}}>
       <div className="aud-head">
-        <span className="eyebrow">◇ presence · 2026</span>
-        <span className="meta">may 2026</span>
+        <span className="eyebrow">presence</span>
+        <span className="meta">2026</span>
       </div>
       <div className="aud-top">
         <div className="aud-stat">
           <span className="v">12.4<span className="unit">k</span></span>
-          <span className="k">audience · 6 nets</span>
-          <span className="d">↑ +312 · 30d</span>
+          <span className="k">audience</span>
         </div>
         <div className="aud-stat">
           <span className="v">84<span className="unit">k</span></span>
-          <span className="k">reach · 30d</span>
-          <span className="d">↑ +28% mom</span>
+          <span className="k">reach</span>
         </div>
       </div>
-      <div className="aud-sep">attending · next 3</div>
-      <div className="ev-list">
-        <div className="ev-row">
-          <span className="date">12 nov</span>
-          <span className="name">Web Summit Lisbon</span>
-          <span className="ev-arr">↗</span>
+      <div className="presence-list">
+        <div className="presence-row">
+          <span className="label">systems improved</span>
+          <span className="value">42</span>
         </div>
-        <div className="ev-row">
-          <span className="date">28 nov</span>
-          <span className="name">Blockchain Rio</span>
-          <span className="ev-arr">↗</span>
+        <div className="presence-row">
+          <span className="label">automations shipped</span>
+          <span className="value">180+</span>
         </div>
-        <div className="ev-row">
-          <span className="date">05 dec</span>
-          <span className="name">Tokenation SP</span>
-          <span className="ev-arr">↗</span>
+        <div className="presence-row">
+          <span className="label">platform notes</span>
+          <span className="value">weekly</span>
         </div>
       </div>
-      <div className="aud-foot">
-        <span>say hi at any of these</span>
-        <span></span>
-      </div>
+      <div className="presence-foot">operator-first infra, not vanity metrics</div>
     </div>
   );
 }

@@ -17,10 +17,10 @@ export const Ico = {
     </svg>
   ),
   instagram: (
-    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.3">
-      <rect x="2.4" y="2.4" width="11.2" height="11.2" rx="3.2"/>
-      <circle cx="8" cy="8" r="2.6"/>
-      <circle cx="11.3" cy="4.7" r="0.75" fill="currentColor"/>
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" shapeRendering="geometricPrecision">
+      <rect x="2.9" y="2.9" width="18.2" height="18.2" rx="5.4" stroke="currentColor" strokeWidth="1.75"/>
+      <circle cx="12" cy="12" r="4.05" stroke="currentColor" strokeWidth="1.75"/>
+      <circle cx="17.25" cy="6.75" r="1.05" fill="currentColor"/>
     </svg>
   ),
   tiktok: (

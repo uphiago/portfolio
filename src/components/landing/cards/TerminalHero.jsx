@@ -3,26 +3,28 @@ import { Ico } from "../icons";
 
 export function TerminalHero({ setContactOpen }) {
   return (
-    <div style={{gridColumn:"span 7", gridRow:"span 5", display:"flex", flexDirection:"column", gap: 16}}>
-      <div className="terminal" style={{flex: 1}}>
-        <div className="tbar" style={{marginBottom: 8, justifyContent: "flex-end"}}>
-          <span className="tpath"></span>
-        </div>
-        <div><span className="prompt">$ </span>cat ~/about</div>
-        <div style={{height: 18}} />
-        <div className="accent">hiago felipe</div>
-        <div>platform engineer · são paulo · <span style={{color:"#ffb86c"}}>13y</span></div>
-        <div style={{height: 18}} />
-        <div>i build infra that doesn't page you at 3am.</div>
-        <div>deep in <span style={{color:"#a8e6a3"}}>n8n</span>, <span style={{color:"#a8e6a3"}}>mcp</span>, self-hosting everything.</div>
-        <div>gov, esports, fintech — all production.<span className="cursor" /></div>
+    <div className="terminal hero-terminal" style={{gridColumn:"span 5", gridRow:"span 5"}}>
+      <div className="tbar">
+        <span className="prompt">$</span>
+        <span>cat ~/about</span>
       </div>
-      <div className="card hero-contact-card">
+      <div className="terminal-copy">
+        <div className="accent">hiago felipe</div>
+        <div>devops & platform engineer · são paulo · <span style={{color:"#ffb86c"}}>13y in production</span></div>
+        <div className="terminal-gap" />
+        <div>reliable platforms, automation, and deployment workflows.</div>
+        <div>self-hosted ops, ci/cd, n8n, k8s, terraform, ai workflows.</div>
+        <div className="terminal-gap" />
+        <div>cloud · containers · internal tooling</div>
+        <div className="terminal-small-gap" />
+        <div>working async or onsite.<span className="cursor" /></div>
+      </div>
+      <div className="terminal-contact">
         <div>
-          <div className="h-card">Open to interesting problems.</div>
-          <div className="meta" style={{marginTop: 6}}>devops · platform engineer · consulting · remote &amp; onsite</div>
+          <div className="h-card">wanna talk?</div>
+          <div className="meta">devops · platform engineer · consulting</div>
         </div>
-        <a className="btn dark" onClick={() => setContactOpen(true)} style={{cursor:"pointer"}}>$ contact{" "}{Ico.arrow}</a>
+        <button type="button" className="btn invert" onClick={() => setContactOpen(true)}>contact {Ico.arrow}</button>
       </div>
     </div>
   );

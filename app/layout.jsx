@@ -14,10 +14,49 @@ const mono = JetBrains_Mono({
   variable: "--font-mono",
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://hiago.sh";
+
 export const metadata = {
-  title: "Hiago | DevOps Engineer",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Hiago | DevOps & Platform Engineer",
+    template: "%s | Hiago",
+  },
   description:
-    "Portfolio for a DevOps engineer focused on reliable systems, automation, and infrastructure.",
+    "Portfolio of Hiago Felipe — DevOps & platform engineer focused on reliable systems, automation, self-hosted ops, CI/CD, Kubernetes, and infrastructure.",
+  applicationName: "hiago.sh",
+  authors: [{ name: "Hiago Felipe", url: siteUrl }],
+  creator: "Hiago Felipe",
+  keywords: [
+    "DevOps", "platform engineering", "automation", "Kubernetes",
+    "Terraform", "CI/CD", "self-hosted", "n8n", "infrastructure",
+  ],
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    url: siteUrl,
+    siteName: "hiago.sh",
+    title: "Hiago | DevOps & Platform Engineer",
+    description:
+      "Reliable platforms, automation, and deployment workflows. Self-hosted ops, CI/CD, Kubernetes, Terraform, AI workflows.",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hiago | DevOps & Platform Engineer",
+    description:
+      "Reliable platforms, automation, and deployment workflows. Self-hosted ops, CI/CD, Kubernetes, Terraform, AI workflows.",
+    creator: "@uphiago",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+};
+
+export const viewport = {
+  themeColor: "#fbfaf6",
+  colorScheme: "light",
 };
 
 export default function RootLayout({ children }) {

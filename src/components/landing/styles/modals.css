@@ -1,0 +1,295 @@
+  /* ───── Modal ───── */
+  .mfi-modal-bg {
+    position: fixed; inset: 0; z-index: 2147483640;
+    background: rgba(10,10,10,0.55);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    animation: mfi-fade .18s ease;
+  }
+  @keyframes mfi-fade { from { opacity: 0; } to { opacity: 1; } }
+  .mfi-modal {
+    width: min(500px, 92vw);
+    background: var(--m-paper);
+    border: 1px solid rgba(30, 26, 20, 0.14);
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 28px 80px rgba(0,0,0,0.24);
+    font-family: var(--font-ibm);
+    color: var(--m-ink);
+    animation: mfi-pop .16s ease-out;
+    position: relative;
+  }
+  @keyframes mfi-pop { from { opacity: 0; } to { opacity: 1; } }
+  .mfi-modal .x {
+    position: absolute; top: 12px; right: 12px;
+    width: 24px; height: 24px; border-radius: 0;
+    border: 0; background: transparent;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 12px;
+    transition: background .15s ease, color .15s ease;
+  }
+  .mfi-modal .x:hover { background: transparent; color: var(--m-ink); }
+  .mfi-modal .row {
+    display: grid; grid-template-columns: 110px 1fr;
+    gap: 14px; padding: 7px 0;
+    border-bottom: 1px solid var(--m-line);
+    align-items: baseline;
+  }
+  .mfi-modal .row:last-of-type { border-bottom: none; }
+  .mfi-modal .row .k {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--m-ink-soft); letter-spacing: 0.02em;
+  }
+  .mfi-modal .row .v {
+    font-family: var(--font-ibm); font-size: 13.5px; color: var(--m-ink);
+    line-height: 1.45;
+  }
+  .mfi-modal .copy-email {
+    -webkit-appearance: none;
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: var(--m-ink);
+    cursor: pointer;
+    font: inherit;
+    padding: 0;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .mfi-modal .copy-email:hover {
+    color: var(--m-ink-2);
+  }
+  .mfi-modal .copy-status {
+    margin-left: 8px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--m-ink-soft);
+  }
+  .mfi-modal label {
+    display: block;
+    font-family: var(--font-mono); font-size: 11px; color: var(--m-ink-soft);
+    margin-bottom: 6px;
+  }
+  .mfi-modal input, .mfi-modal textarea {
+    width: 100%; box-sizing: border-box;
+    -webkit-appearance: none;
+    appearance: none;
+    border: 1px solid rgba(10, 10, 10, 0.18);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.28);
+    padding: 10px 12px;
+    font-family: var(--font-ibm); font-size: 13.5px;
+    color: var(--m-ink); outline: none;
+    transition: border-color .15s ease;
+    resize: vertical;
+  }
+  .mfi-modal input:focus, .mfi-modal textarea:focus {
+    border-color: rgba(10, 10, 10, 0.42);
+    background: rgba(255, 255, 255, 0.42);
+  }
+  .mfi-modal textarea {
+    min-height: 78px;
+    max-height: 150px;
+    resize: vertical;
+  }
+  .mfi-modal .contact-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  /* ───── Article modal (wider, markdown content) ───── */
+  .mfi-article-bg {
+    position: fixed; inset: 0; z-index: 2147483640;
+    background: rgba(10,10,10,0.6);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    animation: mfi-fade .18s ease;
+    padding: 24px;
+  }
+  .mfi-article {
+    width: min(720px, 100%);
+    max-height: calc(100vh - 48px);
+    background: var(--m-paper);
+    border: 1px solid rgba(30, 26, 20, 0.14);
+    border-radius: 8px;
+    box-shadow: 0 28px 86px rgba(0,0,0,0.28);
+    display: flex; flex-direction: column;
+    animation: mfi-pop .22s cubic-bezier(.2,.7,.3,1);
+    overflow: hidden;
+  }
+  .mfi-article .ahead {
+    padding: 24px 28px 18px;
+    border-bottom: 1px solid var(--m-line);
+    display: flex; flex-direction: column; gap: 6px;
+    position: relative;
+  }
+  .mfi-article .ahead .x {
+    position: absolute; top: 14px; right: 14px;
+    width: 28px; height: 28px; border-radius: 50%;
+    border: 1px solid rgba(30, 26, 20, 0.14); background: var(--m-paper);
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 12px;
+    transition: background .15s ease, color .15s ease;
+  }
+  .mfi-article .ahead .x:hover { background: var(--m-ink); color: var(--m-paper); }
+  .mfi-article .ahead .crumb {
+    font-family: var(--font-mono); font-size: 10.5px;
+    color: var(--m-ink-soft); letter-spacing: 0.04em;
+  }
+  .mfi-article .ahead .ti {
+    font-family: var(--font-ibm); font-weight: 600;
+    font-size: 24px; line-height: 1.2; letter-spacing: -0.02em;
+    margin: 4px 0 8px;
+  }
+  .mfi-article .ahead .meta-row {
+    display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+    font-family: var(--font-mono); font-size: 11px; color: var(--m-ink-soft);
+  }
+  .mfi-article .ahead .tag {
+    padding: 2px 8px; border: 1px solid var(--m-line-strong);
+    border-radius: 4px; font-size: 10px;
+  }
+  .mfi-article .abody {
+    padding: 22px 28px 28px;
+    overflow-y: auto;
+    flex: 1;
+  }
+  .mfi-article .abody h3 {
+    font-family: var(--font-ibm); font-weight: 600;
+    font-size: 16px; letter-spacing: -0.01em;
+    margin: 22px 0 8px;
+  }
+  .mfi-article .abody h3:first-child { margin-top: 0; }
+  .mfi-article .abody p {
+    font-family: var(--font-ibm); font-size: 14px;
+    line-height: 1.6; color: var(--m-ink);
+    margin: 0 0 10px;
+  }
+  .mfi-article .abody pre {
+    font-family: var(--font-mono); font-size: 12px;
+    background: #0a0a0a; color: #d8d8d8;
+    padding: 14px 16px; border-radius: 5px;
+    margin: 10px 0 14px; overflow-x: auto;
+    line-height: 1.6; white-space: pre;
+  }
+  .mfi-article .abody ul {
+    margin: 4px 0 14px; padding-left: 22px;
+    font-family: var(--font-ibm); font-size: 14px;
+    line-height: 1.7;
+  }
+  .mfi-article .abody ul li::marker { color: var(--m-ink-faint); }
+  .mfi-article .afoot {
+    border-top: 1px solid var(--m-line);
+    padding: 14px 28px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--m-ink-soft);
+    background: var(--m-paper-2);
+  }
+
+  /* ───── Video modal ───── */
+  .mfi-video-bg {
+    position: fixed; inset: 0; z-index: 2147483641;
+    background: rgba(5,5,5,0.85);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    display: flex; align-items: center; justify-content: center;
+    animation: mfi-fade .18s ease;
+    padding: 24px;
+  }
+  .mfi-video {
+    width: min(880px, 100%);
+    background: #0a0a0a; color: #f1efe8;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 30px 90px rgba(0,0,0,0.38);
+    animation: mfi-pop .22s cubic-bezier(.2,.7,.3,1);
+    display: flex; flex-direction: column;
+    max-height: calc(100vh - 48px);
+  }
+  .mfi-video .vplayer {
+    position: relative; width: 100%;
+    background-size: cover; background-position: center;
+    flex-shrink: 0;
+  }
+  .mfi-video .vplayer.yt { aspect-ratio: 16/9; }
+  .mfi-video .vplayer.short { aspect-ratio: 9/16; max-height: 60vh; }
+  .mfi-video .vplayer::before {
+    content:""; position: absolute; inset: 0;
+    background: rgba(0,0,0,0.18);
+  }
+  .mfi-video .vplayer .bigplay {
+    position: absolute; left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    width: 72px; height: 72px; border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.85);
+    background: rgba(0,0,0,0.4); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    color: #fff; font-size: 22px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: transform .15s ease, background .15s ease;
+  }
+  .mfi-video .vplayer .bigplay:hover { transform: translate(-50%, -50%) scale(1.06); background: rgba(255,255,255,0.18); }
+  .mfi-video .vplayer .vdur {
+    position: absolute; right: 12px; bottom: 12px;
+    padding: 4px 10px; border-radius: 4px;
+    background: rgba(0,0,0,0.85); color: #f1efe8;
+    font-family: var(--font-mono); font-size: 11px;
+  }
+  .mfi-video .vplayer .vbadge {
+    position: absolute; left: 12px; top: 12px;
+    padding: 4px 10px; border-radius: 4px;
+    background: rgba(0,0,0,0.65); color: #f1efe8;
+    font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+    letter-spacing: 0.05em; -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+  }
+  .mfi-video .vinfo-block {
+    padding: 22px 26px;
+    border-top: 1px solid #1a1a1a;
+  }
+  .mfi-video .vinfo-block .vt {
+    font-family: var(--font-ibm); font-weight: 600;
+    font-size: 19px; line-height: 1.25; letter-spacing: -0.015em;
+    color: #f1efe8; margin: 0 0 8px;
+  }
+  .mfi-video .vinfo-block .vm {
+    font-family: var(--font-mono); font-size: 11px;
+    color: #888; margin-bottom: 14px;
+  }
+  .mfi-video .vinfo-block .vdesc {
+    font-family: var(--font-ibm); font-size: 14px;
+    line-height: 1.6; color: #c8c8c8;
+    margin: 0 0 14px;
+  }
+  .mfi-video .vinfo-block .vbtns {
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .mfi-video .vinfo-block .vbtn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 14px;
+    background: transparent; color: #f1efe8;
+    border: 1px solid #2a2a2a; border-radius: 6px;
+    font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+    cursor: pointer; text-decoration: none;
+    transition: background .15s ease, border-color .15s ease;
+  }
+  .mfi-video .vinfo-block .vbtn:hover { background: #f1efe8; color: #0a0a0a; border-color: #f1efe8; }
+  .mfi-video .vinfo-block .vbtn.primary { background: #f1efe8; color: #0a0a0a; border-color: #f1efe8; }
+  .mfi-video .vinfo-block .vbtn.primary:hover { background: transparent; color: #f1efe8; border-color: #f1efe8; }
+  .mfi-video .vclose {
+    position: absolute; top: 14px; right: 14px; z-index: 2;
+    width: 30px; height: 30px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.25); background: rgba(0,0,0,0.55);
+    color: #f1efe8; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 14px;
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    transition: background .15s ease;
+  }
+  .mfi-video .vclose:hover { background: rgba(255,255,255,0.18); }

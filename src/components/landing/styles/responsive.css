@@ -1,0 +1,191 @@
+  @media (max-width: 920px) {
+    .mfi {
+      height: auto;
+      padding: 8px;
+      overflow: visible;
+    }
+    .mfi-shell {
+      height: auto;
+      overflow: visible;
+      padding: 12px;
+    }
+    .mfi-topbar {
+      align-items: center;
+      gap: 10px;
+    }
+    .mfi-socials {
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      max-width: 190px;
+    }
+    .mfi-grid {
+      display: flex !important;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .mfi-grid > * {
+      grid-column: auto !important;
+      grid-row: auto !important;
+      width: 100%;
+      min-height: auto;
+    }
+    .mfi .terminal {
+      min-height: 250px;
+    }
+    .mfi .aud-top,
+    .mfi .contact-grid {
+      grid-template-columns: 1fr;
+    }
+    .mfi .writing-body {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .mfi .subscribe-panel {
+      border-left: 0;
+      border-top: 1px solid var(--m-line);
+      padding-left: 0;
+      padding-top: 12px;
+    }
+    .mfi .shorts-stage {
+      height: 292px;
+      flex: none;
+    }
+    .mfi .drag-tile-info {
+      padding-bottom: 12px;
+    }
+    .mfi .h-card,
+    .mfi .h-mono {
+      overflow-wrap: anywhere;
+    }
+    .mfi .footer {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      padding-top: 12px;
+      line-height: 1.5;
+    }
+    .mfi .hero-contact-card {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .mfi .hero-contact-card .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+  @media (max-width: 520px) {
+    .mfi {
+      padding: 0;
+    }
+    /* Prevent iOS Safari auto-zoom on focus (needs >= 16px) */
+    .mfi .nlinput input,
+    .mfi-modal input,
+    .mfi-modal textarea {
+      font-size: 16px;
+    }
+    .mfi-shell {
+      border-width: 0 0 1px;
+      border-radius: 0;
+      padding: 10px;
+    }
+    .mfi-topbar {
+      flex-direction: row;
+      justify-content: space-between;
+      padding-inline: 2px;
+    }
+    .mfi-socials {
+      justify-content: flex-end;
+      gap: 7px;
+      max-width: none;
+    }
+    .mfi .social {
+      width: 22px;
+      height: 22px;
+    }
+    .mfi .social svg {
+      width: 16px;
+      height: 16px;
+    }
+    .mfi .card,
+    .mfi .terminal {
+      border-radius: 6px;
+    }
+    .mfi .card {
+      padding: 14px;
+    }
+    .mfi .card.flat {
+      padding: 0;
+    }
+    .mfi .terminal {
+      font-size: 11px;
+      padding: 12px 14px;
+    }
+    .mfi .terminal-copy {
+      line-height: 1.62;
+    }
+    .mfi .terminal-gap {
+      height: 12px;
+    }
+    .mfi .terminal-small-gap {
+      height: 6px;
+    }
+    .mfi .hero-contact-card {
+      padding: 14px;
+    }
+    .mfi .hero-contact-card .h-card {
+      font-size: 16px;
+    }
+    .mfi .hero-contact-card .meta {
+      font-size: 9.5px;
+      line-height: 1.45;
+    }
+    .mfi .terminal-contact .meta {
+      display: none;
+    }
+    .mfi .aud-top {
+      gap: 10px;
+    }
+    .mfi .aud-stat .v {
+      font-size: 28px;
+    }
+    .mfi .video-head {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .mfi .drag-row {
+      gap: 12px;
+    }
+    .mfi .video-nav {
+      display: none;
+    }
+    .mfi .shorts-stage::before,
+    .mfi .shorts-stage::after {
+      display: none;
+    }
+    .mfi .nlinput {
+      grid-template-columns: 1fr;
+    }
+    .mfi-modal,
+    .mfi-article,
+    .mfi-video {
+      width: calc(100vw - 20px);
+      max-height: calc(100svh - 20px);
+    }
+    .mfi-modal {
+      padding: 22px;
+    }
+    .mfi-modal .row {
+      grid-template-columns: 78px 1fr;
+      gap: 10px;
+    }
+    .mfi .footer {
+      font-size: 9.5px;
+      margin-top: 10px;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+  }

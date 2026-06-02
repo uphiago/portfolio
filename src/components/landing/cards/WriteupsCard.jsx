@@ -1,25 +1,103 @@
 import React from "react";
 
 export function WriteupsCard({ ARTICLES, setOpenArticle }) {
+  const listRef = React.useRef(null);
+  const dragRef = React.useRef({ active: false, startY: 0, startScrollTop: 0 });
+  const draggedRef = React.useRef(false);
+  const [isDragging, setIsDragging] = React.useState(false);
+
+  const endDrag = (event) => {
+    dragRef.current.active = false;
+    setIsDragging(false);
+    event?.currentTarget?.releasePointerCapture?.(event.pointerId);
+    window.setTimeout(() => {
+      draggedRef.current = false;
+    }, 80);
+  };
+
+  const handlePointerDown = (event) => {
+    if (event.button !== 0 || !listRef.current) return;
+    dragRef.current = {
+      active: true,
+      startY: event.clientY,
+      startScrollTop: listRef.current.scrollTop,
+    };
+    draggedRef.current = false;
+    setIsDragging(true);
+    listRef.current.setPointerCapture?.(event.pointerId);
+  };
+
+  const handlePointerMove = (event) => {
+    if (!dragRef.current.active || !listRef.current) return;
+    const deltaY = event.clientY - dragRef.current.startY;
+    if (Math.abs(deltaY) > 3) {
+      draggedRef.current = true;
+      event.preventDefault();
+    }
+    listRef.current.scrollTop = dragRef.current.startScrollTop - deltaY;
+  };
+
+  const handleArticleClick = (article) => {
+    if (draggedRef.current) return;
+    setOpenArticle(article);
+  };
+
+  const [subscribed, setSubscribed] = React.useState(false);
+  const handleSubscribe = (event) => {
+    event.preventDefault();
+    setSubscribed(true);
+  };
+
   return (
-    <div className="card" style={{gridColumn:"span 7", gridRow:"span 4", display:"flex", flexDirection:"column"}}>
-      <div style={{display:"flex", justifyContent:"space-between", marginBottom: 12, alignItems:"center", flexShrink: 0}}>
-        <span className="eyebrow">⌘ latest write-ups</span>
-        <span className="meta" style={{display:"inline-flex", alignItems:"center", gap: 6}}>
-          {ARTICLES.length} articles
-        </span>
+    <div className="card writing-card" style={{gridColumn:"span 8", gridRow:"span 4"}}>
+      <div className="writing-head">
+        <div>
+          <span className="eyebrow">latest write-ups</span>
+          <div className="h-card">Field notes for people running systems.</div>
+        </div>
       </div>
-      <div className="wlist" style={{flex: 1, overflow: "hidden", paddingRight: 4}}>
-        {ARTICLES.map(a => (
-          <div className="star-row" key={a.id} onClick={() => setOpenArticle(a)}>
-            <span className="idx">{a.id}</span>
-            <div>
-              <div className="ti">{a.title}</div>
-              <div className="sub">{a.meta}</div>
+      <div className="writing-body">
+        <div
+          ref={listRef}
+          className={`wlist${isDragging ? " is-dragging" : ""}`}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={endDrag}
+          onPointerCancel={endDrag}
+        >
+          {ARTICLES.map(a => (
+            <div
+              className="star-row"
+              key={a.id}
+              role="button"
+              tabIndex={0}
+              aria-label={`Open write-up: ${a.title}`}
+              onClick={() => handleArticleClick(a)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  setOpenArticle(a);
+                }
+              }}
+            >
+              <span className="idx">{a.id}</span>
+              <div>
+                <div className="ti">{a.title}</div>
+                <div className="sub">{a.meta}</div>
+              </div>
+              <span className="arr">↗</span>
             </div>
-            <span className="arr">↗</span>
-          </div>
-        ))}
+          ))}
+        </div>
+        <div className="subscribe-panel">
+          <div className="mono">field_notes.subscribe()</div>
+          <div className="meta">{subscribed ? "thanks — you're on the list" : "useful notes, sometimes"}</div>
+          <form className="nlinput" onSubmit={handleSubscribe}>
+            <label htmlFor="nl-email" className="sr-only">Email address</label>
+            <input id="nl-email" type="email" placeholder="your@email.com" required aria-label="Email address" />
+            <button type="submit" className="btn dark">go</button>
+          </form>
+        </div>
       </div>
     </div>
   );

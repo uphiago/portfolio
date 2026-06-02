@@ -6,10 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint .",
+    "lint": "next lint",
     "test": "vitest run"
   },
   "dependencies": {
+    "framer-motion": "^12.40.0",
+    "lucide-react": "^1.17.0",
     "next": "^16.0.5",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
