@@ -1,0 +1,23 @@
+src/components/landing/styles/responsive.css
+  s_d000afb9b2eea6::t_80c20f01dc2f10 44
+  s_d000afb9b2eea6::t_f5fedf27639a38 43,45
+  s_d000afb9b2eea6::t_22578b2103dcbc 173-182
+src/components/landing/styles/cards.css
+  s_d000afb9b2eea6::t_35e42cfd8bbc2b 471-475,482-484
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "9ee1d51fe167632e025f185e5b5e7ecb38e24cd3",
+  "prompts": {},
+  "sessions": {
+    "s_d000afb9b2eea6": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019e8890-34c6-73e1-98b3-37b66e4cae17",
+        "model": "gpt-5.5"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
