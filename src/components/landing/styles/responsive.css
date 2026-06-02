@@ -40,6 +40,9 @@
       grid-template-columns: 1fr;
       gap: 12px;
     }
+    .mfi .wlist {
+      max-height: 237px;
+    }
     .mfi .subscribe-panel {
       border-left: 0;
       border-top: 1px solid var(--m-line);
@@ -166,6 +169,16 @@
     }
     .mfi .nlinput {
       grid-template-columns: 1fr;
+    }
+    .mfi .nlinput input {
+      padding: 6px 8px;
+    }
+    .mfi .nlinput input::placeholder {
+      font-size: 12px;
+    }
+    .mfi .nlinput .btn {
+      min-height: 28px;
+      padding: 7px 11px;
     }
     .mfi-modal,
     .mfi-article,

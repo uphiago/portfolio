@@ -468,11 +468,20 @@
     scrollbar-color: var(--m-line-strong) transparent;
     cursor: grab;
     overscroll-behavior: contain;
+    user-select: none;
+    touch-action: pan-y;
+  }
+  .mfi .wlist:active {
+    cursor: grabbing;
   }
   .mfi .wlist.is-dragging {
     cursor: grabbing;
     user-select: none;
     -webkit-user-select: none;
+  }
+  .mfi .wlist .star-row {
+    cursor: inherit;
+    touch-action: inherit;
   }
   .mfi .wlist::-webkit-scrollbar { width: 6px; }
   .mfi .wlist::-webkit-scrollbar-track { background: transparent; }
