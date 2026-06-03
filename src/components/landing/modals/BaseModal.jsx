@@ -33,11 +33,8 @@ export function BaseModal({ onClose, modalBgClass = "mfi-modal-bg", modalClass =
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
-    // Move focus into the dialog.
-    const focusTarget = modalRef.current?.querySelector(
-      'a[href], button:not([disabled]), input, textarea, select, [tabindex]:not([tabindex="-1"])'
-    );
-    focusTarget?.focus();
+    // Keep focus inside the dialog without preselecting the first control.
+    modalRef.current?.focus();
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
@@ -54,6 +51,7 @@ export function BaseModal({ onClose, modalBgClass = "mfi-modal-bg", modalClass =
         role="dialog"
         aria-modal="true"
         aria-label={label}
+        tabIndex={-1}
         onClick={(e) => e.stopPropagation()}
       >
         {!hideCloseButton && <button className="x" onClick={onClose} aria-label="close">×</button>}

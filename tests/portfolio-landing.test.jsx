@@ -1,7 +1,10 @@
 import { renderToStaticMarkup } from "react-dom/server";
+import { act } from "react";
+import { createRoot } from "react-dom/client";
 import { describe, expect, it } from "vitest";
 
 import { MidfiV1 } from "@/src/components/landing/MidfiV1";
+import { ContactModal } from "@/src/components/landing/modals/ContactModal";
 
 describe("MidfiV1", () => {
   it("renders the refined portfolio layout inside Next", () => {
@@ -36,14 +39,33 @@ describe("MidfiV1", () => {
     expect(html).not.toContain("youtube-cta");
   });
 
-  it("renders the complete social icon row in the topbar", () => {
+  it("renders the selected social icon row in the topbar", () => {
     const html = renderToStaticMarkup(<MidfiV1 />);
 
     expect(html).toContain('title="github"');
     expect(html).toContain('title="linkedin"');
     expect(html).toContain('title="x"');
-    expect(html).toContain('title="youtube"');
-    expect(html).toContain('title="tiktok"');
     expect(html).toContain('title="instagram"');
+    expect(html).not.toContain('title="youtube"');
+    expect(html).not.toContain('title="tiktok"');
+  });
+
+  it("does not focus the contact close button when the modal opens", async () => {
+    const rootElement = document.createElement("div");
+    document.body.appendChild(rootElement);
+    const root = createRoot(rootElement);
+
+    await act(async () => {
+      root.render(<ContactModal setContactOpen={() => {}} />);
+    });
+
+    expect(document.activeElement).not.toBe(
+      rootElement.querySelector('button[aria-label="close"]')
+    );
+
+    await act(async () => {
+      root.unmount();
+    });
+    document.body.removeChild(rootElement);
   });
 });

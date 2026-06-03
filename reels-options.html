@@ -1,0 +1,1112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reels block options</title>
+  <style>
+    :root {
+      --paper: #fbfaf6;
+      --line: #ddd7c8;
+      --ink: #0a0a0a;
+      --muted: #969083;
+      --live: #00ff9d;
+      --panel: #0a0a0a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      padding: 28px;
+    }
+
+    main {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+      display: grid;
+      gap: 18px;
+    }
+
+    .page-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    .note {
+      margin: 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.45;
+      max-width: 440px;
+      text-align: right;
+    }
+
+    .option {
+      display: grid;
+      grid-template-columns: 160px minmax(0, 1fr);
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .option-label {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 14px;
+      min-height: 110px;
+      background: rgba(255,255,255,0.3);
+    }
+
+    .option-label .k {
+      color: var(--muted);
+      font-size: 10px;
+      margin-bottom: 8px;
+    }
+
+    .option-label .v {
+      font-size: 13px;
+      line-height: 1.35;
+      font-weight: 700;
+    }
+
+    .option-label .why {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 10.5px;
+      line-height: 1.45;
+    }
+
+    .reels-card {
+      background: var(--panel);
+      color: #f1efe8;
+      border-radius: 6px;
+      min-height: 284px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .reels-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px 16px 9px;
+      user-select: none;
+    }
+
+    .brand-line {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--live);
+      font-size: 11px;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .brand-copy {
+      color: #9b968c;
+      font-size: 10.5px;
+      line-height: 1.35;
+      max-width: 420px;
+    }
+
+    .brand-copy strong {
+      color: #f1efe8;
+      font-weight: 600;
+    }
+
+    .profile-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: #f1efe8;
+      text-decoration: none;
+      font-size: 10.5px;
+      line-height: 1;
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 5px;
+      padding: 7px 9px;
+      background: rgba(255,255,255,0.04);
+      white-space: nowrap;
+    }
+
+    .profile-pill span {
+      color: #9b968c;
+    }
+
+    .stage {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      padding: 0 0 14px 16px;
+    }
+
+    .rail {
+      height: 100%;
+      display: flex;
+      align-items: stretch;
+      gap: 12px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 0 16px 4px 0;
+      cursor: grab;
+      user-select: none;
+      scroll-snap-type: x proximity;
+      scrollbar-width: none;
+    }
+
+    .rail::-webkit-scrollbar { display: none; }
+    .rail:active { cursor: grabbing; }
+
+    .tile {
+      position: relative;
+      flex: 0 0 auto;
+      width: 128px;
+      height: 228px;
+      border-radius: 5px;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      scroll-snap-align: start;
+      background: #151515;
+    }
+
+    .tile img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .tile::after {
+      content: "";
+      position: absolute;
+      inset: 42% 0 0;
+      background: linear-gradient(to top, rgba(5,5,5,0.86), rgba(5,5,5,0.52) 58%, rgba(5,5,5,0));
+      pointer-events: none;
+    }
+
+    .time {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      z-index: 2;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(0,0,0,0.52);
+      color: #f1efe8;
+      font-size: 9px;
+      line-height: 1;
+    }
+
+    .tile-info {
+      position: absolute;
+      z-index: 2;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 42px 10px 10px;
+    }
+
+    .title {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.12;
+      color: #fff;
+      margin-bottom: 5px;
+    }
+
+    .meta {
+      font-size: 10px;
+      line-height: 1.25;
+      color: #d7d2c7;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .tags {
+      margin-top: 5px;
+      color: #b8b1a4;
+      font-size: 9px;
+      line-height: 1.2;
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .more {
+      flex: 0 0 auto;
+      align-self: center;
+      width: 136px;
+      min-height: 58px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 14px;
+      border-radius: 5px;
+      background: linear-gradient(135deg, #ff7a2f 0%, #f03b61 48%, #9d28d9 100%);
+      color: #fff;
+      text-decoration: none;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.08;
+    }
+
+    .more span { max-width: 78px; }
+
+    .profile-card {
+      width: 176px;
+      min-height: 150px;
+      align-self: center;
+      border-radius: 5px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.045);
+      padding: 13px;
+      display: grid;
+      align-content: center;
+      gap: 10px;
+      color: #f1efe8;
+      text-decoration: none;
+    }
+
+    .profile-card .handle {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .profile-card .desc {
+      color: #a8a298;
+      font-size: 10.5px;
+      line-height: 1.42;
+    }
+
+    .profile-card .cta {
+      width: max-content;
+      color: var(--live);
+      font-size: 10px;
+      line-height: 1;
+    }
+
+    .variant-3 .reels-head {
+      padding-bottom: 5px;
+    }
+
+    .variant-3 .tile {
+      width: 118px;
+      height: 210px;
+    }
+
+    .variant-4 .reels-head {
+      display: block;
+      padding-bottom: 12px;
+    }
+
+    .terminal-line {
+      color: #f1efe8;
+      font-size: 11px;
+      line-height: 1;
+    }
+
+    .terminal-line .prompt {
+      color: var(--live);
+      margin-right: 7px;
+    }
+
+    .terminal-line .muted {
+      color: #8f8a80;
+    }
+
+    .variant-4 .stage {
+      padding-left: 16px;
+    }
+
+    .variant-5 .reels-head {
+      padding-bottom: 5px;
+    }
+
+    .profile-tile {
+      width: 132px;
+      height: 228px;
+      flex: 0 0 auto;
+      border-radius: 5px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background:
+        linear-gradient(135deg, rgba(255,122,47,0.26), rgba(157,40,217,0.22)),
+        #111;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .profile-tile .top {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--live);
+      font-size: 11px;
+    }
+
+    .profile-tile .name {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 17px;
+      font-weight: 750;
+      line-height: 1;
+    }
+
+    .profile-tile .copy {
+      color: #d7d2c7;
+      font-size: 10px;
+      line-height: 1.38;
+      margin-top: 9px;
+    }
+
+    .profile-tile .bottom {
+      color: #fff;
+      font-size: 10px;
+      line-height: 1;
+    }
+
+    .variant-6 .reels-head {
+      align-items: center;
+    }
+
+    .variant-6 .stage {
+      padding-bottom: 9px;
+    }
+
+    .info-bar {
+      margin: 0 16px 14px;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      padding-top: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: #9b968c;
+      font-size: 10.5px;
+      line-height: 1.3;
+    }
+
+    .info-bar a {
+      color: var(--live);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .variant-7 .reels-head {
+      padding: 12px 14px 8px;
+    }
+
+    .variant-7 .brand-line {
+      color: #f1efe8;
+    }
+
+    .variant-7 .profile-pill {
+      border: 0;
+      background: transparent;
+      padding: 0;
+      color: #8f8a80;
+    }
+
+    .variant-7 .more {
+      width: 126px;
+      min-height: 52px;
+      background: #f1efe8;
+      color: #0a0a0a;
+    }
+
+    .variant-8 .reels-head {
+      padding-bottom: 8px;
+    }
+
+    .variant-8 .brand-line {
+      color: var(--live);
+    }
+
+    .variant-8 .brand-copy {
+      margin-top: 5px;
+      max-width: 310px;
+    }
+
+    .batch-title {
+      margin: 6px 0 -2px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1;
+    }
+
+    .variant-9 .reels-head,
+    .variant-10 .reels-head,
+    .variant-11 .reels-head,
+    .variant-12 .reels-head,
+    .variant-13 .reels-head,
+    .variant-14 .reels-head {
+      align-items: center;
+      padding: 13px 15px 9px;
+    }
+
+    .source-line {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--live);
+      font-size: 11px;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .source-line .handle {
+      color: #f1efe8;
+    }
+
+    .source-line .muted {
+      color: #8f8a80;
+    }
+
+    .small-link {
+      color: #8f8a80;
+      font-size: 10.5px;
+      line-height: 1;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .small-link:hover {
+      color: #f1efe8;
+    }
+
+    .tiny-more {
+      flex: 0 0 auto;
+      align-self: center;
+      width: 104px;
+      min-height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 9px 10px;
+      border-radius: 5px;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.045);
+      color: #f1efe8;
+      text-decoration: none;
+      font-size: 10.5px;
+      line-height: 1.1;
+    }
+
+    .variant-10 .reels-card-inner {
+      display: grid;
+      grid-template-columns: 36px minmax(0, 1fr);
+      min-height: 284px;
+    }
+
+    .side-source {
+      border-right: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--live);
+      font-size: 10px;
+      line-height: 1;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      user-select: none;
+    }
+
+    .variant-10 .stage {
+      padding-top: 14px;
+    }
+
+    .variant-11 .stage {
+      padding-top: 3px;
+    }
+
+    .rail-note {
+      position: absolute;
+      z-index: 5;
+      top: 0;
+      left: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 7px;
+      border-radius: 5px;
+      background: rgba(10,10,10,0.9);
+      color: #f1efe8;
+      font-size: 10px;
+      line-height: 1;
+      border: 1px solid rgba(255,255,255,0.12);
+      pointer-events: none;
+    }
+
+    .variant-11 .rail {
+      padding-top: 16px;
+    }
+
+    .variant-12 .source-line {
+      color: #f1efe8;
+    }
+
+    .variant-12 .small-link {
+      color: var(--live);
+    }
+
+    .variant-13 .reels-head {
+      justify-content: flex-start;
+    }
+
+    .variant-13 .stage {
+      padding-top: 2px;
+    }
+
+    .variant-13 .tile {
+      width: 126px;
+      height: 224px;
+    }
+
+    .variant-14 .tile-source {
+      position: absolute;
+      z-index: 3;
+      left: 7px;
+      top: 7px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 6px;
+      border-radius: 4px;
+      background: rgba(0,0,0,0.52);
+      color: #f1efe8;
+      font-size: 9px;
+      line-height: 1;
+    }
+
+    .variant-14 .reels-head {
+      padding-bottom: 5px;
+    }
+
+    .variant-14 .brand-line {
+      color: #8f8a80;
+    }
+
+    .mini-stats {
+      display: flex;
+      gap: 14px;
+      color: #8f8a80;
+      font-size: 10px;
+      line-height: 1.2;
+    }
+
+    .mini-stats strong {
+      display: block;
+      color: #f1efe8;
+      font-size: 13px;
+      line-height: 1;
+      margin-bottom: 4px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    svg { flex: 0 0 auto; }
+
+    @media (max-width: 760px) {
+      body { padding: 14px; }
+      .page-head {
+        display: block;
+      }
+      .note {
+        margin-top: 8px;
+        text-align: left;
+      }
+      .option {
+        grid-template-columns: 1fr;
+      }
+      .reels-card {
+        min-height: 330px;
+      }
+      .reels-head {
+        flex-direction: column;
+        gap: 8px;
+      }
+      .brand-copy {
+        max-width: none;
+      }
+      .tile {
+        width: 124px;
+        height: 220px;
+      }
+      .profile-card {
+        width: 156px;
+      }
+      .info-bar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+      .mini-stats {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .variant-10 .reels-card-inner {
+        grid-template-columns: 1fr;
+      }
+      .side-source {
+        writing-mode: initial;
+        transform: none;
+        justify-content: flex-start;
+        height: auto;
+        border-right: 0;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        padding: 12px 14px 0;
+      }
+      .variant-10 .stage {
+        padding-top: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="page-head">
+      <h1>Reels block options for a separate Instagram profile</h1>
+      <p class="note">Static mock only. Drag the rails horizontally. Replace <strong>@fieldnotes</strong> with the real profile when decided.</p>
+    </header>
+
+    <div class="batch-title">new direction: drier, closer to the current block</div>
+
+    <section class="option">
+      <aside class="option-label">
+        <div class="k">option 09</div>
+        <div class="v">Source line only</div>
+        <div class="why">Just replaces the current header with the source profile. No extra explanation.</div>
+      </aside>
+      <article class="reels-card variant-9">
+        <header class="reels-head">
+          <div class="source-line">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.2" stroke="currentColor" stroke-width="2"></rect><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"></circle><circle cx="17.25" cy="6.75" r="1.1" fill="currentColor"></circle></svg>
+            <span class="muted">reels from</span>
+            <span class="handle">@fieldnotes</span>
+          </div>
+          <a class="small-link" href="#">open profile</a>
+        </header>
+        <div class="stage">
+          <div class="rail">
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/n8n-tip-2026/400/720" alt=""><span class="time">0:42</span><div class="tile-info"><div class="title">n8n flow in 40 sec</div><div class="meta">31k · trending</div><div class="tags"><span>#n8n</span><span>#automation</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/tf-tip-2026/400/720" alt=""><span class="time">0:58</span><div class="tile-info"><div class="title">Terraform tip · GitOps</div><div class="meta">22k · last week</div><div class="tags"><span>#terraform</span><span>#gitops</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/docker-cleanup-2026/400/720" alt=""><span class="time">0:31</span><div class="tile-info"><div class="title">Docker cleanup alias</div><div class="meta">18k · quick tip</div><div class="tags"><span>#docker</span><span>#ops</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/k8s-context-2026/400/720" alt=""><span class="time">0:27</span><div class="tile-info"><div class="title">One-line k8s check</div><div class="meta">14k · saved</div><div class="tags"><span>#k8s</span><span>#shell</span></div></div></a>
+            <a class="tiny-more" href="#"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.2" stroke="currentColor" stroke-width="2"></rect><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"></circle><circle cx="17.25" cy="6.75" r="1.1" fill="currentColor"></circle></svg><span>more</span></a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="option">
+      <aside class="option-label">
+        <div class="k">option 10</div>
+        <div class="v">Side source</div>
+        <div class="why">The profile becomes a quiet rail label. Header stays out of the way.</div>
+      </aside>
+      <article class="reels-card variant-10">
+        <div class="reels-card-inner">
+          <div class="side-source">@fieldnotes</div>
+          <div class="stage">
+            <div class="rail">
+              <a class="tile" href="#"><img src="https://picsum.photos/seed/n8n-retry-2026/400/720" alt=""><span class="time">0:45</span><div class="tile-info"><div class="title">n8n retry pattern</div><div class="meta">11k · automation</div><div class="tags"><span>#n8n</span><span>#retries</span></div></div></a>
+              <a class="tile" href="#"><img src="https://picsum.photos/seed/logql-one-line-2026/400/720" alt=""><span class="time">0:36</span><div class="tile-info"><div class="title">LogQL in one line</div><div class="meta">9k · logs</div><div class="tags"><span>#logs</span><span>#loki</span></div></div></a>
+              <a class="tile" href="#"><img src="https://picsum.photos/seed/safe-deploy-check-2026/400/720" alt=""><span class="time">0:29</span><div class="tile-info"><div class="title">Safe deploy check</div><div class="meta">8k · deploys</div><div class="tags"><span>#deploy</span><span>#ci</span></div></div></a>
+              <a class="tile" href="#"><img src="https://picsum.photos/seed/webhook-sanity-2026/400/720" alt=""><span class="time">0:33</span><div class="tile-info"><div class="title">Webhook sanity test</div><div class="meta">7k · n8n</div><div class="tags"><span>#webhook</span><span>#n8n</span></div></div></a>
+              <a class="tiny-more" href="#">instagram</a>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="option">
+      <aside class="option-label">
+        <div class="k">option 11</div>
+        <div class="v">Floating source tag</div>
+        <div class="why">Keeps the original reels header, with the separate account as a small tag on the rail.</div>
+      </aside>
+      <article class="reels-card variant-11">
+        <header class="reels-head">
+          <div class="brand-line">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.2" stroke="currentColor" stroke-width="2"></rect><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"></circle><circle cx="17.25" cy="6.75" r="1.1" fill="currentColor"></circle></svg>
+            reels
+          </div>
+        </header>
+        <div class="stage">
+          <div class="rail-note">@fieldnotes</div>
+          <div class="rail">
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/n8n-tip-2026/400/720" alt=""><span class="time">0:42</span><div class="tile-info"><div class="title">n8n flow in 40 sec</div><div class="meta">31k · trending</div><div class="tags"><span>#n8n</span><span>#automation</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/tf-tip-2026/400/720" alt=""><span class="time">0:58</span><div class="tile-info"><div class="title">Terraform tip · GitOps</div><div class="meta">22k · last week</div><div class="tags"><span>#terraform</span><span>#gitops</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/docker-cleanup-2026/400/720" alt=""><span class="time">0:31</span><div class="tile-info"><div class="title">Docker cleanup alias</div><div class="meta">18k · quick tip</div><div class="tags"><span>#docker</span><span>#ops</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/k8s-context-2026/400/720" alt=""><span class="time">0:27</span><div class="tile-info"><div class="title">One-line k8s check</div><div class="meta">14k · saved</div><div class="tags"><span>#k8s</span><span>#shell</span></div></div></a>
+            <a class="tiny-more" href="#">more</a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="option">
+      <aside class="option-label">
+        <div class="k">option 12</div>
+        <div class="v">Handle as title</div>
+        <div class="why">No word reels. Instagram icon plus handle does the job.</div>
+      </aside>
+      <article class="reels-card variant-12">
+        <header class="reels-head">
+          <div class="source-line">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.2" stroke="currentColor" stroke-width="2"></rect><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"></circle><circle cx="17.25" cy="6.75" r="1.1" fill="currentColor"></circle></svg>
+            @fieldnotes
+          </div>
+          <a class="small-link" href="#">more clips</a>
+        </header>
+        <div class="stage">
+          <div class="rail">
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/n8n-retry-2026/400/720" alt=""><span class="time">0:45</span><div class="tile-info"><div class="title">n8n retry pattern</div><div class="meta">11k · automation</div><div class="tags"><span>#n8n</span><span>#retries</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/logql-one-line-2026/400/720" alt=""><span class="time">0:36</span><div class="tile-info"><div class="title">LogQL in one line</div><div class="meta">9k · logs</div><div class="tags"><span>#logs</span><span>#loki</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/safe-deploy-check-2026/400/720" alt=""><span class="time">0:29</span><div class="tile-info"><div class="title">Safe deploy check</div><div class="meta">8k · deploys</div><div class="tags"><span>#deploy</span><span>#ci</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/webhook-sanity-2026/400/720" alt=""><span class="time">0:33</span><div class="tile-info"><div class="title">Webhook sanity test</div><div class="meta">7k · n8n</div><div class="tags"><span>#webhook</span><span>#n8n</span></div></div></a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="option">
+      <aside class="option-label">
+        <div class="k">option 13</div>
+        <div class="v">Muted account chip</div>
+        <div class="why">Most minimal. The account is there, but not visually competing with the clips.</div>
+      </aside>
+      <article class="reels-card variant-13">
+        <header class="reels-head">
+          <div class="source-line">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.2" stroke="currentColor" stroke-width="2"></rect><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"></circle><circle cx="17.25" cy="6.75" r="1.1" fill="currentColor"></circle></svg>
+            <span class="muted">@fieldnotes</span>
+          </div>
+        </header>
+        <div class="stage">
+          <div class="rail">
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/n8n-tip-2026/400/720" alt=""><span class="time">0:42</span><div class="tile-info"><div class="title">n8n flow in 40 sec</div><div class="meta">31k · trending</div><div class="tags"><span>#n8n</span><span>#automation</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/tf-tip-2026/400/720" alt=""><span class="time">0:58</span><div class="tile-info"><div class="title">Terraform tip · GitOps</div><div class="meta">22k · last week</div><div class="tags"><span>#terraform</span><span>#gitops</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/docker-cleanup-2026/400/720" alt=""><span class="time">0:31</span><div class="tile-info"><div class="title">Docker cleanup alias</div><div class="meta">18k · quick tip</div><div class="tags"><span>#docker</span><span>#ops</span></div></div></a>
+            <a class="tiny-more" href="#">open</a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="option">
+      <aside class="option-label">
+        <div class="k">option 14</div>
+        <div class="v">Source on clips</div>
+        <div class="why">No separate explanation at all. The source appears on the first clip and the final CTA.</div>
+      </aside>
+      <article class="reels-card variant-14">
+        <header class="reels-head">
+          <div class="brand-line">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.2" stroke="currentColor" stroke-width="2"></rect><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"></circle><circle cx="17.25" cy="6.75" r="1.1" fill="currentColor"></circle></svg>
+            reels
+          </div>
+        </header>
+        <div class="stage">
+          <div class="rail">
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/n8n-retry-2026/400/720" alt=""><span class="tile-source">@fieldnotes</span><span class="time">0:45</span><div class="tile-info"><div class="title">n8n retry pattern</div><div class="meta">11k · automation</div><div class="tags"><span>#n8n</span><span>#retries</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/logql-one-line-2026/400/720" alt=""><span class="time">0:36</span><div class="tile-info"><div class="title">LogQL in one line</div><div class="meta">9k · logs</div><div class="tags"><span>#logs</span><span>#loki</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/safe-deploy-check-2026/400/720" alt=""><span class="time">0:29</span><div class="tile-info"><div class="title">Safe deploy check</div><div class="meta">8k · deploys</div><div class="tags"><span>#deploy</span><span>#ci</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/webhook-sanity-2026/400/720" alt=""><span class="time">0:33</span><div class="tile-info"><div class="title">Webhook sanity test</div><div class="meta">7k · n8n</div><div class="tags"><span>#webhook</span><span>#n8n</span></div></div></a>
+            <a class="tiny-more" href="#">@fieldnotes</a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <div class="batch-title">older directions kept below</div>
+
+    <section class="option">
+      <aside class="option-label">
+        <div class="k">option 01</div>
+        <div class="v">Minimal account context</div>
+        <div class="why">Keeps the current block almost intact, just makes it clear the reels are from another profile.</div>
+      </aside>
+      <article class="reels-card">
+        <header class="reels-head">
+          <div class="brand-line">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.2" stroke="currentColor" stroke-width="2"></rect><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"></circle><circle cx="17.25" cy="6.75" r="1.1" fill="currentColor"></circle></svg>
+            reels by @fieldnotes
+          </div>
+          <a class="profile-pill" href="#"><span>profile</span> @fieldnotes</a>
+        </header>
+        <div class="stage">
+          <div class="rail">
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/n8n-tip-2026/400/720" alt=""><span class="time">0:42</span><div class="tile-info"><div class="title">n8n flow in 40 sec</div><div class="meta">31k · trending</div><div class="tags"><span>#n8n</span><span>#automation</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/tf-tip-2026/400/720" alt=""><span class="time">0:58</span><div class="tile-info"><div class="title">Terraform tip · GitOps</div><div class="meta">22k · last week</div><div class="tags"><span>#terraform</span><span>#gitops</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/docker-cleanup-2026/400/720" alt=""><span class="time">0:31</span><div class="tile-info"><div class="title">Docker cleanup alias</div><div class="meta">18k · quick tip</div><div class="tags"><span>#docker</span><span>#ops</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/k8s-context-2026/400/720" alt=""><span class="time">0:27</span><div class="tile-info"><div class="title">One-line k8s check</div><div class="meta">14k · saved</div><div class="tags"><span>#k8s</span><span>#shell</span></div></div></a>
+            <a class="more" href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.2" stroke="currentColor" stroke-width="2"></rect><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"></circle><circle cx="17.25" cy="6.75" r="1.1" fill="currentColor"></circle></svg><span>more on instagram</span></a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="option">
+      <aside class="option-label">
+        <div class="k">option 02</div>
+        <div class="v">Small editorial note</div>
+        <div class="why">Adds context without making the area feel like a bio card. Best if the new profile needs explanation.</div>
+      </aside>
+      <article class="reels-card">
+        <header class="reels-head">
+          <div>
+            <div class="brand-line">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.2" stroke="currentColor" stroke-width="2"></rect><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"></circle><circle cx="17.25" cy="6.75" r="1.1" fill="currentColor"></circle></svg>
+              @fieldnotes
+            </div>
+            <div class="brand-copy"><strong>short technical notes</strong> on automation, cloud, tooling, and small systems that work.</div>
+          </div>
+          <a class="profile-pill" href="#"><span>open</span> instagram</a>
+        </header>
+        <div class="stage">
+          <div class="rail">
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/n8n-retry-2026/400/720" alt=""><span class="time">0:45</span><div class="tile-info"><div class="title">n8n retry pattern</div><div class="meta">11k · automation</div><div class="tags"><span>#n8n</span><span>#retries</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/logql-one-line-2026/400/720" alt=""><span class="time">0:36</span><div class="tile-info"><div class="title">LogQL in one line</div><div class="meta">9k · logs</div><div class="tags"><span>#logs</span><span>#loki</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/safe-deploy-check-2026/400/720" alt=""><span class="time">0:29</span><div class="tile-info"><div class="title">Safe deploy check</div><div class="meta">8k · deploys</div><div class="tags"><span>#deploy</span><span>#ci</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/webhook-sanity-2026/400/720" alt=""><span class="time">0:33</span><div class="tile-info"><div class="title">Webhook sanity test</div><div class="meta">7k · n8n</div><div class="tags"><span>#webhook</span><span>#n8n</span></div></div></a>
+            <a class="more" href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.2" stroke="currentColor" stroke-width="2"></rect><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"></circle><circle cx="17.25" cy="6.75" r="1.1" fill="currentColor"></circle></svg><span>more on instagram</span></a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="option">
+      <aside class="option-label">
+        <div class="k">option 03</div>
+        <div class="v">Dedicated profile card</div>
+        <div class="why">Most explicit. Good if the point is to send people to a content profile, not just show a few clips.</div>
+      </aside>
+      <article class="reels-card variant-3">
+        <header class="reels-head">
+          <div class="brand-line">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.2" stroke="currentColor" stroke-width="2"></rect><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"></circle><circle cx="17.25" cy="6.75" r="1.1" fill="currentColor"></circle></svg>
+            technical reels
+          </div>
+        </header>
+        <div class="stage">
+          <div class="rail">
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/n8n-tip-2026/400/720" alt=""><span class="time">0:42</span><div class="tile-info"><div class="title">n8n flow in 40 sec</div><div class="meta">31k · trending</div><div class="tags"><span>#n8n</span><span>#automation</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/tf-tip-2026/400/720" alt=""><span class="time">0:58</span><div class="tile-info"><div class="title">Terraform tip</div><div class="meta">22k · last week</div><div class="tags"><span>#terraform</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/docker-cleanup-2026/400/720" alt=""><span class="time">0:31</span><div class="tile-info"><div class="title">Docker cleanup</div><div class="meta">18k · quick tip</div><div class="tags"><span>#docker</span></div></div></a>
+            <a class="profile-card" href="#">
+              <div class="handle">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.2" stroke="currentColor" stroke-width="2"></rect><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"></circle><circle cx="17.25" cy="6.75" r="1.1" fill="currentColor"></circle></svg>
+                @fieldnotes
+              </div>
+              <div class="desc">Short clips for practical automation, cloud work, self-hosted tools, and systems notes.</div>
+              <div class="cta">open instagram</div>
+            </a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="option">
+      <aside class="option-label">
+        <div class="k">option 04</div>
+        <div class="v">Terminal command</div>
+        <div class="why">Feels closer to the rest of the site. It says this is a separate feed without adding marketing copy.</div>
+      </aside>
+      <article class="reels-card variant-4">
+        <header class="reels-head">
+          <div class="terminal-line"><span class="prompt">$</span>open <span class="muted">instagram://</span>@fieldnotes</div>
+        </header>
+        <div class="stage">
+          <div class="rail">
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/n8n-tip-2026/400/720" alt=""><span class="time">0:42</span><div class="tile-info"><div class="title">n8n flow in 40 sec</div><div class="meta">31k · trending</div><div class="tags"><span>#n8n</span><span>#automation</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/tf-tip-2026/400/720" alt=""><span class="time">0:58</span><div class="tile-info"><div class="title">Terraform tip · GitOps</div><div class="meta">22k · last week</div><div class="tags"><span>#terraform</span><span>#gitops</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/docker-cleanup-2026/400/720" alt=""><span class="time">0:31</span><div class="tile-info"><div class="title">Docker cleanup alias</div><div class="meta">18k · quick tip</div><div class="tags"><span>#docker</span><span>#ops</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/k8s-context-2026/400/720" alt=""><span class="time">0:27</span><div class="tile-info"><div class="title">One-line k8s check</div><div class="meta">14k · saved</div><div class="tags"><span>#k8s</span><span>#shell</span></div></div></a>
+            <a class="more" href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.2" stroke="currentColor" stroke-width="2"></rect><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"></circle><circle cx="17.25" cy="6.75" r="1.1" fill="currentColor"></circle></svg><span>open profile</span></a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="option">
+      <aside class="option-label">
+        <div class="k">option 05</div>
+        <div class="v">Profile tile first</div>
+        <div class="why">The first tile explains the account, then the reels start. More visual, less header text.</div>
+      </aside>
+      <article class="reels-card variant-5">
+        <header class="reels-head">
+          <div class="brand-line">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.2" stroke="currentColor" stroke-width="2"></rect><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"></circle><circle cx="17.25" cy="6.75" r="1.1" fill="currentColor"></circle></svg>
+            reels
+          </div>
+        </header>
+        <div class="stage">
+          <div class="rail">
+            <a class="profile-tile" href="#">
+              <div>
+                <div class="top"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.2" stroke="currentColor" stroke-width="2"></rect><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"></circle><circle cx="17.25" cy="6.75" r="1.1" fill="currentColor"></circle></svg> profile</div>
+                <div class="name">@fieldnotes</div>
+                <div class="copy">Practical systems, automation, cloud, and tooling clips.</div>
+              </div>
+              <div class="bottom">open instagram</div>
+            </a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/n8n-retry-2026/400/720" alt=""><span class="time">0:45</span><div class="tile-info"><div class="title">n8n retry pattern</div><div class="meta">11k · automation</div><div class="tags"><span>#n8n</span><span>#retries</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/logql-one-line-2026/400/720" alt=""><span class="time">0:36</span><div class="tile-info"><div class="title">LogQL in one line</div><div class="meta">9k · logs</div><div class="tags"><span>#logs</span><span>#loki</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/safe-deploy-check-2026/400/720" alt=""><span class="time">0:29</span><div class="tile-info"><div class="title">Safe deploy check</div><div class="meta">8k · deploys</div><div class="tags"><span>#deploy</span><span>#ci</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/webhook-sanity-2026/400/720" alt=""><span class="time">0:33</span><div class="tile-info"><div class="title">Webhook sanity test</div><div class="meta">7k · n8n</div><div class="tags"><span>#webhook</span><span>#n8n</span></div></div></a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="option">
+      <aside class="option-label">
+        <div class="k">option 06</div>
+        <div class="v">Footer note</div>
+        <div class="why">Keeps the top clean. The informational text lives below the rail, where it feels less intrusive.</div>
+      </aside>
+      <article class="reels-card variant-6">
+        <header class="reels-head">
+          <div class="brand-line">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.2" stroke="currentColor" stroke-width="2"></rect><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"></circle><circle cx="17.25" cy="6.75" r="1.1" fill="currentColor"></circle></svg>
+            reels
+          </div>
+          <a class="profile-pill" href="#"><span>@fieldnotes</span></a>
+        </header>
+        <div class="stage">
+          <div class="rail">
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/n8n-tip-2026/400/720" alt=""><span class="time">0:42</span><div class="tile-info"><div class="title">n8n flow in 40 sec</div><div class="meta">31k · trending</div><div class="tags"><span>#n8n</span><span>#automation</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/tf-tip-2026/400/720" alt=""><span class="time">0:58</span><div class="tile-info"><div class="title">Terraform tip · GitOps</div><div class="meta">22k · last week</div><div class="tags"><span>#terraform</span><span>#gitops</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/docker-cleanup-2026/400/720" alt=""><span class="time">0:31</span><div class="tile-info"><div class="title">Docker cleanup alias</div><div class="meta">18k · quick tip</div><div class="tags"><span>#docker</span><span>#ops</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/k8s-context-2026/400/720" alt=""><span class="time">0:27</span><div class="tile-info"><div class="title">One-line k8s check</div><div class="meta">14k · saved</div><div class="tags"><span>#k8s</span><span>#shell</span></div></div></a>
+          </div>
+        </div>
+        <div class="info-bar">
+          <span>more short notes live on the separate Instagram profile</span>
+          <a href="#">open @fieldnotes</a>
+        </div>
+      </article>
+    </section>
+
+    <section class="option">
+      <aside class="option-label">
+        <div class="k">option 07</div>
+        <div class="v">Almost flat</div>
+        <div class="why">Very low noise. No explanatory paragraph, just a handle and a calmer CTA.</div>
+      </aside>
+      <article class="reels-card variant-7">
+        <header class="reels-head">
+          <div class="brand-line">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.2" stroke="currentColor" stroke-width="2"></rect><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"></circle><circle cx="17.25" cy="6.75" r="1.1" fill="currentColor"></circle></svg>
+            @fieldnotes
+          </div>
+          <a class="profile-pill" href="#">instagram</a>
+        </header>
+        <div class="stage">
+          <div class="rail">
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/n8n-retry-2026/400/720" alt=""><span class="time">0:45</span><div class="tile-info"><div class="title">n8n retry pattern</div><div class="meta">11k · automation</div><div class="tags"><span>#n8n</span><span>#retries</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/logql-one-line-2026/400/720" alt=""><span class="time">0:36</span><div class="tile-info"><div class="title">LogQL in one line</div><div class="meta">9k · logs</div><div class="tags"><span>#logs</span><span>#loki</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/safe-deploy-check-2026/400/720" alt=""><span class="time">0:29</span><div class="tile-info"><div class="title">Safe deploy check</div><div class="meta">8k · deploys</div><div class="tags"><span>#deploy</span><span>#ci</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/webhook-sanity-2026/400/720" alt=""><span class="time">0:33</span><div class="tile-info"><div class="title">Webhook sanity test</div><div class="meta">7k · n8n</div><div class="tags"><span>#webhook</span><span>#n8n</span></div></div></a>
+            <a class="more" href="#"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.2" stroke="currentColor" stroke-width="2"></rect><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"></circle><circle cx="17.25" cy="6.75" r="1.1" fill="currentColor"></circle></svg><span>more notes</span></a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="option">
+      <aside class="option-label">
+        <div class="k">option 08</div>
+        <div class="v">Small stats</div>
+        <div class="why">Signals this is a real content profile without a big CTA block. Useful if profile has audience metrics.</div>
+      </aside>
+      <article class="reels-card variant-8">
+        <header class="reels-head">
+          <div>
+            <div class="brand-line">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.2" stroke="currentColor" stroke-width="2"></rect><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"></circle><circle cx="17.25" cy="6.75" r="1.1" fill="currentColor"></circle></svg>
+              @fieldnotes
+            </div>
+            <div class="brand-copy">short notes for builders running systems</div>
+          </div>
+          <div class="mini-stats">
+            <span><strong>84k</strong>reach</span>
+            <span><strong>weekly</strong>clips</span>
+          </div>
+        </header>
+        <div class="stage">
+          <div class="rail">
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/n8n-tip-2026/400/720" alt=""><span class="time">0:42</span><div class="tile-info"><div class="title">n8n flow in 40 sec</div><div class="meta">31k · trending</div><div class="tags"><span>#n8n</span><span>#automation</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/tf-tip-2026/400/720" alt=""><span class="time">0:58</span><div class="tile-info"><div class="title">Terraform tip · GitOps</div><div class="meta">22k · last week</div><div class="tags"><span>#terraform</span><span>#gitops</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/docker-cleanup-2026/400/720" alt=""><span class="time">0:31</span><div class="tile-info"><div class="title">Docker cleanup alias</div><div class="meta">18k · quick tip</div><div class="tags"><span>#docker</span><span>#ops</span></div></div></a>
+            <a class="tile" href="#"><img src="https://picsum.photos/seed/k8s-context-2026/400/720" alt=""><span class="time">0:27</span><div class="tile-info"><div class="title">One-line k8s check</div><div class="meta">14k · saved</div><div class="tags"><span>#k8s</span><span>#shell</span></div></div></a>
+            <a class="more" href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.2" stroke="currentColor" stroke-width="2"></rect><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"></circle><circle cx="17.25" cy="6.75" r="1.1" fill="currentColor"></circle></svg><span>more on instagram</span></a>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    document.querySelectorAll(".rail").forEach((rail) => {
+      let active = false;
+      let startX = 0;
+      let startScroll = 0;
+
+      rail.addEventListener("pointerdown", (event) => {
+        active = true;
+        startX = event.clientX;
+        startScroll = rail.scrollLeft;
+        rail.setPointerCapture(event.pointerId);
+      });
+
+      rail.addEventListener("pointermove", (event) => {
+        if (!active) return;
+        const delta = event.clientX - startX;
+        rail.scrollLeft = startScroll - delta;
+      });
+
+      const end = (event) => {
+        active = false;
+        rail.releasePointerCapture?.(event.pointerId);
+      };
+
+      rail.addEventListener("pointerup", end);
+      rail.addEventListener("pointercancel", end);
+    });
+  </script>
+</body>
+</html>

@@ -26,8 +26,6 @@ export function MidfiV1() {
             <a className="social" title="github" aria-label="GitHub" href="https://github.com/uphiago" target="_blank" rel="noopener noreferrer">{Ico.github}</a>
             <a className="social" title="linkedin" aria-label="LinkedIn" href="https://www.linkedin.com/in/uphiago" target="_blank" rel="noopener noreferrer">{Ico.linkedin}</a>
             <a className="social" title="x" aria-label="X (Twitter)" href="https://x.com/uphiago" target="_blank" rel="noopener noreferrer">{Ico.x}</a>
-            <a className="social" title="youtube" aria-label="YouTube" href="https://www.youtube.com/@uphiago" target="_blank" rel="noopener noreferrer">{Ico.youtube}</a>
-            <a className="social" title="tiktok" aria-label="TikTok" href="https://www.tiktok.com/@uphiago" target="_blank" rel="noopener noreferrer">{Ico.tiktok}</a>
             <a className="social" title="instagram" aria-label="Instagram" href={VIDEOS.instagram} target="_blank" rel="noopener noreferrer">{Ico.instagram}</a>
           </nav>
         </header>

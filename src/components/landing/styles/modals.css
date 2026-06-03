@@ -75,18 +75,22 @@
     width: 100%; box-sizing: border-box;
     -webkit-appearance: none;
     appearance: none;
-    border: 1px solid rgba(10, 10, 10, 0.18);
+    border: 1px solid rgba(10, 10, 10, 0.16);
     border-radius: 5px;
     background: rgba(255, 255, 255, 0.28);
     padding: 10px 12px;
     font-family: var(--font-ibm); font-size: 13.5px;
     color: var(--m-ink); outline: none;
-    transition: border-color .15s ease;
+    transition: border-color .15s ease, background .15s ease, box-shadow .15s ease;
     resize: vertical;
   }
   .mfi-modal input:focus, .mfi-modal textarea:focus {
-    border-color: rgba(10, 10, 10, 0.42);
-    background: rgba(255, 255, 255, 0.42);
+    border-color: rgba(10, 10, 10, 0.24);
+    background: rgba(255, 255, 255, 0.38);
+    box-shadow: 0 0 0 2px rgba(10, 10, 10, 0.06);
+  }
+  .mfi-modal input:focus-visible, .mfi-modal textarea:focus-visible {
+    outline: none;
   }
   .mfi-modal textarea {
     min-height: 78px;
