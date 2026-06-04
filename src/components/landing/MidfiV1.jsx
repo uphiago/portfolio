@@ -4,10 +4,10 @@ import React from "react";
 import { Ico } from "./icons";
 import { VIDEOS, ARTICLES } from "./data";
 
-import { TerminalHero, AudienceCard, VideoCard, WriteupsCard } from "./cards";
+import { TerminalHero, VideoCard, WriteupsCard } from "./cards";
 import { ContactModal, ArticleModal, VideoModal } from "./modals";
 
-export function MidfiV1() {
+export function MidfiV1({ articles = ARTICLES }) {
   const [contactOpen, setContactOpen] = React.useState(false);
   const [openArticle, setOpenArticle] = React.useState(null);
   const [openVideo, setOpenVideo] = React.useState(null);
@@ -37,8 +37,7 @@ export function MidfiV1() {
             VIDEOS={VIDEOS}
             setOpenVideo={setOpenVideo}
           />
-          <WriteupsCard ARTICLES={ARTICLES} setOpenArticle={setOpenArticle} />
-          <AudienceCard />
+          <WriteupsCard ARTICLES={articles} setOpenArticle={setOpenArticle} />
         </main>
 
         {/* FOOTER */}

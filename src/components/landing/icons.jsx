@@ -38,6 +38,19 @@ export const Ico = {
       <path d="M2 8 L 8 2 M 4 2 H 8 V 6"/>
     </svg>
   ),
+  copy: (
+    <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4">
+      <rect x="5" y="5" width="8" height="8" rx="1.4"/>
+      <path d="M3 10.5H2.7A1.7 1.7 0 0 1 1 8.8V2.7A1.7 1.7 0 0 1 2.7 1H8.8A1.7 1.7 0 0 1 10.5 2.7V3"/>
+    </svg>
+  ),
+  external: (
+    <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4">
+      <path d="M6 3.2H3.6A1.6 1.6 0 0 0 2 4.8v7.6A1.6 1.6 0 0 0 3.6 14h7.6a1.6 1.6 0 0 0 1.6-1.6V10"/>
+      <path d="M8.5 2H14v5.5"/>
+      <path d="M7.5 8.5 14 2"/>
+    </svg>
+  ),
   star: (
     <svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor">
       <path d="M6 0.5 L 7.4 4.3 L 11.5 4.5 L 8.3 7 L 9.5 11 L 6 8.8 L 2.5 11 L 3.7 7 L 0.5 4.5 L 4.6 4.3 Z"/>

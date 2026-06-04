@@ -1,5 +1,6 @@
 import React from "react";
 import { Ico } from "../icons";
+import { MediaImage } from "../MediaImage";
 import { BaseModal } from "./BaseModal";
 
 export function VideoModal({ openVideo, setOpenVideo }) {
@@ -10,7 +11,7 @@ export function VideoModal({ openVideo, setOpenVideo }) {
   return (
     <BaseModal onClose={() => setOpenVideo(null)} modalBgClass="mfi-video-bg" modalClass="mfi-video" hideCloseButton={true} label={openVideo.title}>
       <div className={"vplayer " + (isShort ? "short" : "yt")}>
-        <img src={openVideo.thumb} loading="lazy" alt="" style={{position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0}} />
+        <MediaImage src={openVideo.thumb} className="vplayer-media" />
         <button type="button" className="vclose" style={{zIndex: 1}} onClick={() => setOpenVideo(null)} aria-label="close">×</button>
         <span className="vbadge" style={{zIndex: 1}}>{isShort ? "SHORT · 9:16" : "▶ YOUTUBE"}</span>
         {watchUrl ? (

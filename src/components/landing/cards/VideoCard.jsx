@@ -1,6 +1,7 @@
 import React from "react";
 import { motion, useMotionValue, useMotionValueEvent, animate } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { MediaImage } from "../MediaImage";
 
 function InstagramMark({ size = 12 }) {
   return (
@@ -146,16 +147,9 @@ export function VideoCard({ VIDEOS, setOpenVideo }) {
               aria-label={`Open Instagram reel: ${v.title}`}
               onClick={(e) => handleClick(e, v)}
             >
-              <div className="drag-tile-thumb">
-                <img
-                  draggable={false}
-                  src={v.thumb}
-                  loading="lazy"
-                  alt=""
-                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
-                />
+              <MediaImage src={v.thumb} className="drag-tile-thumb">
                 <span className="vts">{v.duration}</span>
-              </div>
+              </MediaImage>
               <div className="drag-tile-info">
                 <div className="vtitle">{v.title}</div>
                 <div className="drag-tile-desc">{v.desc}</div>

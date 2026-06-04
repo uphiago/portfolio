@@ -20,6 +20,9 @@
     animation: mfi-pop .16s ease-out;
     position: relative;
   }
+  .mfi-modal:focus {
+    outline: none;
+  }
   @keyframes mfi-pop { from { opacity: 0; } to { opacity: 1; } }
   .mfi-modal .x {
     position: absolute; top: 12px; right: 12px;
@@ -54,10 +57,33 @@
     cursor: pointer;
     font: inherit;
     padding: 0;
-    text-decoration: underline;
-    text-underline-offset: 2px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
   }
-  .mfi-modal .copy-email:hover {
+  .mfi-modal .copy-email svg {
+    color: var(--m-ink-faint);
+    flex-shrink: 0;
+  }
+  .mfi-modal .copy-email:hover,
+  .mfi-modal .copy-email:hover svg {
+    color: var(--m-ink-2);
+  }
+  .mfi-modal .contact-link,
+  .mfi-modal .contact-link:visited {
+    color: var(--m-ink);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+  }
+  .mfi-modal .contact-link svg {
+    color: var(--m-ink-faint);
+    flex-shrink: 0;
+  }
+  .mfi-modal .contact-link:hover,
+  .mfi-modal .contact-link:hover svg {
     color: var(--m-ink-2);
   }
   .mfi-modal .copy-status {
@@ -126,21 +152,25 @@
     animation: mfi-pop .22s cubic-bezier(.2,.7,.3,1);
     overflow: hidden;
   }
+  .mfi-article:focus {
+    outline: none;
+  }
   .mfi-article .ahead {
     padding: 24px 28px 18px;
     border-bottom: 1px solid var(--m-line);
     display: flex; flex-direction: column; gap: 6px;
     position: relative;
   }
-  .mfi-article .ahead .x {
-    position: absolute; top: 14px; right: 14px;
-    width: 28px; height: 28px; border-radius: 50%;
-    border: 1px solid rgba(30, 26, 20, 0.14); background: var(--m-paper);
+  .mfi-article .article-close {
+    position: absolute; top: 10px; right: 10px;
+    width: 20px; height: 20px; border-radius: 0;
+    border: 0; background: transparent;
+    color: var(--m-ink-faint);
     cursor: pointer; display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-mono); font-size: 12px;
+    font-family: var(--font-mono); font-size: 11px; line-height: 1;
     transition: background .15s ease, color .15s ease;
   }
-  .mfi-article .ahead .x:hover { background: var(--m-ink); color: var(--m-paper); }
+  .mfi-article .article-close:hover { background: transparent; color: var(--m-ink); }
   .mfi-article .ahead .crumb {
     font-family: var(--font-mono); font-size: 10.5px;
     color: var(--m-ink-soft); letter-spacing: 0.04em;
@@ -163,16 +193,23 @@
     overflow-y: auto;
     flex: 1;
   }
+  .mfi-article .abody h2,
   .mfi-article .abody h3 {
     font-family: var(--font-ibm); font-weight: 600;
     font-size: 16px; letter-spacing: -0.01em;
     margin: 22px 0 8px;
   }
+  .mfi-article .abody h2:first-child,
   .mfi-article .abody h3:first-child { margin-top: 0; }
   .mfi-article .abody p {
     font-family: var(--font-ibm); font-size: 14px;
     line-height: 1.6; color: var(--m-ink);
     margin: 0 0 10px;
+  }
+  .mfi-article .abody a {
+    color: var(--m-ink);
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
   .mfi-article .abody pre {
     font-family: var(--font-mono); font-size: 12px;
@@ -181,12 +218,78 @@
     margin: 10px 0 14px; overflow-x: auto;
     line-height: 1.6; white-space: pre;
   }
-  .mfi-article .abody ul {
+  .mfi-article .abody code {
+    font-family: var(--font-mono);
+  }
+  .mfi-article .abody p code,
+  .mfi-article .abody li code,
+  .mfi-article .abody td code {
+    padding: 1px 4px;
+    border-radius: 3px;
+    background: rgba(10,10,10,0.07);
+    font-size: 0.92em;
+  }
+  .mfi-article .abody pre code {
+    padding: 0;
+    background: transparent;
+    font-size: inherit;
+  }
+  .mfi-article .abody ul,
+  .mfi-article .abody ol {
     margin: 4px 0 14px; padding-left: 22px;
     font-family: var(--font-ibm); font-size: 14px;
     line-height: 1.7;
   }
-  .mfi-article .abody ul li::marker { color: var(--m-ink-faint); }
+  .mfi-article .abody ul li::marker,
+  .mfi-article .abody ol li::marker { color: var(--m-ink-faint); }
+  .mfi-article .abody blockquote {
+    margin: 12px 0 16px;
+    padding: 10px 14px;
+    border-left: 2px solid var(--m-line-strong);
+    background: rgba(255,255,255,0.32);
+    color: var(--m-ink-soft);
+  }
+  .mfi-article .abody blockquote p:last-child {
+    margin-bottom: 0;
+  }
+  .mfi-article .abody img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 14px auto 18px;
+    border-radius: 5px;
+    border: 1px solid var(--m-line);
+  }
+  .mfi-article .abody table {
+    width: 100%;
+    min-width: 540px;
+    border-collapse: collapse;
+    margin: 12px 0 16px;
+    font-size: 13px;
+    line-height: 1.45;
+  }
+  .mfi-article .abody table {
+    display: block;
+    overflow-x: auto;
+    border: 1px solid var(--m-line);
+    border-radius: 5px;
+  }
+  .mfi-article .abody th,
+  .mfi-article .abody td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--m-line);
+    text-align: left;
+    vertical-align: top;
+  }
+  .mfi-article .abody th {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--m-ink-soft);
+    background: rgba(255,255,255,0.34);
+  }
+  .mfi-article .abody tr:last-child td {
+    border-bottom: 0;
+  }
   .mfi-article .afoot {
     border-top: 1px solid var(--m-line);
     padding: 14px 28px;
@@ -194,6 +297,28 @@
     font-family: var(--font-mono); font-size: 11px;
     color: var(--m-ink-soft);
     background: var(--m-paper-2);
+  }
+  .mfi-article .article-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .mfi-article .article-actions a,
+  .mfi-article .article-actions a:visited,
+  .mfi-article .article-actions button {
+    -webkit-appearance: none;
+    appearance: none;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    color: var(--m-ink-soft);
+    font: inherit;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .mfi-article .article-actions a:hover,
+  .mfi-article .article-actions button:hover {
+    color: var(--m-ink);
   }
 
   /* ───── Video modal ───── */
@@ -221,6 +346,11 @@
     position: relative; width: 100%;
     background-size: cover; background-position: center;
     flex-shrink: 0;
+  }
+  .mfi-video .vplayer-media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
   }
   .mfi-video .vplayer.yt { aspect-ratio: 16/9; }
   .mfi-video .vplayer.short { aspect-ratio: 9/16; max-height: 60vh; }

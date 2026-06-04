@@ -1,9 +1,12 @@
 import { MidfiV1 } from "@/src/components/landing/MidfiV1";
+import { getBlogArticles } from "@/src/components/landing/blog";
 import "@/src/components/landing/styles/base.css";
 import "@/src/components/landing/styles/cards.css";
 import "@/src/components/landing/styles/modals.css";
 import "@/src/components/landing/styles/responsive.css";
 
-export default function Page() {
-  return <MidfiV1 />;
+export default async function Page() {
+  const articles = await getBlogArticles();
+
+  return <MidfiV1 articles={articles} />;
 }

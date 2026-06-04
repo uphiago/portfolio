@@ -57,7 +57,7 @@ export function WriteupsCard({ ARTICLES, setOpenArticle }) {
   };
 
   return (
-    <div className="card writing-card" style={{gridColumn:"span 8", gridRow:"span 4"}}>
+    <div className="card writing-card" style={{gridColumn:"span 12", gridRow:"span 4"}}>
       <div className="writing-head">
         <div>
           <span className="eyebrow">latest write-ups</span>
@@ -73,29 +73,36 @@ export function WriteupsCard({ ARTICLES, setOpenArticle }) {
           onPointerUp={endDrag}
           onPointerCancel={endDrag}
         >
-          {ARTICLES.map(a => (
-            <div
-              className="star-row"
-              key={a.id}
-              role="button"
-              tabIndex={0}
-              aria-label={`Open write-up: ${a.title}`}
-              onClick={() => handleArticleClick(a)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  setOpenArticle(a);
-                }
-              }}
-            >
+          {ARTICLES.map(a => {
+            const rowContent = (
+              <>
               <span className="idx">{a.id}</span>
               <div>
                 <div className="ti">{a.title}</div>
-                <div className="sub">{a.meta}</div>
               </div>
               <span className="arr">↗</span>
-            </div>
-          ))}
+              </>
+            );
+
+            return (
+              <div
+                className="star-row"
+                key={a.id}
+                role="button"
+                tabIndex={0}
+                aria-label={`Open write-up: ${a.title}`}
+                onClick={() => handleArticleClick(a)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setOpenArticle(a);
+                  }
+                }}
+              >
+                {rowContent}
+              </div>
+            );
+          })}
         </div>
         <div className="subscribe-panel">
           <div className="mono">field_notes.subscribe()</div>

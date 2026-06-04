@@ -31,31 +31,23 @@ export function ContactModal({ setContactOpen }) {
           <span className="k">email</span>
           <span className="v">
             <button type="button" className="copy-email" onClick={copyEmail}>
-              {email}
+              <span>{email}</span>
+              {Ico.copy}
             </button>
             {emailCopied && <span className="copy-status">copied</span>}
           </span>
         </div>
         <div className="row">
           <span className="k">linkedin</span>
-          <span className="v"><a href="https://www.linkedin.com/in/uphiago" target="_blank" rel="noopener noreferrer" style={{color:"var(--m-ink)", textDecoration:"underline"}}>linkedin.com/in/uphiago</a></span>
+          <span className="v">
+            <a className="contact-link" href="https://www.linkedin.com/in/uphiago" target="_blank" rel="noopener noreferrer">
+              <span>linkedin.com/in/uphiago</span>
+              {Ico.external}
+            </a>
+          </span>
         </div>
         <div className="row"><span className="k">response</span><span className="v">usually within 24h</span></div>
       </div>
-
-      <form onSubmit={(e) => e.preventDefault()}>
-        <div style={{marginBottom: 12}}>
-          <label htmlFor="mfi-email">email</label>
-          <input id="mfi-email" type="email" placeholder="you@company.com" />
-        </div>
-        <div style={{marginBottom: 14}}>
-          <label htmlFor="mfi-msg">what are you building?</label>
-          <textarea id="mfi-msg" placeholder="A line or two on the project - stack, scale, timing." />
-        </div>
-        <div className="contact-actions">
-          <button type="submit" className="btn dark">./send {Ico.arrow}</button>
-        </div>
-      </form>
     </BaseModal>
   );
 }

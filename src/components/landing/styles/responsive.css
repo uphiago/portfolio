@@ -32,7 +32,6 @@
     .mfi .terminal {
       min-height: 250px;
     }
-    .mfi .aud-top,
     .mfi .contact-grid {
       grid-template-columns: 1fr;
     }
@@ -42,6 +41,11 @@
     }
     .mfi .wlist {
       max-height: 237px;
+      padding-right: 0;
+    }
+    .mfi .star-row {
+      grid-template-columns: 24px minmax(0, 1fr) 16px;
+      padding: 9px 8px;
     }
     .mfi .subscribe-panel {
       border-left: 0;
@@ -145,12 +149,6 @@
     }
     .mfi .terminal-contact .meta {
       display: none;
-    }
-    .mfi .aud-top {
-      gap: 10px;
-    }
-    .mfi .aud-stat .v {
-      font-size: 28px;
     }
     .mfi .video-head {
       align-items: flex-start;

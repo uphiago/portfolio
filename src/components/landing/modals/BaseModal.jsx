@@ -1,6 +1,6 @@
 import React from "react";
 
-export function BaseModal({ onClose, modalBgClass = "mfi-modal-bg", modalClass = "mfi-modal", hideCloseButton = false, label = "dialog", children }) {
+export function BaseModal({ onClose, modalBgClass = "mfi-modal-bg", modalClass = "mfi-modal", hideCloseButton = false, closeButtonClass = "", restoreFocusOnClose = true, label = "dialog", children }) {
   const modalRef = React.useRef(null);
 
   React.useEffect(() => {
@@ -39,9 +39,9 @@ export function BaseModal({ onClose, modalBgClass = "mfi-modal-bg", modalClass =
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = prevOverflow;
-      if (previouslyFocused instanceof HTMLElement) previouslyFocused.focus();
+      if (restoreFocusOnClose && previouslyFocused instanceof HTMLElement) previouslyFocused.focus();
     };
-  }, [onClose]);
+  }, [onClose, restoreFocusOnClose]);
 
   return (
     <div className={modalBgClass} onClick={onClose}>
@@ -54,7 +54,7 @@ export function BaseModal({ onClose, modalBgClass = "mfi-modal-bg", modalClass =
         tabIndex={-1}
         onClick={(e) => e.stopPropagation()}
       >
-        {!hideCloseButton && <button className="x" onClick={onClose} aria-label="close">×</button>}
+        {!hideCloseButton && <button className={`x ${closeButtonClass}`.trim()} onClick={onClose} aria-label="close">×</button>}
         {children}
       </div>
     </div>
