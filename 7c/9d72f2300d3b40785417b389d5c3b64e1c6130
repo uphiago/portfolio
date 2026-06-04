@@ -1,0 +1,90 @@
+src/components/landing/styles/cards.css
+  s_225249b98fdab6::t_421792f13a6ff0 101-105,108
+  s_225249b98fdab6::t_d356feedc70a55 300,302
+  s_225249b98fdab6::t_30951db04eeecc 86,88-90,94,96,98-99,110-114,116-121,451,458-459,468,470,486
+  s_225249b98fdab6::t_f500d34e57d4fd 87
+  s_225249b98fdab6::t_fa6c6176e792f9 326,331
+  s_225249b98fdab6::t_dba1fe56dac321 92-93
+src/components/landing/cards/VideoCard.jsx
+  s_225249b98fdab6::t_4e7703a295823f 4,150,152
+src/components/landing/MidfiV1.jsx
+  s_225249b98fdab6::t_c8fa42d19552bf 10,40
+  s_225249b98fdab6::t_39894f82100ba4 7
+src/components/landing/modals/BaseModal.jsx
+  s_225249b98fdab6::t_0705161dcec02d 3,42,44
+  s_225249b98fdab6::t_486c6c9fd04d42 57
+src/components/landing/styles/base.css
+  s_225249b98fdab6::t_fa6c6176e792f9 189-233,238-241,252-253
+  s_225249b98fdab6::t_ff4b02d524fee3 234-237,242-251
+  s_225249b98fdab6::t_b129035fbace1a 273,276,280-281
+src/components/landing/styles/modals.css
+  s_225249b98fdab6::t_d5be43699b9f1e 60-67,69-86
+  s_225249b98fdab6::t_fa6c6176e792f9 350-354
+  s_225249b98fdab6::t_c11b959d4fe842 301-322
+  s_225249b98fdab6::t_486c6c9fd04d42 164-168,170,173
+  s_225249b98fdab6::t_ee68f263dadacc 196,202,209-213,221-238,243-291
+  s_225249b98fdab6::t_94fe6a052148b6 155-157
+  s_225249b98fdab6::t_a89eaf055bb0ca 23-25
+src/components/landing/modals/ArticleModal.jsx
+  s_225249b98fdab6::t_94fe6a052148b6 45
+  s_225249b98fdab6::t_dee5e0973cf161 28
+  s_225249b98fdab6::t_c11b959d4fe842 27,46,48-51
+  s_225249b98fdab6::t_4315637153173c 32-42
+  s_225249b98fdab6::t_11f88a74aa1e5b 6-7,9-19,47
+  s_225249b98fdab6::t_0705161dcec02d 21,23
+package.json
+  s_225249b98fdab6::t_9e97b26e2f6c8c 15
+package-lock.json
+  ai_agent 13,5855-5864
+tests/portfolio-landing.test.jsx
+  s_225249b98fdab6::t_2f9b89d762390d 8,10,165,178-190
+  s_225249b98fdab6::t_8a6e9fe9be29e6 9,34,219-227
+  s_225249b98fdab6::t_ad90979cfcdde2 63
+  s_225249b98fdab6::t_5e0347379a75d1 93,103-108,129
+  s_225249b98fdab6::t_4a92554707d786 56,109-117,119-126,130,133
+  s_225249b98fdab6::t_ecb511bfe34c3b 127-128,196-218
+  s_225249b98fdab6::t_5996b843062dc4 166-177
+  s_225249b98fdab6::t_78fafc3123ca85 61
+  s_225249b98fdab6::t_78f5124ba6bc54 22,25-29
+  s_225249b98fdab6::t_dee5e0973cf161 49,62
+  s_225249b98fdab6::t_249981f70c49e2 11,66-70,72-92,99,101-102
+  s_225249b98fdab6::t_1028ad4a03dd3a 50-55,57-60,64-65,94-98
+  s_225249b98fdab6::t_c11b959d4fe842 71,100,118,131-132
+app/page.jsx
+  s_225249b98fdab6::t_c8fa42d19552bf 2,8-11
+src/components/landing/icons.jsx
+  s_225249b98fdab6::t_d5be43699b9f1e 41-53
+src/components/landing/modals/VideoModal.jsx
+  s_225249b98fdab6::t_4e7703a295823f 3,14
+src/components/landing/cards/WriteupsCard.jsx
+  s_225249b98fdab6::t_c8fa42d19552bf 76-78,84-105
+  s_225249b98fdab6::t_39894f82100ba4 60
+src/components/landing/styles/responsive.css
+  s_225249b98fdab6::t_e3105fdbace82f 44-48
+src/components/landing/MediaImage.jsx
+  s_225249b98fdab6::t_4e7703a295823f 3-6,8-18
+src/components/landing/blog.js
+  s_225249b98fdab6::t_188ebaedbeb0ed 1-2,17,58-69,88,117
+  s_225249b98fdab6::t_c11b959d4fe842 14,77,86
+  s_225249b98fdab6::t_dee5e0973cf161 56
+  s_225249b98fdab6::t_1c90202fe493cc 4-5,12-13,21-41,44-47,50-55,57,72-76,78-85,87,89,92-101,106-116,118-121
+  s_225249b98fdab6::t_c8fa42d19552bf 3,6-11,15-16,18-20,42-43,48-49,70-71,90-91,102-105,122-125
+src/components/landing/modals/ContactModal.jsx
+  s_225249b98fdab6::t_d5be43699b9f1e 34-35,42-47
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "7c9d72f2300d3b40785417b389d5c3b64e1c6130",
+  "prompts": {},
+  "sessions": {
+    "s_225249b98fdab6": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019e8f99-f443-7831-b433-65ea20f1f182",
+        "model": "gpt-5.5"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
