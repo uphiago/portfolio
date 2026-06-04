@@ -3,11 +3,12 @@
 import React from "react";
 import { Ico } from "./icons";
 import { VIDEOS, ARTICLES } from "./data";
+import { DEFAULT_MUSIC } from "./youtube";
 
 import { TerminalHero, VideoCard, WriteupsCard } from "./cards";
 import { ContactModal, ArticleModal, VideoModal } from "./modals";
 
-export function MidfiV1({ articles = ARTICLES }) {
+export function MidfiV1({ articles = ARTICLES, music = DEFAULT_MUSIC }) {
   const [contactOpen, setContactOpen] = React.useState(false);
   const [openArticle, setOpenArticle] = React.useState(null);
   const [openVideo, setOpenVideo] = React.useState(null);
@@ -37,7 +38,7 @@ export function MidfiV1({ articles = ARTICLES }) {
             VIDEOS={VIDEOS}
             setOpenVideo={setOpenVideo}
           />
-          <WriteupsCard ARTICLES={articles} setOpenArticle={setOpenArticle} />
+          <WriteupsCard ARTICLES={articles} setOpenArticle={setOpenArticle} music={music} />
         </main>
 
         {/* FOOTER */}

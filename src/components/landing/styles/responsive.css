@@ -47,11 +47,19 @@
       grid-template-columns: 24px minmax(0, 1fr) 16px;
       padding: 9px 8px;
     }
-    .mfi .subscribe-panel {
+    .mfi .music-panel {
       border-left: 0;
       border-top: 1px solid var(--m-line);
       padding-left: 0;
       padding-top: 12px;
+    }
+    .mfi .music-player-stack {
+      display: block;
+    }
+    .mfi .music-cover {
+      height: auto;
+      width: 100%;
+      aspect-ratio: 16 / 9;
     }
     .mfi .shorts-stage {
       height: 292px;
@@ -86,7 +94,6 @@
       padding: 0;
     }
     /* Prevent iOS Safari auto-zoom on focus (needs >= 16px) */
-    .mfi .nlinput input,
     .mfi-modal input,
     .mfi-modal textarea {
       font-size: 16px;
@@ -116,7 +123,7 @@
     }
     .mfi .card,
     .mfi .terminal {
-      border-radius: 6px;
+      border-radius: 3px;
     }
     .mfi .card {
       padding: 14px;
@@ -165,18 +172,8 @@
     .mfi .shorts-stage::after {
       display: none;
     }
-    .mfi .nlinput {
-      grid-template-columns: 1fr;
-    }
-    .mfi .nlinput input {
-      padding: 6px 8px;
-    }
-    .mfi .nlinput input::placeholder {
-      font-size: 12px;
-    }
-    .mfi .nlinput .btn {
-      min-height: 28px;
-      padding: 7px 11px;
+    .mfi .music-panel {
+      gap: 11px;
     }
     .mfi-modal,
     .mfi-article,

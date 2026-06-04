@@ -21,12 +21,12 @@ export function ContactModal({ setContactOpen }) {
       <div className="mono" style={{fontSize: 11, color:"var(--m-ink-soft)", marginBottom: 4}}>$ contact</div>
       <div className="h-card" style={{fontSize: 22, marginBottom: 4}}>wanna talk?</div>
       <p className="body" style={{margin:"0 0 18px"}}>
-        Platform work, automation, cloud infrastructure, n8n workflows, self-hosted ops. Or a focused 30-min chat.
+        For projects, consulting, or technical conversations, reach me on LinkedIn or email.
       </p>
 
       <div style={{margin:"0 0 16px"}}>
         <div className="row"><span className="k">role</span><span className="v">DevOps & Platform Engineer</span></div>
-        <div className="row"><span className="k">based</span><span className="v">São Paulo, Brazil</span></div>
+        <div className="row"><span className="k">based</span><span className="v">São Paulo, Brasil</span></div>
         <div className="row">
           <span className="k">email</span>
           <span className="v">

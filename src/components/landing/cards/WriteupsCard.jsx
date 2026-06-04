@@ -1,6 +1,7 @@
 import React from "react";
+import { MusicPlayer } from "./MusicPlayer";
 
-export function WriteupsCard({ ARTICLES, setOpenArticle }) {
+export function WriteupsCard({ ARTICLES, setOpenArticle, music }) {
   const listRef = React.useRef(null);
   const dragRef = React.useRef({ active: false, captured: false, pointerId: null, startY: 0, startScrollTop: 0 });
   const draggedRef = React.useRef(false);
@@ -50,14 +51,8 @@ export function WriteupsCard({ ARTICLES, setOpenArticle }) {
     setOpenArticle(article);
   };
 
-  const [subscribed, setSubscribed] = React.useState(false);
-  const handleSubscribe = (event) => {
-    event.preventDefault();
-    setSubscribed(true);
-  };
-
   return (
-    <div className="card writing-card" style={{gridColumn:"span 12", gridRow:"span 4"}}>
+    <div className="card writing-card" style={{gridColumn:"span 12", gridRow:"span 5"}}>
       <div className="writing-head">
         <div>
           <span className="eyebrow">latest write-ups</span>
@@ -104,15 +99,7 @@ export function WriteupsCard({ ARTICLES, setOpenArticle }) {
             );
           })}
         </div>
-        <div className="subscribe-panel">
-          <div className="mono">field_notes.subscribe()</div>
-          <div className="meta">{subscribed ? "thanks - you're on the list" : "useful notes, sometimes"}</div>
-          <form className="nlinput" onSubmit={handleSubscribe}>
-            <label htmlFor="nl-email" className="sr-only">Email address</label>
-            <input id="nl-email" type="email" placeholder="your@email.com" required aria-label="Email address" />
-            <button type="submit" className="btn dark">go</button>
-          </form>
-        </div>
+        <MusicPlayer music={music} />
       </div>
     </div>
   );

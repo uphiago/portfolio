@@ -9,18 +9,26 @@ import { ArticleModal } from "@/src/components/landing/modals/ArticleModal";
 import { VideoModal } from "@/src/components/landing/modals/VideoModal";
 import { ARTICLES, VIDEOS } from "@/src/components/landing/data";
 import { parseBlogMarkdown } from "@/src/components/landing/blog";
+import { buildYoutubeEmbedUrl, buildYoutubeThumbnailUrl, parsePlaylistId } from "@/src/components/landing/youtube";
 
 describe("MidfiV1", () => {
   it("renders the refined portfolio layout inside Next", () => {
     const html = renderToStaticMarkup(<MidfiV1 />);
 
     expect(html).toContain("hiago");
+    expect(html).toContain("devops &amp; platform engineer · são paulo");
+    expect(html).toContain("infrastructure, automation, ai workflows, and internal platforms.");
+    expect(html).toContain("linux, self-hosted ops, ci/cd, k8s, terraform, n8n.");
+    expect(html).toContain("cloud · containers · integrations");
+    expect(html).not.toContain("13y in production");
+    expect(html).not.toContain("working async or onsite");
     expect(html).toContain("wanna talk?");
     expect(html).not.toContain("github · i use this");
     expect(html).not.toContain("repo-card");
     expect(html).toContain("latest write-ups");
-    expect(html).toContain('class="card writing-card" style="grid-column:span 12;grid-row:span 4"');
+    expect(html).toContain('class="card writing-card" style="grid-column:span 12;grid-row:span 5"');
     expect(html).toContain("field_notes.subscribe()");
+    expect(html).not.toContain("youtube.playlist()");
     expect(html).toContain("self-hosted ops");
     expect(html).not.toContain("presence");
     expect(html).not.toContain("systems improved");
@@ -61,6 +69,44 @@ describe("MidfiV1", () => {
     expect(html).not.toContain("Apr 2026 · Dotmind it");
     expect(html).not.toContain('href="https://dotmindblog.vercel.app/posts/2026/ai/agentic-engineering-guide/"');
     expect(html).not.toContain('rel="noopener noreferrer">Skills Stack');
+  });
+
+  it("parses the configured YouTube playlist URL and start offset", () => {
+    const playlistUrl = "https://youtube.com/playlist?list=PL4NWyqf4Mpp2gOfgZFhOc9W3P--QKoprV&si=pINjpqGtEc8RVy9S";
+
+    expect(parsePlaylistId(playlistUrl)).toBe("PL4NWyqf4Mpp2gOfgZFhOc9W3P--QKoprV");
+    expect(buildYoutubeThumbnailUrl("abc123")).toBe("https://i.ytimg.com/vi/abc123/hqdefault.jpg");
+    expect(buildYoutubeEmbedUrl({ playlistId: "PL4NWyqf4Mpp2gOfgZFhOc9W3P--QKoprV", videoId: "abc123", startSeconds: 93 })).toBe(
+      "https://www.youtube-nocookie.com/embed/abc123?list=PL4NWyqf4Mpp2gOfgZFhOc9W3P--QKoprV&start=93&enablejsapi=1&playsinline=1&controls=0&rel=0&modestbranding=1"
+    );
+    expect(buildYoutubeEmbedUrl({ playlistId: "PL4NWyqf4Mpp2gOfgZFhOc9W3P--QKoprV", startSeconds: 93, autoplay: true, muted: true })).toBe(
+      "https://www.youtube.com/embed/videoseries?list=PL4NWyqf4Mpp2gOfgZFhOc9W3P--QKoprV&start=93&autoplay=1&mute=1&enablejsapi=1&playsinline=1&controls=0&rel=0&modestbranding=1"
+    );
+  });
+
+  it("renders the compact YouTube playlist player inside field notes", () => {
+    const html = renderToStaticMarkup(
+      <MidfiV1
+        music={{
+          playlistId: "PL4NWyqf4Mpp2gOfgZFhOc9W3P--QKoprV",
+          startSeconds: 42,
+          title: "Lo-fi deploy window",
+          channelTitle: "hiago playlist",
+          thumbnailUrl: "https://i.ytimg.com/vi/abc123/hqdefault.jpg",
+          embedUrl: "https://www.youtube-nocookie.com/embed/abc123?playlist=PL4NWyqf4Mpp2gOfgZFhOc9W3P--QKoprV&start=42&enablejsapi=1&playsinline=1&controls=0&rel=0&modestbranding=1",
+        }}
+      />
+    );
+
+    expect(html).not.toContain("youtube.playlist()");
+    expect(html).not.toContain("Lo-fi deploy window");
+    expect(html).not.toContain("hiago playlist");
+    expect(html).toContain("https://i.ytimg.com/vi/abc123/hqdefault.jpg");
+    expect(html).toContain("music-eq");
+    expect(html).toContain("<iframe");
+    expect(html).toContain("YouTube playlist player");
+    expect(html).toContain("your@email.com");
+    expect(html).toContain("field_notes.subscribe()");
   });
 
   it("parses Dotmind markdown into complete modal blocks", () => {
@@ -167,6 +213,10 @@ npx skills add repo
     const html = renderToStaticMarkup(<ContactModal setContactOpen={() => {}} />);
 
     expect(html).toContain("hfelipe.sh@gmail.com");
+    expect(html).toContain("For projects, consulting, or technical conversations, reach me on LinkedIn or email.");
+    expect(html).not.toContain("Need help turning messy infra");
+    expect(html).toContain("São Paulo, Brasil");
+    expect(html).not.toContain("Brazil");
     expect(html).toContain("copy-email");
     expect(html).toContain("contact-link");
     expect(html).toContain("linkedin.com/in/uphiago");
