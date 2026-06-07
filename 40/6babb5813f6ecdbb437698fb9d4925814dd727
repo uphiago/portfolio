@@ -1,0 +1,25 @@
+src/components/landing/styles/base.css
+  s_225249b98fdab6::t_57c9fa82a43bf2 65-71
+src/components/landing/styles/cards.css
+  s_225249b98fdab6::t_57c9fa82a43bf2 332,337
+src/components/landing/cards/WriteupsCard.jsx
+  s_225249b98fdab6::t_57c9fa82a43bf2 18
+tests/portfolio-landing.test.jsx
+  s_225249b98fdab6::t_bbb4327cb277b9 129-141
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "406babb5813f6ecdbb437698fb9d4925814dd727",
+  "prompts": {},
+  "sessions": {
+    "s_225249b98fdab6": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019e8f99-f443-7831-b433-65ea20f1f182",
+        "model": "gpt-5.5"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
