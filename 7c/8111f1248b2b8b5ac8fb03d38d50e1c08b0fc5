@@ -1,0 +1,50 @@
+tests/portfolio-landing.test.jsx
+  s_225249b98fdab6::t_5660aa89454d4a 29-30
+  s_225249b98fdab6::t_fab34cb7541adc 122
+  s_225249b98fdab6::t_11e3aed0eb1248 11,25-28
+  s_225249b98fdab6::t_6e840fb4895057 56-62
+  s_225249b98fdab6::t_43a51f24729730 123,126-127
+  s_225249b98fdab6::t_a497fe283d1d23 124-125
+  s_225249b98fdab6::t_c1022ec67e3b9a 131
+  s_225249b98fdab6::t_ab0c84645df5d1 2,17-24
+  s_225249b98fdab6::t_2d001694082b04 120-121
+  s_225249b98fdab6::t_a30aaee40044af 130
+src/components/landing/cards/MusicPlayer.jsx
+  s_225249b98fdab6::t_6e68c371463505 142,159-164,181-182
+  s_225249b98fdab6::t_f15f1a5ccc5fb1 2,40,83-86,122,124-134,151-158,177
+  s_225249b98fdab6::t_b94331084ac6c6 44
+  s_225249b98fdab6::t_93d3021da9214d 39,63,76,119-121,123,135-136,165-176,178-180
+  s_225249b98fdab6::t_bbea455c75d97c 141
+  s_225249b98fdab6::t_9694ba0a533f10 5-7,81,87
+src/components/landing/styles/responsive.css
+  s_225249b98fdab6::t_c98082db65c301 64-65
+src/components/landing/styles/cards.css
+  s_225249b98fdab6::t_bbea455c75d97c 587,590,594-600,610-612,628,632,634-639,678-681
+  s_225249b98fdab6::t_3bf235f748d10b 669-670,674-675,750-752,754,763-764,766
+  s_225249b98fdab6::t_04657c53604803 234-244,250-266
+  s_225249b98fdab6::t_ee104bb8943069 245-249
+  s_225249b98fdab6::t_c68829e8aa5a7e 633,668,671-673,676-677,685-689,721-728,741-749,753,755-762,765,767
+  s_225249b98fdab6::t_96e27a36630151 643-646,649-652,655,657-667,729-740
+  s_225249b98fdab6::t_3ed33aeed0fc38 647-648,653-654,656,682-684,790-792,796-808
+docs/superpowers/specs/2026-06-04-youtube-playlist-player-design.md
+  s_225249b98fdab6::t_a1cf1b296672c9 1-4,6-12,15-19,21-24
+  s_225249b98fdab6::t_9f8933dc7c05c8 5,13-14,20,25
+src/components/landing/cards/VideoCard.jsx
+  s_225249b98fdab6::t_e5fa2706f6bb1d 2,21,28-35
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "7c8111f1248b2b8b5ac8fb03d38d50e1c08b0fc5",
+  "prompts": {},
+  "sessions": {
+    "s_225249b98fdab6": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019e8f99-f443-7831-b433-65ea20f1f182",
+        "model": "gpt-5.5"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
