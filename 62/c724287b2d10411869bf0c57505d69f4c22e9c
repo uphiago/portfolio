@@ -1,0 +1,24 @@
+src/components/landing/cards/MusicPlayer.jsx
+  s_225249b98fdab6::t_a8476fe4d35669 49-53,227
+app/api/field-notes/subscribe/route.js
+  s_225249b98fdab6::t_a8476fe4d35669 41
+tests/portfolio-landing.test.jsx
+  s_225249b98fdab6::t_ee053a5dc2a89a 44-45
+  s_225249b98fdab6::t_849b8ff6abcd80 48-49
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "62c724287b2d10411869bf0c57505d69f4c22e9c",
+  "prompts": {},
+  "sessions": {
+    "s_225249b98fdab6": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019e8f99-f443-7831-b433-65ea20f1f182",
+        "model": "gpt-5.5"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
