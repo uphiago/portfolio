@@ -62,6 +62,13 @@
     min-width: 0;
     min-height: 0;
   }
+  .mfi img,
+  .mfi iframe,
+  .mfi svg,
+  .mfi a,
+  .mfi button {
+    -webkit-user-drag: none;
+  }
   .mfi .footer {
     flex-shrink: 0;
   }

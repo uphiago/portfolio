@@ -126,6 +126,19 @@ describe("MidfiV1", () => {
     expect(css).toContain(".mfi .wlist .star-row:first-child");
   });
 
+  it("does not expose grab cursors or drag-to-scroll interactions", () => {
+    const css = readFileSync("src/components/landing/styles/cards.css", "utf8");
+    const baseCss = readFileSync("src/components/landing/styles/base.css", "utf8");
+    const writeups = readFileSync("src/components/landing/cards/WriteupsCard.jsx", "utf8");
+
+    expect(css).not.toContain("cursor: grab");
+    expect(css).not.toContain("cursor: grabbing");
+    expect(writeups).not.toContain("setPointerCapture");
+    expect(writeups).not.toContain("onPointerDown");
+    expect(writeups).not.toContain("is-dragging");
+    expect(baseCss).toContain("-webkit-user-drag: none");
+  });
+
   it("ramps the music volume smoothly to 50 percent over 2 seconds", () => {
     expect(MUSIC_DEFAULT_VOLUME).toBe(50);
     expect(MUSIC_FADE_MS).toBe(2000);

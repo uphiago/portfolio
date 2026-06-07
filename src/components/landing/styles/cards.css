@@ -329,12 +329,12 @@
     height: 100%;
     padding: 0 10px 4px 0;
     align-items: stretch;
-    cursor: grab;
+    cursor: default;
     user-select: none;
     touch-action: pan-x;
   }
   .mfi .drag-row:active {
-    cursor: grabbing;
+    cursor: default;
   }
   .mfi .drag-row .drag-tile {
     cursor: inherit;
@@ -796,11 +796,6 @@
   }
   .mfi .wlist:active {
     cursor: default;
-  }
-  .mfi .wlist.is-dragging {
-    cursor: default;
-    user-select: none;
-    -webkit-user-select: none;
   }
   .mfi .wlist .star-row {
     border: 0;
