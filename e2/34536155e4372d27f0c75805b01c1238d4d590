@@ -1,0 +1,31 @@
+app/layout.jsx
+  s_225249b98fdab6::t_9908813a514815 36-38
+app/icon.svg
+  s_225249b98fdab6::t_9908813a514815 1-4
+.env.example
+  s_225249b98fdab6::t_fe37d12d335693 10-13
+src/lib/newsletterSheet.js
+  s_225249b98fdab6::t_fe37d12d335693 55-76,101,104-106,110
+  s_225249b98fdab6::t_9e75ede07d8bf8 29-52,93
+tests/portfolio-landing.test.jsx
+  s_225249b98fdab6::t_9e75ede07d8bf8 20,55-59
+  s_225249b98fdab6::t_fe37d12d335693 21,60-71
+src/components/landing/cards/MusicPlayer.jsx
+  s_225249b98fdab6::t_9e75ede07d8bf8 167
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "e234536155e4372d27f0c75805b01c1238d4d590",
+  "prompts": {},
+  "sessions": {
+    "s_225249b98fdab6": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019e8f99-f443-7831-b433-65ea20f1f182",
+        "model": "gpt-5.5"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
