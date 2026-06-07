@@ -1,0 +1,27 @@
+tests/portfolio-landing.test.jsx
+  s_225249b98fdab6::t_8e141d7d2f9fc4 50-53,55,57
+  s_225249b98fdab6::t_fc17f3af84a28c 45-46
+src/lib/newsletterSheet.js
+  s_225249b98fdab6::t_2095af4d70f9a9 13-22,142-143,163
+  s_225249b98fdab6::t_94104f8f5d42fa 4
+app/api/field-notes/subscribe/route.js
+  s_225249b98fdab6::t_2095af4d70f9a9 19-24
+.env.example
+  s_225249b98fdab6::t_94104f8f5d42fa 7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "498b2abe87f07ebca03c71c2127fef3dd907038a",
+  "prompts": {},
+  "sessions": {
+    "s_225249b98fdab6": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019e8f99-f443-7831-b433-65ea20f1f182",
+        "model": "gpt-5.5"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
