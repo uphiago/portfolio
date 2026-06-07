@@ -1,0 +1,40 @@
+package.json
+  s_225249b98fdab6::t_3eabf66d8631c0 13
+tests/portfolio-landing.test.jsx
+  s_225249b98fdab6::t_0822a511d1e31b 23-27,51-52
+  s_225249b98fdab6::t_0a0174fa2e4b58 15-20,28-40,43-50
+  s_225249b98fdab6::t_9719c6838736e9 41-42
+src/lib/newsletterSheet.js
+  s_225249b98fdab6::t_086663187818d3 1-3,5-12,15-94,96-104
+  s_225249b98fdab6::t_9719c6838736e9 4,13-14,95
+src/components/landing/cards/MusicPlayer.jsx
+  s_225249b98fdab6::t_6407968173378a 41,43-44,116,118-136,208-210,213-216,218
+src/components/landing/styles/cards.css
+  s_225249b98fdab6::t_6407968173378a 156-163,182-189
+package-lock.json
+  ai_agent 11,2530-2571,6049
+app/layout.jsx
+  s_225249b98fdab6::t_ff3a88dd9630ce 3,71
+app/api/field-notes/subscribe/route.js
+  s_225249b98fdab6::t_086663187818d3 1-18,20-25
+  s_225249b98fdab6::t_9719c6838736e9 19
+.env.example
+  s_225249b98fdab6::t_6407968173378a 3-6,8-9
+  s_225249b98fdab6::t_9719c6838736e9 7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "1941140d1488637adcff0aee1427f814bce7eb30",
+  "prompts": {},
+  "sessions": {
+    "s_225249b98fdab6": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019e8f99-f443-7831-b433-65ea20f1f182",
+        "model": "gpt-5.5"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
