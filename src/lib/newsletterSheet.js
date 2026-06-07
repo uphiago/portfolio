@@ -118,7 +118,8 @@ export async function getGoogleAccessToken({
   });
 
   if (!response.ok) {
-    throw new Error("Google token request failed");
+    const errorBody = await response.text().catch(() => "");
+    throw new Error(`Google token request failed: ${response.status} ${errorBody}`);
   }
 
   const token = await response.json();
@@ -127,13 +128,21 @@ export async function getGoogleAccessToken({
 
 export async function appendNewsletterSubscriber({
   email,
+  serviceAccountEmail,
+  privateKey,
+  serviceAccountJson,
   fetchImpl = fetch,
 } = {}) {
   if (!isValidSubscriberEmail(email)) {
     throw new Error("Invalid email");
   }
 
-  const accessToken = await getGoogleAccessToken({ fetchImpl });
+  const accessToken = await getGoogleAccessToken({
+    serviceAccountEmail,
+    privateKey,
+    serviceAccountJson,
+    fetchImpl,
+  });
   const response = await fetchImpl(buildSheetsAppendUrl(), {
     method: "POST",
     headers: {
@@ -146,7 +155,8 @@ export async function appendNewsletterSubscriber({
   });
 
   if (!response.ok) {
-    throw new Error("Google Sheets append failed");
+    const errorBody = await response.text().catch(() => "");
+    throw new Error(`Google Sheets append failed: ${response.status} ${errorBody}`);
   }
 
   return response.json();

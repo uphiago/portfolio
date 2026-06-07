@@ -1,5 +1,6 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { readFileSync } from "node:fs";
+import { generateKeyPairSync } from "node:crypto";
 import { act } from "react";
 import { createRoot } from "react-dom/client";
 import { describe, expect, it } from "vitest";
@@ -16,6 +17,7 @@ import {
   buildSheetsAppendUrl,
   buildSubscriberRow,
   DEFAULT_NEWSLETTER_SPREADSHEET_ID,
+  appendNewsletterSubscriber,
   isValidSubscriberEmail,
   normalizeGooglePrivateKey,
   resolveGoogleCredentials,
@@ -69,6 +71,35 @@ describe("MidfiV1", () => {
 
     expect(credentials.serviceAccountEmail).toBe("sheet-bot@example.iam.gserviceaccount.com");
     expect(normalizeGooglePrivateKey(credentials.privateKey)).toBe("-----BEGIN PRIVATE KEY-----\nabc\n-----END PRIVATE KEY-----");
+  });
+
+  it("includes Google Sheets response details when append fails", async () => {
+    const { privateKey } = generateKeyPairSync("rsa", { modulusLength: 2048 });
+    const testPrivateKey = privateKey.export({ type: "pkcs8", format: "pem" });
+    const calls = [];
+    const fakeFetch = async (url) => {
+      calls.push(String(url));
+      if (String(url).includes("oauth2.googleapis.com")) {
+        return {
+          ok: true,
+          json: async () => ({ access_token: "token" }),
+        };
+      }
+
+      return {
+        ok: false,
+        status: 403,
+        text: async () => "The caller does not have permission",
+      };
+    };
+
+    await expect(appendNewsletterSubscriber({
+      email: "hiago@example.com",
+      fetchImpl: fakeFetch,
+      serviceAccountEmail: "sheet-bot@example.iam.gserviceaccount.com",
+      privateKey: testPrivateKey,
+    })).rejects.toThrow("Google Sheets append failed: 403 The caller does not have permission");
+    expect(calls.some((url) => url.includes("sheets.googleapis.com"))).toBe(true);
   });
 
   it("visually separates field note rows with list dividers", () => {
