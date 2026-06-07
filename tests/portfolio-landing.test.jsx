@@ -41,8 +41,12 @@ describe("MidfiV1", () => {
     expect(source).toContain('name="website"');
     expect(source).toContain("SUBSCRIBE_COOLDOWN_MS = 3000");
     expect(source).toContain("subscribing");
+    expect(source).toContain("subscribeLabel");
+    expect(source).not.toContain("try again later</div>");
     expect(route).toContain("SUBSCRIBE_RATE_LIMIT_MS = 3000");
     expect(route).toContain("rate_limited");
+    expect(route).toContain("skipped: \"rate_limited\"");
+    expect(route).not.toContain("status: 429");
   });
 
   it("builds newsletter rows for the configured Google Sheet", () => {

@@ -46,6 +46,11 @@ export function MusicPlayer({ music = DEFAULT_MUSIC }) {
   const subscribed = subscribeStatus === "success";
   const subscribing = subscribeStatus === "submitting";
   const submitLocked = subscribing || coolingDown;
+  const subscribeLabel = subscribeStatus === "error"
+    ? "try again later"
+    : subscribed
+      ? "thanks - you're on the list"
+      : "field_notes.subscribe()";
 
   const src = music.embedUrl;
 
@@ -219,7 +224,7 @@ export function MusicPlayer({ music = DEFAULT_MUSIC }) {
 
       <div className="music-subscribe">
         <div className="mono">
-          {subscribed ? "thanks - you're on the list" : "field_notes.subscribe()"}
+          {subscribeLabel}
         </div>
         <form className="nlinput" onSubmit={handleSubscribe}>
           <label htmlFor="nl-email" className="sr-only">Email address</label>
@@ -228,7 +233,6 @@ export function MusicPlayer({ music = DEFAULT_MUSIC }) {
           <input id="nl-website" name="website" type="text" className="nl-hp" tabIndex="-1" autoComplete="off" aria-hidden="true" />
           <button type="submit" className="nl-go" disabled={submitLocked}>{subscribing ? "..." : "go"}</button>
         </form>
-        {subscribeStatus === "error" && <div className="meta subscribe-status">try again later</div>}
       </div>
     </div>
   );

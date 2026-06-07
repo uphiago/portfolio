@@ -38,10 +38,7 @@ export async function POST(request) {
   }
 
   if (isRateLimited(request, email)) {
-    return NextResponse.json(
-      { ok: false, error: "rate_limited" },
-      { status: 429, headers: { "Retry-After": "3" } }
-    );
+    return NextResponse.json({ ok: true, skipped: "rate_limited" });
   }
 
   try {
