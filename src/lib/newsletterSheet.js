@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
 
 export const DEFAULT_NEWSLETTER_SPREADSHEET_ID = "1D4Hx5J0eiU9qKkh6GLHc0G3Na5rJtl5tA7t1Za3vQ5w";
-export const DEFAULT_NEWSLETTER_RANGE = "A:A";
+export const DEFAULT_NEWSLETTER_RANGE = "A:C";
 
 const SHEETS_SCOPE = "https://www.googleapis.com/auth/spreadsheets";
 const GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token";
@@ -10,8 +10,16 @@ export function isValidSubscriberEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email || "").trim());
 }
 
-export function buildSubscriberRow({ email }) {
-  return [String(email).trim().toLowerCase()];
+function cleanCell(value) {
+  return String(value || "").replace(/\s+/g, " ").trim();
+}
+
+export function buildSubscriberRow({ email, metadata = {}, now = new Date() }) {
+  return [
+    now.toISOString(),
+    String(email).trim().toLowerCase(),
+    cleanCell(metadata.city),
+  ];
 }
 
 export function buildSheetsAppendUrl({
@@ -131,6 +139,8 @@ export async function appendNewsletterSubscriber({
   serviceAccountEmail,
   privateKey,
   serviceAccountJson,
+  metadata = {},
+  now = new Date(),
   fetchImpl = fetch,
 } = {}) {
   if (!isValidSubscriberEmail(email)) {
@@ -150,7 +160,7 @@ export async function appendNewsletterSubscriber({
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      values: [buildSubscriberRow({ email })],
+      values: [buildSubscriberRow({ email, metadata, now })],
     }),
   });
 

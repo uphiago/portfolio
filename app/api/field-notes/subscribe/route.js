@@ -16,7 +16,12 @@ export async function POST(request) {
   }
 
   try {
-    await appendNewsletterSubscriber({ email });
+    await appendNewsletterSubscriber({
+      email,
+      metadata: {
+        city: request.headers.get("x-vercel-ip-city"),
+      },
+    });
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error("field notes subscribe failed", error);

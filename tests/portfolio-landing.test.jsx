@@ -42,13 +42,19 @@ describe("MidfiV1", () => {
 
   it("builds newsletter rows for the configured Google Sheet", () => {
     expect(DEFAULT_NEWSLETTER_SPREADSHEET_ID).toBe("1D4Hx5J0eiU9qKkh6GLHc0G3Na5rJtl5tA7t1Za3vQ5w");
-    expect(buildSheetsAppendUrl({ spreadsheetId: "sheet123", range: "Subscribers!A:A" })).toBe(
-      "https://sheets.googleapis.com/v4/spreadsheets/sheet123/values/Subscribers!A%3AA:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS"
+    expect(buildSheetsAppendUrl({ spreadsheetId: "sheet123", range: "Subscribers!A:C" })).toBe(
+      "https://sheets.googleapis.com/v4/spreadsheets/sheet123/values/Subscribers!A%3AC:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS"
     );
     expect(buildSubscriberRow({
       email: "  HIAGO@example.com ",
+      metadata: {
+        city: "São Paulo",
+      },
+      now: new Date("2026-06-07T19:30:00.000Z"),
     })).toEqual([
+      "2026-06-07T19:30:00.000Z",
       "hiago@example.com",
+      "São Paulo",
     ]);
     expect(isValidSubscriberEmail("hiago@example.com")).toBe(true);
     expect(isValidSubscriberEmail("not-an-email")).toBe(false);
