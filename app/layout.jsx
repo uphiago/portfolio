@@ -1,5 +1,6 @@
 import { IBM_Plex_Sans, JetBrains_Mono } from "next/font/google";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const ibm = IBM_Plex_Sans({
@@ -67,6 +68,7 @@ export default function RootLayout({ children }) {
         {process.env.NODE_ENV === "production" && (
           <Script defer src="https://cloud.umami.is/script.js" data-website-id="cdcbf823-222c-42f4-90a0-7d31f2c592eb" strategy="afterInteractive" />
         )}
+        <Analytics />
       </body>
     </html>
   );

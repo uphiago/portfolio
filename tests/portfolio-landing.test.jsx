@@ -12,8 +12,44 @@ import { MUSIC_DEFAULT_VOLUME, MUSIC_FADE_MS, MUSIC_FADE_STEPS } from "@/src/com
 import { ARTICLES, VIDEOS } from "@/src/components/landing/data";
 import { parseBlogMarkdown } from "@/src/components/landing/blog";
 import { buildYoutubeEmbedUrl, buildYoutubeThumbnailUrl, parsePlaylistId } from "@/src/components/landing/youtube";
+import {
+  buildSheetsAppendUrl,
+  buildSubscriberRow,
+  DEFAULT_NEWSLETTER_SPREADSHEET_ID,
+  isValidSubscriberEmail,
+} from "@/src/lib/newsletterSheet";
 
 describe("MidfiV1", () => {
+  it("installs Vercel Analytics in the root layout", () => {
+    const layout = readFileSync("app/layout.jsx", "utf8");
+
+    expect(layout).toContain('import { Analytics } from "@vercel/analytics/next"');
+    expect(layout).toContain("<Analytics />");
+  });
+
+  it("posts field-note subscriptions to the local server route", () => {
+    const source = readFileSync("src/components/landing/cards/MusicPlayer.jsx", "utf8");
+
+    expect(source).toContain('fetch("/api/field-notes/subscribe"');
+    expect(source).toContain('name="email"');
+    expect(source).toContain('name="website"');
+    expect(source).toContain("subscribing");
+  });
+
+  it("builds newsletter rows for the configured Google Sheet", () => {
+    expect(DEFAULT_NEWSLETTER_SPREADSHEET_ID).toBe("1D4Hx5J0eiU9qKkh6GLHc0G3Na5rJtl5tA7t1Za3vQ5w");
+    expect(buildSheetsAppendUrl({ spreadsheetId: "sheet123", range: "Subscribers!A:A" })).toBe(
+      "https://sheets.googleapis.com/v4/spreadsheets/sheet123/values/Subscribers!A%3AA:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS"
+    );
+    expect(buildSubscriberRow({
+      email: "  HIAGO@example.com ",
+    })).toEqual([
+      "hiago@example.com",
+    ]);
+    expect(isValidSubscriberEmail("hiago@example.com")).toBe(true);
+    expect(isValidSubscriberEmail("not-an-email")).toBe(false);
+  });
+
   it("visually separates field note rows with list dividers", () => {
     const css = readFileSync("src/components/landing/styles/cards.css", "utf8");
 

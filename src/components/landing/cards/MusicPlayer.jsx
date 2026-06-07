@@ -38,8 +38,10 @@ export function MusicPlayer({ music = DEFAULT_MUSIC }) {
   const [volume, setVolumeState] = React.useState(0);
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [volumeVisible, setVolumeVisible] = React.useState(false);
-  const [subscribed, setSubscribed] = React.useState(false);
+  const [subscribeStatus, setSubscribeStatus] = React.useState("idle");
   const hasThumbnail = Boolean(music.thumbnailUrl);
+  const subscribed = subscribeStatus === "success";
+  const subscribing = subscribeStatus === "submitting";
 
   const src = music.embedUrl;
 
@@ -111,9 +113,27 @@ export function MusicPlayer({ music = DEFAULT_MUSIC }) {
     };
   }, []);
 
-  const handleSubscribe = (event) => {
+  const handleSubscribe = async (event) => {
     event.preventDefault();
-    setSubscribed(true);
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const email = String(formData.get("email") || "");
+    const website = String(formData.get("website") || "");
+
+    setSubscribeStatus("submitting");
+    try {
+      const response = await fetch("/api/field-notes/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, website }),
+      });
+
+      if (!response.ok) throw new Error("subscribe failed");
+      form.reset();
+      setSubscribeStatus("success");
+    } catch {
+      setSubscribeStatus("error");
+    }
   };
 
   const changeVolume = (event) => {
@@ -185,12 +205,17 @@ export function MusicPlayer({ music = DEFAULT_MUSIC }) {
       </div>
 
       <div className="music-subscribe">
-        <div className="mono">{subscribed ? "thanks - you're on the list" : "field_notes.subscribe()"}</div>
+        <div className="mono">
+          {subscribed ? "thanks - you're on the list" : "field_notes.subscribe()"}
+        </div>
         <form className="nlinput" onSubmit={handleSubscribe}>
           <label htmlFor="nl-email" className="sr-only">Email address</label>
-          <input id="nl-email" type="email" placeholder="your@email.com" required aria-label="Email address" />
-          <button type="submit" className="nl-go">go</button>
+          <input id="nl-email" name="email" type="email" placeholder="your@email.com" required aria-label="Email address" disabled={subscribing} />
+          <label htmlFor="nl-website" className="sr-only">Website</label>
+          <input id="nl-website" name="website" type="text" className="nl-hp" tabIndex="-1" autoComplete="off" aria-hidden="true" />
+          <button type="submit" className="nl-go" disabled={subscribing}>{subscribing ? "..." : "go"}</button>
         </form>
+        {subscribeStatus === "error" && <div className="meta subscribe-status">try again later</div>}
       </div>
     </div>
   );
