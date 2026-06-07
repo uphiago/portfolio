@@ -1,0 +1,26 @@
+src/components/landing/cards/MusicPlayer.jsx
+  s_225249b98fdab6::t_ab7f46d5f3e770 8,39,44,48,116-118,125,132-136,226,229
+app/api/field-notes/subscribe/route.js
+  s_225249b98fdab6::t_efa4ad82d5606a 5-26,40-44
+src/lib/newsletterSheet.js
+  s_225249b98fdab6::t_ab7f46d5f3e770 17-41,44,46
+tests/portfolio-landing.test.jsx
+  s_225249b98fdab6::t_b1ecd9e1eb28cb 37,44-45
+  s_225249b98fdab6::t_3df309b91c22cc 21,42,56,60,62,64
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "6cb91a8dc9494061a6f0f4ec56e2e17afee946c8",
+  "prompts": {},
+  "sessions": {
+    "s_225249b98fdab6": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019e8f99-f443-7831-b433-65ea20f1f182",
+        "model": "gpt-5.5"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
