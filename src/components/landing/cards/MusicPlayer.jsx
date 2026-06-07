@@ -164,7 +164,7 @@ export function MusicPlayer({ music = DEFAULT_MUSIC }) {
               ref={iframeRef}
               title="YouTube playlist player"
               src={src}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               referrerPolicy="strict-origin-when-cross-origin"
               allowFullScreen
             />

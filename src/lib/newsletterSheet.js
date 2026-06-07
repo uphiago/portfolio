@@ -26,8 +26,54 @@ function base64Url(value) {
   return Buffer.from(value).toString("base64url");
 }
 
-function normalizePrivateKey(privateKey) {
-  return privateKey.replace(/\\n/g, "\n");
+export function normalizeGooglePrivateKey(privateKey) {
+  let key = String(privateKey || "").trim();
+
+  if (
+    (key.startsWith('"') && key.endsWith('"')) ||
+    (key.startsWith("'") && key.endsWith("'"))
+  ) {
+    key = key.slice(1, -1);
+  }
+
+  key = key.replace(/\\n/g, "\n").trim();
+
+  if (!key.includes("-----BEGIN PRIVATE KEY-----")) {
+    try {
+      const decoded = Buffer.from(key, "base64").toString("utf8").trim();
+      if (decoded.includes("-----BEGIN PRIVATE KEY-----")) {
+        key = decoded.replace(/\\n/g, "\n").trim();
+      }
+    } catch {
+      /* keep the original value; crypto will report the parse error */
+    }
+  }
+
+  return key;
+}
+
+function parseMaybeJsonCredentials(value) {
+  const raw = String(value || "").trim();
+  if (!raw.startsWith("{")) return null;
+
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
+export function resolveGoogleCredentials({
+  serviceAccountEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+  privateKey = process.env.GOOGLE_PRIVATE_KEY,
+  serviceAccountJson = process.env.GOOGLE_SERVICE_ACCOUNT_JSON,
+} = {}) {
+  const jsonCredentials = parseMaybeJsonCredentials(serviceAccountJson) || parseMaybeJsonCredentials(privateKey);
+
+  return {
+    serviceAccountEmail: serviceAccountEmail || jsonCredentials?.client_email,
+    privateKey: jsonCredentials?.private_key || privateKey,
+  };
 }
 
 export function createGoogleJwt({ serviceAccountEmail, privateKey, nowSeconds = Math.floor(Date.now() / 1000) }) {
@@ -44,7 +90,7 @@ export function createGoogleJwt({ serviceAccountEmail, privateKey, nowSeconds = 
   const signature = crypto
     .createSign("RSA-SHA256")
     .update(unsignedToken)
-    .sign(normalizePrivateKey(privateKey), "base64url");
+    .sign(normalizeGooglePrivateKey(privateKey), "base64url");
 
   return `${unsignedToken}.${signature}`;
 }
@@ -52,13 +98,16 @@ export function createGoogleJwt({ serviceAccountEmail, privateKey, nowSeconds = 
 export async function getGoogleAccessToken({
   serviceAccountEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
   privateKey = process.env.GOOGLE_PRIVATE_KEY,
+  serviceAccountJson = process.env.GOOGLE_SERVICE_ACCOUNT_JSON,
   fetchImpl = fetch,
 } = {}) {
-  if (!serviceAccountEmail || !privateKey) {
+  const credentials = resolveGoogleCredentials({ serviceAccountEmail, privateKey, serviceAccountJson });
+
+  if (!credentials.serviceAccountEmail || !credentials.privateKey) {
     throw new Error("Missing Google service account credentials");
   }
 
-  const assertion = createGoogleJwt({ serviceAccountEmail, privateKey });
+  const assertion = createGoogleJwt(credentials);
   const response = await fetchImpl(GOOGLE_TOKEN_URL, {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },

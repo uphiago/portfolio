@@ -17,6 +17,8 @@ import {
   buildSubscriberRow,
   DEFAULT_NEWSLETTER_SPREADSHEET_ID,
   isValidSubscriberEmail,
+  normalizeGooglePrivateKey,
+  resolveGoogleCredentials,
 } from "@/src/lib/newsletterSheet";
 
 describe("MidfiV1", () => {
@@ -48,6 +50,25 @@ describe("MidfiV1", () => {
     ]);
     expect(isValidSubscriberEmail("hiago@example.com")).toBe(true);
     expect(isValidSubscriberEmail("not-an-email")).toBe(false);
+  });
+
+  it("normalizes Google private keys pasted into Vercel env vars", () => {
+    const pem = "-----BEGIN PRIVATE KEY-----\nabc\n-----END PRIVATE KEY-----";
+
+    expect(normalizeGooglePrivateKey(`"${pem.replace(/\n/g, "\\n")}"`)).toBe(pem);
+    expect(normalizeGooglePrivateKey(Buffer.from(pem).toString("base64"))).toBe(pem);
+  });
+
+  it("accepts a full service account JSON env var", () => {
+    const credentials = resolveGoogleCredentials({
+      serviceAccountJson: JSON.stringify({
+        client_email: "sheet-bot@example.iam.gserviceaccount.com",
+        private_key: "-----BEGIN PRIVATE KEY-----\\nabc\\n-----END PRIVATE KEY-----\\n",
+      }),
+    });
+
+    expect(credentials.serviceAccountEmail).toBe("sheet-bot@example.iam.gserviceaccount.com");
+    expect(normalizeGooglePrivateKey(credentials.privateKey)).toBe("-----BEGIN PRIVATE KEY-----\nabc\n-----END PRIVATE KEY-----");
   });
 
   it("visually separates field note rows with list dividers", () => {

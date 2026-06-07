@@ -33,6 +33,9 @@ export const metadata = {
     "Terraform", "CI/CD", "self-hosted", "n8n", "infrastructure",
   ],
   alternates: { canonical: "/" },
+  icons: {
+    icon: "/icon.svg",
+  },
   openGraph: {
     type: "website",
     url: siteUrl,
