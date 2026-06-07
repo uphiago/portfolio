@@ -1,4 +1,5 @@
 import { renderToStaticMarkup } from "react-dom/server";
+import { readFileSync } from "node:fs";
 import { act } from "react";
 import { createRoot } from "react-dom/client";
 import { describe, expect, it } from "vitest";
@@ -7,11 +8,26 @@ import { MidfiV1 } from "@/src/components/landing/MidfiV1";
 import { ContactModal } from "@/src/components/landing/modals/ContactModal";
 import { ArticleModal } from "@/src/components/landing/modals/ArticleModal";
 import { VideoModal } from "@/src/components/landing/modals/VideoModal";
+import { MUSIC_DEFAULT_VOLUME, MUSIC_FADE_MS, MUSIC_FADE_STEPS } from "@/src/components/landing/cards/MusicPlayer";
 import { ARTICLES, VIDEOS } from "@/src/components/landing/data";
 import { parseBlogMarkdown } from "@/src/components/landing/blog";
 import { buildYoutubeEmbedUrl, buildYoutubeThumbnailUrl, parsePlaylistId } from "@/src/components/landing/youtube";
 
 describe("MidfiV1", () => {
+  it("visually separates field note rows with list dividers", () => {
+    const css = readFileSync("src/components/landing/styles/cards.css", "utf8");
+
+    expect(css).toContain(".mfi .wlist .star-row");
+    expect(css).toContain("border-bottom: 1px solid var(--m-line)");
+    expect(css).toContain(".mfi .wlist .star-row:first-child");
+  });
+
+  it("ramps the music volume smoothly to 50 percent over 2 seconds", () => {
+    expect(MUSIC_DEFAULT_VOLUME).toBe(50);
+    expect(MUSIC_FADE_MS).toBe(2000);
+    expect(MUSIC_FADE_STEPS).toBeGreaterThanOrEqual(80);
+  });
+
   it("renders the refined portfolio layout inside Next", () => {
     const html = renderToStaticMarkup(<MidfiV1 />);
 
@@ -37,14 +53,13 @@ describe("MidfiV1", () => {
     expect(html).not.toContain("operator-first");
     expect(html).not.toContain("attending");
     expect(html).toContain("reels");
-    expect(html).toContain("drag-row");
-    expect(html).toContain("drag-tile");
-    expect(html).toContain("media-shell is-loading drag-tile-thumb");
-    expect(html).toContain("drag-tile-desc");
-    expect(html).toContain("reel-meta");
-    expect(html).toContain("reels-more");
-    expect(html).toContain("Open Instagram reel");
-    expect(html).toContain("short-tags");
+    expect(html).toContain("reels-soon");
+    expect(html).toContain("work in progress");
+    expect(html).toContain("soon");
+    expect(html).not.toContain("drag-row");
+    expect(html).not.toContain("drag-tile");
+    expect(html).not.toContain("Open Instagram reel");
+    expect(html).not.toContain("reels-more");
     expect(html).not.toContain("hfelipe.sh@gmail.com");
     expect(html).not.toContain("self-hosted, deployed on a friday");
     expect(html).not.toContain("UTC−3");
@@ -102,9 +117,18 @@ describe("MidfiV1", () => {
     expect(html).not.toContain("Lo-fi deploy window");
     expect(html).not.toContain("hiago playlist");
     expect(html).toContain("https://i.ytimg.com/vi/abc123/hqdefault.jpg");
-    expect(html).toContain("music-eq");
+    expect(html).toContain("music-cover");
+    expect(html).not.toContain("music-cover is-playing");
+    expect(html).toContain("music-center-button");
+    expect(html).toContain("aria-label=\"Play music\"");
+    expect(html).not.toContain("music-play-button");
+    expect(html).not.toContain("music-volume-range");
+    expect(html).not.toContain("music-eq");
+    expect(html).not.toContain("aria-label=\"Music volume\"");
     expect(html).toContain("<iframe");
     expect(html).toContain("YouTube playlist player");
+    expect(html).not.toContain("autoplay=1");
+    expect(html).not.toContain("mute=1");
     expect(html).toContain("your@email.com");
     expect(html).toContain("field_notes.subscribe()");
   });

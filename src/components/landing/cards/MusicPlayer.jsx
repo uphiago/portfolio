@@ -1,9 +1,10 @@
 import React from "react";
+import { Pause, Play } from "lucide-react";
 import { DEFAULT_MUSIC } from "../youtube";
 
-const DEFAULT_VOLUME = 40;
-const FADE_MS = 2200;
-const FADE_STEPS = 30;
+export const MUSIC_DEFAULT_VOLUME = 50;
+export const MUSIC_FADE_MS = 2000;
+export const MUSIC_FADE_STEPS = 100;
 
 let apiReadyPromise = null;
 
@@ -35,13 +36,12 @@ export function MusicPlayer({ music = DEFAULT_MUSIC }) {
   const volumeRef = React.useRef(0);
   const fadeRef = React.useRef(null);
   const [volume, setVolumeState] = React.useState(0);
+  const [isPlaying, setIsPlaying] = React.useState(false);
+  const [volumeVisible, setVolumeVisible] = React.useState(false);
   const [subscribed, setSubscribed] = React.useState(false);
   const hasThumbnail = Boolean(music.thumbnailUrl);
 
-  // Starts muted (browsers block sound-on-load); audio is enabled on the first
-  // user gesture and eased in so it never blasts in at full level.
-  const sep = music.embedUrl.includes("?") ? "&" : "?";
-  const src = `${music.embedUrl}${sep}autoplay=1&mute=1`;
+  const src = music.embedUrl;
 
   const stopFade = () => {
     if (fadeRef.current) {
@@ -60,6 +60,7 @@ export function MusicPlayer({ music = DEFAULT_MUSIC }) {
     } else {
       player.unMute();
       player.setVolume(value);
+      setIsPlaying(true);
     }
     player.playVideo();
   };
@@ -72,14 +73,18 @@ export function MusicPlayer({ music = DEFAULT_MUSIC }) {
       player.unMute?.();
       player.setVolume?.(0);
       player.playVideo?.();
+      setIsPlaying(true);
     }
     let step = 0;
     fadeRef.current = window.setInterval(() => {
       step += 1;
-      const value = Math.round((target * step) / FADE_STEPS);
+      const value = (target * step) / MUSIC_FADE_STEPS;
       setVolumeNow(value);
-      if (step >= FADE_STEPS) stopFade();
-    }, FADE_MS / FADE_STEPS);
+      if (step >= MUSIC_FADE_STEPS) {
+        stopFade();
+        setVolumeVisible(false);
+      }
+    }, MUSIC_FADE_MS / MUSIC_FADE_STEPS);
   };
 
   React.useEffect(() => {
@@ -90,9 +95,6 @@ export function MusicPlayer({ music = DEFAULT_MUSIC }) {
         events: {
           onReady: (event) => {
             playerRef.current = event.target;
-            // Try to start with sound right away (works for recurring visitors
-            // the browser trusts); blocked sessions fall back to first gesture.
-            fadeInTo(DEFAULT_VOLUME);
           },
         },
       });
@@ -109,29 +111,35 @@ export function MusicPlayer({ music = DEFAULT_MUSIC }) {
     };
   }, []);
 
-  // First interaction anywhere unlocks audio and eases it in to the default.
-  React.useEffect(() => {
-    const events = ["pointerdown", "keydown", "touchstart", "wheel"];
-    const onFirstGesture = () => {
-      events.forEach((name) => window.removeEventListener(name, onFirstGesture));
-      // Safety net: if the browser blocked sound-on-load, enable it now.
-      if (volumeRef.current <= 0) fadeInTo(DEFAULT_VOLUME);
-    };
-    events.forEach((name) => window.addEventListener(name, onFirstGesture, { passive: true }));
-    return () => events.forEach((name) => window.removeEventListener(name, onFirstGesture));
-  }, []);
-
   const handleSubscribe = (event) => {
     event.preventDefault();
     setSubscribed(true);
+  };
+
+  const changeVolume = (event) => {
+    const next = Number(event.target.value);
+    stopFade();
+    setVolumeVisible(true);
+    setVolumeNow(next);
+  };
+
+  const togglePlayback = () => {
+    if (isPlaying) {
+      stopFade();
+      playerRef.current?.pauseVideo?.();
+      setIsPlaying(false);
+      return;
+    }
+    setVolumeVisible(true);
+    fadeInTo(MUSIC_DEFAULT_VOLUME);
   };
 
   return (
     <div className="music-panel">
       <div className="music-player-stack">
         <div className="music-stage">
-          <div className="music-cover">
-            {hasThumbnail ? <img src={music.thumbnailUrl} alt="" loading="lazy" /> : <span className="music-fallback">yt</span>}
+          <div className={`music-cover${isPlaying ? " is-playing" : ""}`}>
+            {hasThumbnail ? <img src={music.thumbnailUrl} alt="" loading="lazy" draggable={false} /> : <span className="music-fallback">yt</span>}
             <iframe
               ref={iframeRef}
               title="YouTube playlist player"
@@ -140,11 +148,38 @@ export function MusicPlayer({ music = DEFAULT_MUSIC }) {
               referrerPolicy="strict-origin-when-cross-origin"
               allowFullScreen
             />
-            <div className="music-controls">
-              <span className={`music-eq${volume > 0 ? " is-playing" : ""}`} aria-hidden="true">
-                <span /><span /><span /><span />
-              </span>
-            </div>
+            <button
+              type="button"
+              className={`music-center-button${isPlaying ? " is-playing" : ""}`}
+              onClick={togglePlayback}
+              aria-label={isPlaying ? "Pause music" : "Play music"}
+            >
+              {isPlaying ? <Pause size={22} /> : <Play size={22} fill="currentColor" />}
+            </button>
+            {isPlaying && (
+              <div
+                className={`music-controls is-playing${volumeVisible ? " show-volume" : ""}`}
+                onMouseEnter={() => setVolumeVisible(true)}
+                onFocus={() => setVolumeVisible(true)}
+              >
+                <>
+                  <span className="music-eq is-playing" aria-hidden="true">
+                    <span /><span /><span /><span />
+                  </span>
+                  <input
+                    type="range"
+                    className="music-volume-range"
+                    min="0"
+                    max="100"
+                    step="1"
+                    value={volume}
+                    onChange={changeVolume}
+                    draggable={false}
+                    aria-label="Music volume"
+                  />
+                </>
+              </div>
+            )}
           </div>
         </div>
       </div>

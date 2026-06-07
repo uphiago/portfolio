@@ -61,8 +61,8 @@
       width: 100%;
       aspect-ratio: 16 / 9;
     }
-    .mfi .shorts-stage {
-      height: 292px;
+    .mfi .reels-soon {
+      min-height: 220px;
       flex: none;
     }
     .mfi .drag-tile-info {

@@ -231,6 +231,39 @@
   .mfi .video-head .meta {
     color: #777;
   }
+  .mfi .reels-soon {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 18px;
+    color: #f1efe8;
+  }
+  .mfi .reels-soon-mark {
+    width: 22px;
+    height: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(241,239,232,.74);
+  }
+  .mfi .reels-soon-copy {
+    min-width: 0;
+  }
+  .mfi .reels-soon-title {
+    font-family: var(--font-ibm);
+    font-size: 18px;
+    font-weight: 560;
+    line-height: 1.1;
+  }
+  .mfi .reels-soon-meta {
+    margin-top: 5px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: #777;
+  }
   .mfi .shorts-stage {
     flex: 1;
     min-height: 0;
@@ -551,14 +584,20 @@
     object-fit: cover;
     opacity: 1;
     z-index: 3;
+    transition: opacity .16s ease;
   }
-  /* The player is the audio engine only: kept invisible behind the artwork so
-     YouTube's chrome and the white load flash never show. */
   .mfi .music-cover iframe {
-    z-index: 1;
+    z-index: 2;
     opacity: 0;
     pointer-events: none;
     border-radius: inherit;
+    transition: opacity .16s ease;
+  }
+  .mfi .music-cover.is-playing img {
+    opacity: 0;
+  }
+  .mfi .music-cover.is-playing iframe {
+    opacity: 1;
   }
   .mfi .music-cover::after {
     content: "";
@@ -567,6 +606,9 @@
     z-index: 3;
     background: linear-gradient(to top, rgba(10,10,10,.34), rgba(10,10,10,0) 58%);
     pointer-events: none;
+  }
+  .mfi .music-cover.is-playing::after {
+    background: linear-gradient(to top, rgba(10,10,10,.44), rgba(10,10,10,0) 56%);
   }
   .mfi .music-fallback {
     position: absolute;
@@ -583,14 +625,67 @@
   /* Now-playing indicator overlay on the video: animated EQ bars */
   .mfi .music-controls {
     position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     z-index: 4;
     display: flex;
     align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 0;
+    background: transparent;
+  }
+  .mfi .music-controls.is-playing {
+    inset: auto 0 0 0;
+    justify-content: flex-start;
     padding: 16px 11px 9px;
     background: linear-gradient(to top, rgba(5,5,5,.55), rgba(5,5,5,0));
+  }
+  .mfi .music-center-button {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    width: 44px;
+    height: 44px;
+    margin: auto;
+    display: grid;
+    place-items: center;
+    border: 0;
+    background: transparent;
+    color: #f4f1ea;
+    cursor: pointer;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,.42));
+  }
+  .mfi .music-center-button.is-playing {
+    opacity: 0;
+    transform: scale(.96);
+    transition: opacity .14s ease, transform .14s ease;
+  }
+  .mfi .music-cover:hover .music-center-button.is-playing,
+  .mfi .music-center-button.is-playing:focus-visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .mfi .music-play-button {
+    width: 16px;
+    height: 16px;
+    display: grid;
+    place-items: center;
+    border: 0;
+    background: transparent;
+    color: #f4f1ea;
+    cursor: pointer;
+    padding: 0;
+  }
+  .mfi .music-play-button.is-primary {
+    width: 48px;
+    height: 48px;
+    background: transparent;
+    color: #f4f1ea;
+    box-shadow: none;
+  }
+  .mfi .music-play-button:focus-visible {
+    outline: 1px solid rgba(244,241,234,.65);
+    outline-offset: 3px;
   }
   .mfi .music-eq {
     display: inline-flex;
@@ -623,6 +718,54 @@
   @media (prefers-reduced-motion: reduce) {
     .mfi .music-eq span { animation: none; }
   }
+  .mfi .music-volume-range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 42px;
+    height: 10px;
+    margin: 0;
+    background: transparent;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateX(-3px);
+    pointer-events: none;
+    transition: opacity .14s ease, transform .14s ease;
+    user-select: none;
+  }
+  .mfi .music-controls.show-volume .music-volume-range,
+  .mfi .music-controls:hover .music-volume-range,
+  .mfi .music-controls:focus-within .music-volume-range {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+  .mfi .music-volume-range::-webkit-slider-runnable-track {
+    height: 2px;
+    border-radius: 999px;
+    background: rgba(244,241,234,.42);
+  }
+  .mfi .music-volume-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 2px;
+    height: 8px;
+    margin-top: -3px;
+    border: 0;
+    border-radius: 1px;
+    background: rgba(244,241,234,.96);
+  }
+  .mfi .music-volume-range::-moz-range-track {
+    height: 2px;
+    border-radius: 999px;
+    background: rgba(244,241,234,.42);
+  }
+  .mfi .music-volume-range::-moz-range-thumb {
+    width: 2px;
+    height: 8px;
+    border: 0;
+    border-radius: 1px;
+    background: rgba(244,241,234,.96);
+  }
 
   /* Write-ups scroll list */
   .mfi .wlist {
@@ -644,8 +787,25 @@
     -webkit-user-select: none;
   }
   .mfi .wlist .star-row {
+    border: 0;
+    border-bottom: 1px solid var(--m-line);
+    border-radius: 0;
     cursor: pointer;
     touch-action: inherit;
+  }
+  .mfi .wlist .star-row:first-child {
+    border-top: 1px solid var(--m-line);
+  }
+  .mfi .wlist .star-row + .star-row {
+    margin-top: 0;
+  }
+  .mfi .wlist .star-row:hover {
+    background: rgba(255,255,255,0.28);
+    border-color: var(--m-line-strong);
+  }
+  .mfi .wlist .star-row:focus-visible {
+    background: rgba(255,255,255,0.32);
+    box-shadow: inset 2px 0 0 rgba(10,10,10,.18);
   }
   .mfi .wlist::-webkit-scrollbar { width: 6px; }
   .mfi .wlist::-webkit-scrollbar-track { background: transparent; }
