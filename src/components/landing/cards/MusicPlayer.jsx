@@ -5,6 +5,7 @@ import { DEFAULT_MUSIC } from "../youtube";
 export const MUSIC_DEFAULT_VOLUME = 50;
 export const MUSIC_FADE_MS = 2000;
 export const MUSIC_FADE_STEPS = 100;
+export const SUBSCRIBE_COOLDOWN_MS = 3000;
 
 let apiReadyPromise = null;
 
@@ -35,13 +36,16 @@ export function MusicPlayer({ music = DEFAULT_MUSIC }) {
   const playerRef = React.useRef(null);
   const volumeRef = React.useRef(0);
   const fadeRef = React.useRef(null);
+  const cooldownRef = React.useRef(null);
   const [volume, setVolumeState] = React.useState(0);
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [volumeVisible, setVolumeVisible] = React.useState(false);
   const [subscribeStatus, setSubscribeStatus] = React.useState("idle");
+  const [coolingDown, setCoolingDown] = React.useState(false);
   const hasThumbnail = Boolean(music.thumbnailUrl);
   const subscribed = subscribeStatus === "success";
   const subscribing = subscribeStatus === "submitting";
+  const submitLocked = subscribing || coolingDown;
 
   const src = music.embedUrl;
 
@@ -109,18 +113,27 @@ export function MusicPlayer({ music = DEFAULT_MUSIC }) {
       } catch {
         /* player may not be initialised yet */
       }
+      if (cooldownRef.current) {
+        window.clearTimeout(cooldownRef.current);
+      }
       playerRef.current = null;
     };
   }, []);
 
   const handleSubscribe = async (event) => {
     event.preventDefault();
+    if (submitLocked) return;
     const form = event.currentTarget;
     const formData = new FormData(form);
     const email = String(formData.get("email") || "");
     const website = String(formData.get("website") || "");
 
     setSubscribeStatus("submitting");
+    setCoolingDown(true);
+    cooldownRef.current = window.setTimeout(() => {
+      setCoolingDown(false);
+      cooldownRef.current = null;
+    }, SUBSCRIBE_COOLDOWN_MS);
     try {
       const response = await fetch("/api/field-notes/subscribe", {
         method: "POST",
@@ -210,10 +223,10 @@ export function MusicPlayer({ music = DEFAULT_MUSIC }) {
         </div>
         <form className="nlinput" onSubmit={handleSubscribe}>
           <label htmlFor="nl-email" className="sr-only">Email address</label>
-          <input id="nl-email" name="email" type="email" placeholder="your@email.com" required aria-label="Email address" disabled={subscribing} />
+          <input id="nl-email" name="email" type="email" placeholder="your@email.com" required aria-label="Email address" disabled={submitLocked} />
           <label htmlFor="nl-website" className="sr-only">Website</label>
           <input id="nl-website" name="website" type="text" className="nl-hp" tabIndex="-1" autoComplete="off" aria-hidden="true" />
-          <button type="submit" className="nl-go" disabled={subscribing}>{subscribing ? "..." : "go"}</button>
+          <button type="submit" className="nl-go" disabled={submitLocked}>{subscribing ? "..." : "go"}</button>
         </form>
         {subscribeStatus === "error" && <div className="meta subscribe-status">try again later</div>}
       </div>

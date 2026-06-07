@@ -14,11 +14,36 @@ function cleanCell(value) {
   return String(value || "").replace(/\s+/g, " ").trim();
 }
 
+function decodeCell(value) {
+  const cell = cleanCell(value);
+  try {
+    return decodeURIComponent(cell.replace(/\+/g, " "));
+  } catch {
+    return cell;
+  }
+}
+
+export function formatBrazilTimestamp(date) {
+  const parts = new Intl.DateTimeFormat("pt-BR", {
+    timeZone: "America/Sao_Paulo",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  }).formatToParts(date);
+  const get = (type) => parts.find((part) => part.type === type)?.value || "";
+
+  return `${get("day")}/${get("month")}/${get("year")} ${get("hour")}:${get("minute")}:${get("second")}`;
+}
+
 export function buildSubscriberRow({ email, metadata = {}, now = new Date() }) {
   return [
-    now.toISOString(),
+    formatBrazilTimestamp(now),
     String(email).trim().toLowerCase(),
-    cleanCell(metadata.city),
+    decodeCell(metadata.city),
   ];
 }
 

@@ -18,6 +18,7 @@ import {
   buildSubscriberRow,
   DEFAULT_NEWSLETTER_SPREADSHEET_ID,
   appendNewsletterSubscriber,
+  formatBrazilTimestamp,
   isValidSubscriberEmail,
   normalizeGooglePrivateKey,
   resolveGoogleCredentials,
@@ -33,11 +34,15 @@ describe("MidfiV1", () => {
 
   it("posts field-note subscriptions to the local server route", () => {
     const source = readFileSync("src/components/landing/cards/MusicPlayer.jsx", "utf8");
+    const route = readFileSync("app/api/field-notes/subscribe/route.js", "utf8");
 
     expect(source).toContain('fetch("/api/field-notes/subscribe"');
     expect(source).toContain('name="email"');
     expect(source).toContain('name="website"');
+    expect(source).toContain("SUBSCRIBE_COOLDOWN_MS = 3000");
     expect(source).toContain("subscribing");
+    expect(route).toContain("SUBSCRIBE_RATE_LIMIT_MS = 3000");
+    expect(route).toContain("rate_limited");
   });
 
   it("builds newsletter rows for the configured Google Sheet", () => {
@@ -48,14 +53,15 @@ describe("MidfiV1", () => {
     expect(buildSubscriberRow({
       email: "  HIAGO@example.com ",
       metadata: {
-        city: "São Paulo",
+        city: "Rio%20de%20Janeiro",
       },
       now: new Date("2026-06-07T19:30:00.000Z"),
     })).toEqual([
-      "2026-06-07T19:30:00.000Z",
+      "07/06/2026 16:30:00",
       "hiago@example.com",
-      "São Paulo",
+      "Rio de Janeiro",
     ]);
+    expect(formatBrazilTimestamp(new Date("2026-06-07T19:30:00.000Z"))).toBe("07/06/2026 16:30:00");
     expect(isValidSubscriberEmail("hiago@example.com")).toBe(true);
     expect(isValidSubscriberEmail("not-an-email")).toBe(false);
   });
