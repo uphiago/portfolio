@@ -52,7 +52,7 @@ export function buildSheetsAppendUrl({
   range = process.env.GOOGLE_SHEETS_RANGE || DEFAULT_NEWSLETTER_RANGE,
 } = {}) {
   const encodedRange = encodeURIComponent(range);
-  return `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${encodedRange}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`;
+  return `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${encodedRange}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`;
 }
 
 function base64Url(value) {
