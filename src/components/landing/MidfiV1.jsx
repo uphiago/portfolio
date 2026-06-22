@@ -5,7 +5,7 @@ import { Ico } from "./icons";
 import { ARTICLES } from "./data";
 import { DEFAULT_MUSIC } from "./youtube";
 
-import { TerminalHero, WriteupsCard } from "./cards";
+import { TerminalHero, VideoCard, WriteupsCard } from "./cards";
 import { ContactModal, ArticleModal } from "./modals";
 
 export function MidfiV1({ articles = ARTICLES, music = DEFAULT_MUSIC }) {
@@ -32,6 +32,7 @@ export function MidfiV1({ articles = ARTICLES, music = DEFAULT_MUSIC }) {
         {/* BENTO */}
         <main className="mfi-grid">
           <TerminalHero setContactOpen={setContactOpen} />
+          <VideoCard />
           <WriteupsCard ARTICLES={articles} setOpenArticle={setOpenArticle} music={music} />
         </main>
 
