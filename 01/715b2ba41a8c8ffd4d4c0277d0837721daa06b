@@ -1,0 +1,22 @@
+src/components/landing/cards/TerminalHero.jsx
+  s_46f1b425b7178a::t_1cc9a3a6e76017 6
+src/components/landing/MidfiV1.jsx
+  s_46f1b425b7178a::t_faefaa08f13612 35
+  s_46f1b425b7178a::t_95d9ffaea36887 8
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "01715b2ba41a8c8ffd4d4c0277d0837721daa06b",
+  "prompts": {},
+  "sessions": {
+    "s_46f1b425b7178a": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_17b006571ffeiCmUUQp3HJOXmT",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
