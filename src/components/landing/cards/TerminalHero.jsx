@@ -3,7 +3,7 @@ import { Ico } from "../icons";
 
 export function TerminalHero({ setContactOpen }) {
   return (
-    <div className="terminal hero-terminal" style={{gridColumn:"span 5", gridRow:"span 5"}}>
+    <div className="terminal hero-terminal" style={{gridColumn:"span 12", gridRow:"span 5"}}>
       <div className="tbar">
         <span className="prompt">$</span>
         <span>cat ~/about</span>
