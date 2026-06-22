@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Ico } from "./icons";
 import { ARTICLES } from "./data";
 import { DEFAULT_MUSIC } from "./youtube";
@@ -11,6 +12,36 @@ import { ContactModal, ArticleModal } from "./modals";
 export function MidfiV1({ articles = ARTICLES, music = DEFAULT_MUSIC }) {
   const [contactOpen, setContactOpen] = React.useState(false);
   const [openArticle, setOpenArticle] = React.useState(null);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const initialized = React.useRef(false);
+
+  // Sync URL when opening/closing article
+  const handleOpenArticle = React.useCallback((article) => {
+    setOpenArticle(article);
+    const params = new URLSearchParams(searchParams);
+    params.set("post", article.id);
+    router.replace(`?${params.toString()}`, { scroll: false });
+  }, [searchParams, router]);
+
+  const handleCloseArticle = React.useCallback(() => {
+    setOpenArticle(null);
+    const params = new URLSearchParams(searchParams);
+    params.delete("post");
+    const qs = params.toString();
+    router.replace(qs ? `?${qs}` : window.location.pathname, { scroll: false });
+  }, [searchParams, router]);
+
+  // Auto-open article from URL on first load
+  React.useEffect(() => {
+    if (initialized.current) return;
+    initialized.current = true;
+    const postId = searchParams.get("post");
+    if (postId && articles.length > 0) {
+      const article = articles.find(a => a.id === postId);
+      if (article) setOpenArticle(article);
+    }
+  }, [searchParams, articles]);
 
   return (
     <section data-screen-label="v1·midfi - Builder-led" className="mfi">
@@ -33,7 +64,7 @@ export function MidfiV1({ articles = ARTICLES, music = DEFAULT_MUSIC }) {
         <main className="mfi-grid">
           <TerminalHero setContactOpen={setContactOpen} />
           <VideoCard />
-          <WriteupsCard ARTICLES={articles} setOpenArticle={setOpenArticle} music={music} />
+          <WriteupsCard ARTICLES={articles} setOpenArticle={handleOpenArticle} music={music} />
         </main>
 
         {/* FOOTER */}
@@ -55,7 +86,7 @@ export function MidfiV1({ articles = ARTICLES, music = DEFAULT_MUSIC }) {
       </div>
 
       {contactOpen && <ContactModal setContactOpen={setContactOpen} />}
-      {openArticle && <ArticleModal openArticle={openArticle} setOpenArticle={setOpenArticle} />}
+      {openArticle && <ArticleModal openArticle={openArticle} setOpenArticle={handleCloseArticle} />}
     </section>
   );
 }

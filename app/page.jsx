@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { MidfiV1 } from "@/src/components/landing/MidfiV1";
 import { getBlogArticles } from "@/src/components/landing/blog";
 import { getYoutubePlaylist } from "@/src/components/landing/youtube";
@@ -12,5 +13,9 @@ export default async function Page() {
     getYoutubePlaylist(),
   ]);
 
-  return <MidfiV1 articles={articles} music={music} />;
+  return (
+    <Suspense>
+      <MidfiV1 articles={articles} music={music} />
+    </Suspense>
+  );
 }

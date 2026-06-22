@@ -180,6 +180,22 @@
     font-size: 24px; line-height: 1.2; letter-spacing: -0.02em;
     margin: 4px 0 8px;
   }
+  .copy-title-btn {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    margin-left: 8px;
+    border: none;
+    border-radius: 4px;
+    padding: 2px 4px;
+    color: var(--m-ink-soft);
+    background: transparent;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .copy-title-btn:hover {
+    color: var(--m-ink, #fff);
+  }
   .mfi-article .ahead .meta-row {
     display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
     font-family: var(--font-mono); font-size: 11px; color: var(--m-ink-soft);

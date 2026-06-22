@@ -181,6 +181,37 @@
       width: calc(100vw - 20px);
       max-height: calc(100svh - 20px);
     }
+    .mfi-article-bg {
+      padding: 10px;
+    }
+    .mfi-article {
+      overflow-x: hidden;
+    }
+    .mfi-article .ahead {
+      padding: 18px 18px 14px;
+    }
+    .mfi-article .ahead .ti {
+      font-size: 20px;
+      word-break: break-word;
+    }
+    .mfi-article .abody {
+      padding: 16px 18px 20px;
+      overflow-x: hidden;
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+    .mfi-article .abody table {
+      min-width: 0;
+    }
+    .mfi-article .afoot {
+      padding: 12px 18px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .mfi-article .article-actions {
+      flex-wrap: wrap;
+      gap: 8px;
+    }
     .mfi-modal {
       padding: 22px;
     }
