@@ -1,0 +1,23 @@
+src/components/landing/MidfiV1.jsx
+  s_46f1b425b7178a::t_97d9715f014c51 8
+  s_46f1b425b7178a::t_57a17298b3ee98 9
+  s_46f1b425b7178a::t_a409a54262d7d5 5
+src/components/landing/cards/TerminalHero.jsx
+  s_46f1b425b7178a::t_b8019043afa0a7 6
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "19b4c6cdd8aa994917d5d24cdc3b0cfb042fbfde",
+  "prompts": {},
+  "sessions": {
+    "s_46f1b425b7178a": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_17b006571ffeiCmUUQp3HJOXmT",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
