@@ -143,7 +143,7 @@
   }
   .mfi-article {
     position: relative;
-    width: min(720px, 100%);
+    width: min(880px, 100%);
     max-height: calc(100vh - 48px);
     background: var(--m-paper);
     border: 1px solid rgba(30, 26, 20, 0.14);
