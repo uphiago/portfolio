@@ -16,12 +16,13 @@ export function WriteupsCard({ ARTICLES, setOpenArticle, music }) {
       </div>
       <div className="writing-body">
         <div className="wlist">
-          {ARTICLES.map(a => {
+          {ARTICLES.map((a, i) => {
+            const isNew = i === 0;
             const rowContent = (
               <>
               <span className="idx">{a.id}</span>
               <div>
-                <div className="ti">{a.title}</div>
+                <div className="ti">{a.title}{isNew && <span className="new-badge">new</span>}</div>
               </div>
               <span className="arr">↗</span>
               </>
