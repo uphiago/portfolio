@@ -60,8 +60,7 @@ function slugify(text) {
     .toLowerCase()
     .replace(/&amp;/g, "")
     .replace(/[^\w\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
+    .replace(/\s/g, "-")
     .replace(/^-|-$/g, "");
 }
 

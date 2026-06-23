@@ -59,9 +59,9 @@ export function ArticleModal({ openArticle, setOpenArticle }) {
       if (base !== "" && base !== "?" && base !== window.location.pathname && base !== `${window.location.pathname}?${window.location.search}`) return;
     }
 
-    e.preventDefault();
     const target = document.getElementById(hash.slice(1));
     if (target) {
+      e.preventDefault();
       target.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
