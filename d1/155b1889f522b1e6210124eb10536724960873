@@ -1,0 +1,22 @@
+src/components/landing/MidfiV1.jsx
+  s_367624849be038::t_fe98903497921f 28
+  s_367624849be038::t_c0c2a3a82996d7 20,25
+tests/portfolio-landing.test.jsx
+  s_367624849be038::t_509a515bf2e2ba 283,290
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.11",
+  "base_commit_sha": "d1155b1889f522b1e6210124eb10536724960873",
+  "prompts": {},
+  "sessions": {
+    "s_367624849be038": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_10deae073ffeu16N7PrtvkPbRY",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
