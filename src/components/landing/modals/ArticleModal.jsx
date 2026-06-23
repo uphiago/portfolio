@@ -10,7 +10,8 @@ export function ArticleModal({ openArticle, setOpenArticle }) {
 
   const copyLink = async () => {
     try {
-      await navigator.clipboard.writeText(openArticle.url || window.location.href);
+      const url = `${window.location.origin}${window.location.pathname}?post=${openArticle.id}`;
+      await navigator.clipboard.writeText(url);
       setCopied(true);
       window.setTimeout(() => setCopied(false), 1400);
     } catch {
@@ -79,6 +80,7 @@ export function ArticleModal({ openArticle, setOpenArticle }) {
         <span>esc to close</span>
         <span className="article-actions">
           <button type="button" onClick={copyLink}>{copied ? "copied" : "copy link"}</button>
+          <button type="button" onClick={copyMarkdown}>{copiedMd ? "copied" : "copy md"}</button>
           {openArticle.url && (
             <a href={openArticle.url} target="_blank" rel="noopener noreferrer">original {Ico.arrow}</a>
           )}
