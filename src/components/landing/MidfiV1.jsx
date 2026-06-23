@@ -26,11 +26,10 @@ export function MidfiV1({ articles = ARTICLES, music = DEFAULT_MUSIC }) {
 
   const handleCloseArticle = React.useCallback(() => {
     setOpenArticle(null);
-    const params = new URLSearchParams(searchParams);
-    params.delete("post");
-    const qs = params.toString();
-    router.replace(qs ? `?${qs}` : window.location.pathname, { scroll: false });
-  }, [searchParams, router]);
+    const url = new URL(window.location.href);
+    url.searchParams.delete("post");
+    window.history.replaceState({}, "", url.pathname + (url.search || ""));
+  }, []);
 
   // Auto-open article from URL on first load
   React.useEffect(() => {
