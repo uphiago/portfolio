@@ -55,6 +55,16 @@ function pathToBlogUrl(path) {
   return `${BLOG_ORIGIN}/${slug}/`;
 }
 
+function slugify(text) {
+  return text
+    .toLowerCase()
+    .replace(/&amp;/g, "")
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
 function renderMarkdownHtml(markdown) {
   const rendered = marked.parse(markdown.replace(/<!--more-->/g, ""), {
     async: false,
@@ -66,6 +76,7 @@ function renderMarkdownHtml(markdown) {
     .replaceAll('href="/', `href="${BLOG_ORIGIN}/`)
     .replaceAll('src="/', `src="${BLOG_ORIGIN}/`)
     .replace(/<a href="(https?:\/\/[^"]+)"/g, '<a href="$1" target="_blank" rel="noopener noreferrer"')
+    .replace(/<h([1-6])>([^<]*)<\/h\1>/g, (_, level, text) => `<h${level} id="${slugify(text)}">${text}</h${level}>`)
     .trim();
 }
 

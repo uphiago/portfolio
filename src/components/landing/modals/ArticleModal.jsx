@@ -4,6 +4,7 @@ import { BaseModal } from "./BaseModal";
 export function ArticleModal({ openArticle, setOpenArticle }) {
   const [copied, setCopied] = React.useState(false);
   const [copiedMd, setCopiedMd] = React.useState(false);
+  const bodyRef = React.useRef(null);
 
   if (!openArticle) return null;
 
@@ -42,6 +43,30 @@ export function ArticleModal({ openArticle, setOpenArticle }) {
     }
   };
 
+  const handleBodyClick = (e) => {
+    const link = e.target.closest("a");
+    if (!link) return;
+    const href = link.getAttribute("href");
+    if (!href) return;
+
+    const hashIdx = href.indexOf("#");
+    if (hashIdx === -1) return;
+    const hash = href.slice(hashIdx);
+    if (!hash) return;
+
+    if (hashIdx > 0) {
+      const base = href.slice(0, hashIdx);
+      if (base !== "" && base !== "?" && base !== window.location.pathname && base !== `${window.location.pathname}?${window.location.search}`) return;
+    }
+
+    e.preventDefault();
+    const target = bodyRef.current?.querySelector(hash);
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      window.history.replaceState({}, "", hash);
+    }
+  };
+
   return (
     <BaseModal onClose={() => setOpenArticle(null)} modalBgClass="mfi-article-bg" modalClass="mfi-article" closeButtonClass="article-close" restoreFocusOnClose={false} label={openArticle.title}>
       <div className="ahead">
@@ -62,7 +87,7 @@ export function ArticleModal({ openArticle, setOpenArticle }) {
           {(openArticle.tags || []).map(tag => <span className="tag" key={tag}>{tag}</span>)}
         </div>
       </div>
-      <div className="abody">
+      <div className="abody" ref={bodyRef} onClick={handleBodyClick}>
         {openArticle.html ? (
           <div className="markdown-body" dangerouslySetInnerHTML={{ __html: openArticle.html }} />
         ) : (
