@@ -1,0 +1,23 @@
+src/components/landing/cards/WriteupsCard.jsx
+  s_367624849be038::t_a0efa34f21dce2 19-20,25
+src/components/landing/styles/cards.css
+  s_367624849be038::t_df9943689b658d 123,130-131,134
+  s_367624849be038::t_027454741696ef 125-126,129
+  s_367624849be038::t_fd7c6284af914b 124,127-128,132-133
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.11",
+  "base_commit_sha": "b3cb2cb0f886e94be9d7b56200b93600a2135d42",
+  "prompts": {},
+  "sessions": {
+    "s_367624849be038": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_10deae073ffeu16N7PrtvkPbRY",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
