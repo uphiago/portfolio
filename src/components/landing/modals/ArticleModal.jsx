@@ -1,5 +1,4 @@
 import React from "react";
-import { Ico } from "../icons";
 import { BaseModal } from "./BaseModal";
 
 export function ArticleModal({ openArticle, setOpenArticle }) {
@@ -79,11 +78,8 @@ export function ArticleModal({ openArticle, setOpenArticle }) {
       <div className="afoot">
         <button type="button" className="esc-hint" onClick={() => setOpenArticle(null)}>esc to close</button>
         <span className="article-actions">
-          <button type="button" onClick={copyLink}>{copied ? "copied" : "copy link"}</button>
-          <button type="button" onClick={copyMarkdown}>{copiedMd ? "copied" : "copy md"}</button>
-          {openArticle.url && (
-            <a href={openArticle.url} target="_blank" rel="noopener noreferrer">original {Ico.arrow}</a>
-          )}
+          <button type="button" className={copied ? "flashed" : ""} onClick={copyLink}>copy link</button>
+          <button type="button" className={copiedMd ? "flashed" : ""} onClick={copyMarkdown}>copy md</button>
         </span>
       </div>
     </BaseModal>
