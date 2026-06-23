@@ -314,6 +314,17 @@
     color: var(--m-ink-soft);
     background: var(--m-paper-2);
   }
+  .mfi-article .afoot .esc-hint {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+  .mfi-article .afoot .esc-hint:hover {
+    color: var(--m-ink);
+  }
   .mfi-article .article-actions {
     display: inline-flex;
     align-items: center;

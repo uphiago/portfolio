@@ -77,7 +77,7 @@ export function ArticleModal({ openArticle, setOpenArticle }) {
         )}
       </div>
       <div className="afoot">
-        <span>esc to close</span>
+        <button type="button" className="esc-hint" onClick={() => setOpenArticle(null)}>esc to close</button>
         <span className="article-actions">
           <button type="button" onClick={copyLink}>{copied ? "copied" : "copy link"}</button>
           <button type="button" onClick={copyMarkdown}>{copiedMd ? "copied" : "copy md"}</button>
