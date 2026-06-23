@@ -53,7 +53,7 @@ export function MidfiV1({ articles = ARTICLES, music = DEFAULT_MUSIC }) {
             </span>
           </div>
           <nav className="mfi-socials" aria-label="Social links">
-            <a className="social" title="github" aria-label="GitHub" href="https://github.com/uphiago" target="_blank" rel="noopener noreferrer">{Ico.github}</a>
+            <a className="social" title="github" aria-label="GitHub" href="https://github.com/uphiago/portfolio" target="_blank" rel="noopener noreferrer">{Ico.github}</a>
             <a className="social" title="linkedin" aria-label="LinkedIn" href="https://www.linkedin.com/in/uphiago" target="_blank" rel="noopener noreferrer">{Ico.linkedin}</a>
             <a className="social" title="x" aria-label="X (Twitter)" href="https://x.com/uphiago" target="_blank" rel="noopener noreferrer">{Ico.x}</a>
           </nav>
