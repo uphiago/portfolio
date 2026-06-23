@@ -1,19 +1,21 @@
-# Portfolio
+# hiago.sh
 
-Next.js portfolio app for Vercel deployment.
+Personal portfolio — live at **[hiago.sh](https://hiago.sh)**.
+
+Built with Next.js App Router. Deployed on Vercel.
+
+## What's here
+
+- **Write-ups** — synced live from [dotmindblog](https://dotmindblog.vercel.app) via GitHub raw. Click to read inline, `?post=XX` for direct link sharing.
+- **Reels** — pulls the latest videos from a [YouTube playlist](https://www.youtube.com/playlist?list=PL6N1UVmmKz5Y6V3doyQQn4n3sB7F3Uj9W). Configured in `youtube.js`.
+- **Terminal** — bio, contact modal, social links.
+- **Bento grid** — responsive CSS grid layout, no Tailwind.
 
 ## Development
 
 ```bash
 npm install
-npm run dev
-```
-
-Open `http://localhost:3000`.
-
-## Checks
-
-```bash
+npm run dev       # localhost:3000
 npm test
 npm run lint
 npm run build
@@ -21,15 +23,13 @@ npm run build
 
 ## Structure
 
-- `app/` - Next.js App Router pages, layout, and global CSS.
-- `src/components/landing/` - landing page components.
-  - `cards/` - bento cards (terminal hero, reels, write-ups, audience).
-  - `modals/` - contact, article, and video dialogs (`BaseModal` shared shell).
-  - `styles/` - scoped CSS split into `base`, `cards`, `modals`, `responsive`.
-  - `data.js` - editable portfolio content (videos, articles).
-- `public/assets/` - static assets served by Next.js.
-
-## Environment
-
-Copy `.env.example` to `.env.local` and adjust as needed. `NEXT_PUBLIC_SITE_URL`
-is used for SEO canonical and Open Graph metadata.
+```
+app/                  → Next.js App Router (page, layout, globals)
+src/components/landing/
+  cards/              → TerminalHero, VideoCard, WriteupsCard
+  modals/             → ArticleModal, ContactModal, BaseModal
+  styles/             → base.css, cards.css, modals.css, responsive.css
+  blog.js             → fetches posts from dotmindblog GitHub repo
+  youtube.js          → fetches playlist from YouTube Data API
+  data.js             → fallback content
+```
