@@ -17,13 +17,15 @@ export function MidfiV1({ articles = ARTICLES, music = DEFAULT_MUSIC }) {
 
   const handleOpenArticle = React.useCallback((article) => {
     setOpenArticle(article);
+    window.history.replaceState({}, "", `?post=${article.id}`);
   }, []);
 
   const handleCloseArticle = React.useCallback(() => {
     setOpenArticle(null);
+    window.history.replaceState({}, "", window.location.pathname);
   }, []);
 
-  // Auto-open article from URL on first load (read-only, no writes to URL)
+  // Auto-open article from URL on first load
   React.useEffect(() => {
     if (initialized.current) return;
     initialized.current = true;

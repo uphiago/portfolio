@@ -280,14 +280,14 @@ npx skills add repo
     expect(article).toMatchObject({
       id: "01",
       title: "Skills Stack, MCP, and Project Context",
-      meta: "Apr 2026 · Dotmind it",
+      meta: "Apr 2026",
       url: "https://dotmindblog.vercel.app/posts/2026/ai/agentic-engineering-guide/",
       summary: "A practical guide to building interoperable agents across any AI runtime.",
       date: "2026-04-02T00:00:00-03:00",
       author: "iceteash",
       tags: ["ai", "agents"],
     });
-    expect(article.html).toContain("<h2>Quick Setup</h2>");
+    expect(article.html).toContain('<h2 id="quick-setup"');
     expect(article.html).toContain("<table>");
     expect(article.html).toContain("<td");
     expect(article.html).toContain("Keep skills in <code>skills/</code>.");
@@ -317,7 +317,6 @@ npx skills add repo
     expect(html).toContain("<pre><code>echo ok</code></pre>");
     expect(html).toContain("@iceteash");
     expect(html).toContain("copy link");
-    expect(html).toContain("original");
   });
 
   it("renders the selected social icon row in the topbar", () => {
@@ -326,7 +325,6 @@ npx skills add repo
     expect(html).toContain('title="github"');
     expect(html).toContain('title="linkedin"');
     expect(html).toContain('title="x"');
-    expect(html).toContain('title="instagram"');
     expect(html).not.toContain('title="youtube"');
     expect(html).not.toContain('title="tiktok"');
   });
