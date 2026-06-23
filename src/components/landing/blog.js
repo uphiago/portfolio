@@ -6,7 +6,7 @@ const BLOG_RAW_ORIGIN = "https://raw.githubusercontent.com/uphiago/dotmindblog/m
 
 export const BLOG_FALLBACK_ARTICLES = [
   {
-    id: "01",
+    id: "agentic-engineering-guide",
     title: "Skills Stack, MCP, and Project Context",
     meta: "Apr 2026 · Dotmind it",
     date: "2026-04-02T00:00:00-03:00",
@@ -86,8 +86,14 @@ export function parseBlogMarkdown(path, markdown, index = 0) {
   const date = frontmatter.date || "";
   const author = frontmatter.author || frontmatter.authors?.[0] || "";
 
+  const slug = frontmatter.slug || path
+    .replace(/^content\/posts\//, "")
+    .replace(/\.md$/, "")
+    .replace(/\/index$/, "")
+    .replace(/\//g, "-");
+
   return {
-    id: String(index + 1).padStart(2, "0"),
+    id: slug,
     title,
     meta: formatPostDate(date),
     url: pathToBlogUrl(path),
@@ -125,8 +131,7 @@ export async function getBlogArticles() {
     const published = articles
       .filter(Boolean)
       .filter((article) => article.title && article.html)
-      .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0))
-      .map((article, index) => ({ ...article, id: String(index + 1).padStart(2, "0") }));
+      .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
 
     return published.length > 0 ? published : BLOG_FALLBACK_ARTICLES;
   } catch {

@@ -278,7 +278,7 @@ npx skills add repo
 `);
 
     expect(article).toMatchObject({
-      id: "01",
+      id: "2026-ai-agentic-engineering-guide",
       title: "Skills Stack, MCP, and Project Context",
       meta: "Apr 2026",
       url: "https://dotmindblog.vercel.app/posts/2026/ai/agentic-engineering-guide/",
