@@ -65,7 +65,7 @@ function renderMarkdownHtml(markdown) {
   return rendered
     .replaceAll('href="/', `href="${BLOG_ORIGIN}/`)
     .replaceAll('src="/', `src="${BLOG_ORIGIN}/`)
-    .replace(/<a href="([^"]+)"/g, '<a href="$1" target="_blank" rel="noopener noreferrer"')
+    .replace(/<a href="(https?:\/\/[^"]+)"/g, '<a href="$1" target="_blank" rel="noopener noreferrer"')
     .trim();
 }
 
