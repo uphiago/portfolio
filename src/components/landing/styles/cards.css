@@ -124,8 +124,9 @@
     font-family: var(--font-ibm); font-size: 10.5px; font-weight: 600;
     color: var(--m-ink);
     background: var(--m-line);
-    padding: 3px 8px;
-    border-radius: 3px;
+    padding: 3px 6px;
+    border-radius: 1px;
+    display: inline-block;
     margin-left: 8px;
     vertical-align: middle;
     text-transform: uppercase;
