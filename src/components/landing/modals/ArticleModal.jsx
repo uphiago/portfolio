@@ -63,7 +63,6 @@ export function ArticleModal({ openArticle, setOpenArticle }) {
     const target = document.getElementById(hash.slice(1));
     if (target) {
       target.scrollIntoView({ behavior: "smooth", block: "start" });
-      window.history.replaceState({}, "", hash);
     }
   };
 

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Ico } from "./icons";
 import { ARTICLES } from "./data";
 import { DEFAULT_MUSIC } from "./youtube";
@@ -13,25 +13,17 @@ export function MidfiV1({ articles = ARTICLES, music = DEFAULT_MUSIC }) {
   const [contactOpen, setContactOpen] = React.useState(false);
   const [openArticle, setOpenArticle] = React.useState(null);
   const searchParams = useSearchParams();
-  const router = useRouter();
   const initialized = React.useRef(false);
 
-  // Sync URL when opening/closing article
   const handleOpenArticle = React.useCallback((article) => {
     setOpenArticle(article);
-    const params = new URLSearchParams(searchParams);
-    params.set("post", article.id);
-    router.replace(`?${params.toString()}`, { scroll: false });
-  }, [searchParams, router]);
+  }, []);
 
   const handleCloseArticle = React.useCallback(() => {
     setOpenArticle(null);
-    const url = new URL(window.location.href);
-    url.searchParams.delete("post");
-    window.history.replaceState({}, "", url.pathname + (url.search || ""));
   }, []);
 
-  // Auto-open article from URL on first load
+  // Auto-open article from URL on first load (read-only, no writes to URL)
   React.useEffect(() => {
     if (initialized.current) return;
     initialized.current = true;
