@@ -326,6 +326,11 @@
   .mfi-article .afoot .esc-hint:hover {
     color: var(--m-ink);
   }
+  .mfi-article .afoot .afoot-left {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
   .mfi-article .article-actions {
     display: inline-flex;
     align-items: center;

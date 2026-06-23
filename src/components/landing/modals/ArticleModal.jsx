@@ -101,7 +101,10 @@ export function ArticleModal({ openArticle, setOpenArticle }) {
         )}
       </div>
       <div className="afoot">
-        <button type="button" className="esc-hint" onClick={() => setOpenArticle(null)}>esc to close</button>
+        <span className="afoot-left">
+          <button type="button" className="esc-hint" onClick={() => setOpenArticle(null)}>esc to close</button>
+          <button type="button" className="esc-hint" onClick={() => bodyRef.current?.scrollTo({ top: 0, behavior: "smooth" })} aria-label="Scroll to top">↑</button>
+        </span>
         <span className="article-actions">
           <button type="button" className={copied ? "flashed" : ""} onClick={copyLink}>copy link</button>
           <button type="button" className={copiedMd ? "flashed" : ""} onClick={copyMarkdown}>copy md</button>
