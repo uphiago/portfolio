@@ -163,15 +163,15 @@
     position: relative;
   }
   .mfi-article .article-close {
-    position: absolute; top: 12px; right: 14px;
+    position: absolute; top: 12px; right: 14px; z-index: 2;
     width: 24px; height: 24px; border-radius: 0;
     border: 0; background: transparent;
-    color: var(--m-ink-faint);
+    color: var(--m-ink-soft);
     cursor: pointer; display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-mono); font-size: 11px; line-height: 1;
+    font-family: var(--font-mono); font-size: 13px; line-height: 1;
     transition: background .15s ease, color .15s ease;
   }
-  .mfi-article .article-close:hover { background: transparent; color: var(--m-ink); }
+  .mfi-article .article-close:hover { background: transparent; color: #fff; }
   .mfi-article .ahead .crumb {
     font-family: var(--font-mono); font-size: 10.5px;
     color: var(--m-ink-soft); letter-spacing: 0.04em;
