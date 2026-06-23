@@ -1,0 +1,23 @@
+tests/portfolio-landing.test.jsx
+  s_367624849be038::t_75e209071705b7 281
+src/components/landing/blog.js
+  s_367624849be038::t_abf4a17a9a5777 9
+  s_367624849be038::t_4cb474c509c1e6 89-94,96
+  s_367624849be038::t_972d0543cb6880 134
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.11",
+  "base_commit_sha": "cc0a69bb3d4ee29e62918d897ba3e3a8e58f112a",
+  "prompts": {},
+  "sessions": {
+    "s_367624849be038": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_10deae073ffeu16N7PrtvkPbRY",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
