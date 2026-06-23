@@ -31,7 +31,8 @@ export function MidfiV1({ articles = ARTICLES, music = DEFAULT_MUSIC }) {
     initialized.current = true;
     const postId = searchParams.get("post");
     if (postId && articles.length > 0) {
-      const article = articles.find(a => a.id === postId);
+      const article = articles.find(a => a.id === postId)
+        || articles[/^\d+$/.test(postId) ? Number(postId) - 1 : -1];
       if (article) setOpenArticle(article);
     }
   }, [searchParams, articles]);
