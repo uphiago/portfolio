@@ -212,7 +212,7 @@ describe("MidfiV1", () => {
       "https://www.youtube-nocookie.com/embed/abc123?list=PL4NWyqf4Mpp2gOfgZFhOc9W3P--QKoprV&start=93&enablejsapi=1&playsinline=1&controls=0&rel=0&modestbranding=1"
     );
     expect(buildYoutubeEmbedUrl({ playlistId: "PL4NWyqf4Mpp2gOfgZFhOc9W3P--QKoprV", startSeconds: 93, autoplay: true, muted: true })).toBe(
-      "https://www.youtube.com/embed/videoseries?list=PL4NWyqf4Mpp2gOfgZFhOc9W3P--QKoprV&start=93&autoplay=1&mute=1&enablejsapi=1&playsinline=1&controls=0&rel=0&modestbranding=1"
+      "https://www.youtube-nocookie.com/embed/videoseries?list=PL4NWyqf4Mpp2gOfgZFhOc9W3P--QKoprV&start=93&autoplay=1&mute=1&enablejsapi=1&playsinline=1&controls=0&rel=0&modestbranding=1"
     );
   });
 
