@@ -1,0 +1,21 @@
+middleware.js
+  s_367624849be038::t_0ee6d4803da440 21
+  s_367624849be038::t_f4b2b5d890bccd 4-7,13,15
+  s_367624849be038::t_4d57990109836c 14,16
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.13",
+  "base_commit_sha": "24297c4baf1de5d86186a4b6bf7f2b5ea85580c7",
+  "prompts": {},
+  "sessions": {
+    "s_367624849be038": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_10deae073ffeu16N7PrtvkPbRY",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
