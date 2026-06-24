@@ -1,0 +1,23 @@
+src/components/landing/youtube.js
+  s_367624849be038::t_188d589beac68d 35-36
+tests/portfolio-landing.test.jsx
+  s_367624849be038::t_30d0a0e385d462 228
+  s_367624849be038::t_6243e8cf2d056a 212
+  s_367624849be038::t_df3bdc62cd6bfc 215
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.13",
+  "base_commit_sha": "ca5284f5259fee8dbb8cc3b0a0452cadc37b4737",
+  "prompts": {},
+  "sessions": {
+    "s_367624849be038": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_10deae073ffeu16N7PrtvkPbRY",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
