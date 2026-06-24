@@ -209,10 +209,10 @@ describe("MidfiV1", () => {
     expect(parsePlaylistId(playlistUrl)).toBe("PL4NWyqf4Mpp2gOfgZFhOc9W3P--QKoprV");
     expect(buildYoutubeThumbnailUrl("abc123")).toBe("https://i.ytimg.com/vi/abc123/hqdefault.jpg");
     expect(buildYoutubeEmbedUrl({ playlistId: "PL4NWyqf4Mpp2gOfgZFhOc9W3P--QKoprV", videoId: "abc123", startSeconds: 93 })).toBe(
-      "https://www.youtube-nocookie.com/embed/abc123?list=PL4NWyqf4Mpp2gOfgZFhOc9W3P--QKoprV&start=93&enablejsapi=1&playsinline=1&controls=0&rel=0&modestbranding=1"
+      "https://www.youtube.com/embed/abc123?list=PL4NWyqf4Mpp2gOfgZFhOc9W3P--QKoprV&start=93&enablejsapi=1&playsinline=1&controls=0&rel=0&modestbranding=1"
     );
     expect(buildYoutubeEmbedUrl({ playlistId: "PL4NWyqf4Mpp2gOfgZFhOc9W3P--QKoprV", startSeconds: 93, autoplay: true, muted: true })).toBe(
-      "https://www.youtube-nocookie.com/embed/videoseries?list=PL4NWyqf4Mpp2gOfgZFhOc9W3P--QKoprV&start=93&autoplay=1&mute=1&enablejsapi=1&playsinline=1&controls=0&rel=0&modestbranding=1"
+      "https://www.youtube.com/embed/videoseries?list=PL4NWyqf4Mpp2gOfgZFhOc9W3P--QKoprV&start=93&autoplay=1&mute=1&enablejsapi=1&playsinline=1&controls=0&rel=0&modestbranding=1"
     );
   });
 
@@ -225,7 +225,7 @@ describe("MidfiV1", () => {
           title: "Lo-fi deploy window",
           channelTitle: "hiago playlist",
           thumbnailUrl: "https://i.ytimg.com/vi/abc123/hqdefault.jpg",
-          embedUrl: "https://www.youtube-nocookie.com/embed/abc123?playlist=PL4NWyqf4Mpp2gOfgZFhOc9W3P--QKoprV&start=42&enablejsapi=1&playsinline=1&controls=0&rel=0&modestbranding=1",
+          embedUrl: "https://www.youtube.com/embed/abc123?playlist=PL4NWyqf4Mpp2gOfgZFhOc9W3P--QKoprV&start=42&enablejsapi=1&playsinline=1&controls=0&rel=0&modestbranding=1",
         }}
       />
     );

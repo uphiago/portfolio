@@ -32,8 +32,8 @@ export function parseStartSeconds(input = "") {
 
 export function buildYoutubeEmbedUrl({ playlistId, videoId = "", startSeconds = 0, autoplay = false, muted = false }) {
   const path = videoId
-    ? `https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}`
-    : "https://www.youtube-nocookie.com/embed/videoseries";
+    ? `https://www.youtube.com/embed/${encodeURIComponent(videoId)}`
+    : "https://www.youtube.com/embed/videoseries";
   const url = new URL(path);
 
   if (playlistId) {

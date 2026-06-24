@@ -103,7 +103,6 @@ export function MusicPlayer({ music = DEFAULT_MUSIC }) {
     loadYouTubeIframeApi().then((YT) => {
       if (cancelled || !YT || !iframeRef.current || playerRef.current) return;
       playerRef.current = new YT.Player(iframeRef.current, {
-        origin: window.location.origin,
         events: {
           onReady: (event) => {
             playerRef.current = event.target;
