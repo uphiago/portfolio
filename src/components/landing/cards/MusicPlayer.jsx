@@ -52,7 +52,7 @@ export function MusicPlayer({ music = DEFAULT_MUSIC }) {
       ? "thanks - you're on the list"
       : "field_notes.subscribe()";
 
-  const src = `${music.embedUrl}&origin=${encodeURIComponent(typeof window !== "undefined" ? window.location.origin : "https://hiago.sh")}`;
+  const src = music.embedUrl;
 
   const stopFade = () => {
     if (fadeRef.current) {
@@ -103,6 +103,7 @@ export function MusicPlayer({ music = DEFAULT_MUSIC }) {
     loadYouTubeIframeApi().then((YT) => {
       if (cancelled || !YT || !iframeRef.current || playerRef.current) return;
       playerRef.current = new YT.Player(iframeRef.current, {
+        origin: window.location.origin,
         events: {
           onReady: (event) => {
             playerRef.current = event.target;
