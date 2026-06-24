@@ -11,16 +11,20 @@ export default function OG() {
           width: "100%",
           height: "100%",
           display: "flex",
+          flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
           background: "#fbfaf6",
           color: "#0a0a0a",
           fontFamily: "monospace",
-          fontSize: 48,
-          fontWeight: 500,
         }}
       >
-        hiago.sh
+        <div style={{ fontSize: 48, fontWeight: 500 }}>
+          hiago.sh
+        </div>
+        <div style={{ fontSize: 22, color: "#8c8a86", marginTop: 14 }}>
+          DevOps &amp; Platform Engineer
+        </div>
       </div>
     ),
     { ...size },
