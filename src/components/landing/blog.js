@@ -75,6 +75,7 @@ function renderMarkdownHtml(markdown) {
     .replaceAll('href="/', `href="${BLOG_ORIGIN}/`)
     .replaceAll('src="/', `src="${BLOG_ORIGIN}/`)
     .replace(/<a href="(https?:\/\/[^"]+)"/g, '<a href="$1" target="_blank" rel="noopener noreferrer"')
+    .replace(/<a href="(?!https?:\/\/|#)[^"]*"/g, "<a href=\"#\"")
     .replace(/<h([1-6])>([^<]*)<\/h\1>/g, (_, level, text) => `<h${level} id="${slugify(text)}">${text}</h${level}>`)
     .trim();
 }
@@ -97,6 +98,7 @@ export function parseBlogMarkdown(path, markdown, index = 0) {
     title,
     meta: formatPostDate(date),
     url: pathToBlogUrl(path),
+    sourcePath: path,
     ...(summary ? { summary } : {}),
     ...(date ? { date } : {}),
     ...(author ? { author } : {}),
