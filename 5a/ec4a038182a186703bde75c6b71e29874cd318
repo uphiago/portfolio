@@ -1,0 +1,20 @@
+src/components/landing/cards/MusicPlayer.jsx
+  s_367624849be038::t_c9883e0b20889a 55
+  s_367624849be038::t_8fb9b27f83f873 106
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.13",
+  "base_commit_sha": "5aec4a038182a186703bde75c6b71e29874cd318",
+  "prompts": {},
+  "sessions": {
+    "s_367624849be038": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_10deae073ffeu16N7PrtvkPbRY",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
