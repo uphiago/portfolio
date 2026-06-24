@@ -1,0 +1,21 @@
+next.config.mjs
+  s_367624849be038::t_28aa3cf6228fd9 4
+middleware.js
+  s_367624849be038::t_1945cee16ae3cb 5-26,30,38,44-51
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.13",
+  "base_commit_sha": "8f08be7cfb04531165a5a8e1a36901f91738bb59",
+  "prompts": {},
+  "sessions": {
+    "s_367624849be038": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_10deae073ffeu16N7PrtvkPbRY",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
