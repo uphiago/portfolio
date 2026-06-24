@@ -1,0 +1,36 @@
+public/robots.txt
+  s_367624849be038::t_c55326d53270b4 1-4
+app/llms.txt/route.js
+  s_367624849be038::t_461237e4a87d4d 1-42
+app/sitemap.xml/route.js
+  s_367624849be038::t_9512354aea9648 1-36
+app/md/[slug]/route.js
+  s_367624849be038::t_1b4855676150ab 6-7
+middleware.js
+  s_367624849be038::t_f480dd359c56d7 3,5-6
+  s_367624849be038::t_215a58bc9eddff 7
+  s_367624849be038::t_c7b3b04080ab22 1-2,9-12,14
+  s_367624849be038::t_61b168d8f57cc9 13
+  s_367624849be038::t_ab7298e6d60922 4,8
+src/components/landing/blog.js
+  s_367624849be038::t_600a0c4d061441 78
+  s_367624849be038::t_66ad04068b64f5 101
+app/not-found.jsx
+  s_367624849be038::t_68f594549838a8 1-5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.13",
+  "base_commit_sha": "3e646c619b56b73d2d80f6303a66288a79721b60",
+  "prompts": {},
+  "sessions": {
+    "s_367624849be038": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_10deae073ffeu16N7PrtvkPbRY",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
