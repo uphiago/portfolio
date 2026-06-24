@@ -16,17 +16,11 @@ export default function OG() {
           background: "#fbfaf6",
           color: "#0a0a0a",
           fontFamily: "monospace",
+          fontSize: 48,
+          fontWeight: 500,
         }}
       >
-        <div
-          style={{
-            fontSize: 380,
-            fontWeight: 600,
-            letterSpacing: "-0.08em",
-          }}
-        >
-          h
-        </div>
+        hiago.sh
       </div>
     ),
     { ...size },
