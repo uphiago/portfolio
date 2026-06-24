@@ -4,7 +4,7 @@ const FAVICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"
 
 const CSP = [
   "default-src 'self'",
-  "script-src 'self' https://www.youtube.com https://vercel.live 'unsafe-inline' 'unsafe-eval'",
+  "script-src 'self' https://www.youtube.com https://vercel.live https://cloud.umami.is 'unsafe-inline' 'unsafe-eval'",
   "style-src 'self' 'unsafe-inline'",
   "frame-src 'self' https://www.youtube.com",
   "img-src 'self' https://*.ytimg.com https://i.ytimg.com https://vercel.live data: blob:",
@@ -42,12 +42,9 @@ export function middleware(request) {
     });
   }
 
-  // Apply security headers to HTML pages
+  // Apply security headers to all responses
   const response = NextResponse.next();
-  const ct = response.headers.get("content-type") || "";
-  if (ct.includes("text/html")) {
-    SECURITY_HEADERS.forEach((h) => response.headers.set(h.key, h.value));
-  }
+  SECURITY_HEADERS.forEach((h) => response.headers.set(h.key, h.value));
   return response;
 }
 
