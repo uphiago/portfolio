@@ -1,0 +1,19 @@
+next.config.mjs
+  s_367624849be038::t_7527db1d896da8 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "533f2a5f2ad5917771d683c420b764942b41b825",
+  "prompts": {},
+  "sessions": {
+    "s_367624849be038": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_10deae073ffeu16N7PrtvkPbRY",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
