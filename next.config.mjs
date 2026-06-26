@@ -4,7 +4,7 @@ const CSP = [
   "style-src 'self' 'unsafe-inline'",
   "frame-src 'self' https://www.youtube.com",
   "img-src 'self' https://*.ytimg.com https://i.ytimg.com https://vercel.live data: blob:",
-  "connect-src 'self' https://api.github.com https://raw.githubusercontent.com https://sheets.googleapis.com https://oauth2.googleapis.com https://cloud.umami.is https://vercel.live",
+  "connect-src 'self' https://api.github.com https://raw.githubusercontent.com https://sheets.googleapis.com https://oauth2.googleapis.com https://cloud.umami.is https://gateway.umami.is https://vercel.live",
   "font-src 'self' data:",
   "media-src 'self'",
   "object-src 'none'",
