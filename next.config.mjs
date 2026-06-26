@@ -1,6 +1,6 @@
 const CSP = [
   "default-src 'self'",
-  "script-src 'self' https://www.youtube.com https://vercel.live https://cloud.umami.is 'unsafe-inline' 'unsafe-eval'",
+  "script-src 'self' https://www.youtube.com https://vercel.live https://cloud.umami.is https://static.cloudflareinsights.com 'unsafe-inline' 'unsafe-eval'",
   "style-src 'self' 'unsafe-inline'",
   "frame-src 'self' https://www.youtube.com",
   "img-src 'self' https://*.ytimg.com https://i.ytimg.com https://vercel.live data: blob:",
