@@ -1,0 +1,19 @@
+app/not-found.jsx
+  s_367624849be038::t_dc87d7d5a689dc 1,4-28
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "22b7d8d370e7b634cb299f0709ca08b521e49c8f",
+  "prompts": {},
+  "sessions": {
+    "s_367624849be038": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_10deae073ffeu16N7PrtvkPbRY",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
