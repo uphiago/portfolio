@@ -1,0 +1,19 @@
+app/llms.txt/route.js
+  s_9d6b26015d42f7::t_981505b587437e 8,10,12-17,23-28,32,34-36,44
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "8e663d54e0bf03fc382638a80c71d813a8d924b3",
+  "prompts": {},
+  "sessions": {
+    "s_9d6b26015d42f7": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_1060f9af0ffe5fAaIQRtSwckUQ",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
