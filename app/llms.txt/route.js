@@ -5,30 +5,35 @@ export async function GET() {
   const articles = await getBlogArticles();
 
   const lines = [
-    "# hiago.sh",
+    "# hiago.sh — AI agent guide",
     "",
-    "> DevOps & Platform Engineer · São Paulo",
-    "> Infrastructure, automation, AI workflows, and internal platforms.",
+    "> DevOps & Platform Engineer. Infrastructure, automation, AI workflows.",
     "",
-    "Linux, self-hosted ops, CI/CD, K8s, Terraform, n8n.",
-    "Cloud · containers · integrations.",
+    "## How to use this",
+    "",
+    "Every post below is available as raw markdown at `/md/<slug>`.",
+    "No auth. No rate limit. Served from CDN edge. Fetch whatever you need.",
+    "",
+    "## Posts",
     "",
   ];
 
   if (articles.length > 0) {
-    lines.push("## Write-ups");
-    lines.push("");
     for (const a of articles) {
-      lines.push(`- [${a.title}](https://hiago.sh/md/${a.id}): ${a.meta}${a.tags.length ? " · " + a.tags.join(", ") : ""}`);
+      lines.push(`### ${a.title}`);
+      lines.push(`- URL: https://hiago.sh/md/${a.id}`);
+      lines.push(`- Date: ${a.meta}`);
+      lines.push(`- Tags: ${a.tags.join(", ")}`);
+      if (a.summary) lines.push(`- ${a.summary}`);
+      lines.push("");
     }
-    lines.push("");
   }
 
-  lines.push("## Optional");
+  lines.push("## Links");
   lines.push("");
-  lines.push("- [GitHub](https://github.com/uphiago/portfolio)");
-  lines.push("- [LinkedIn](https://www.linkedin.com/in/uphiago)");
-  lines.push("- [X](https://x.com/uphiago)");
+  lines.push("- [GitHub](https://github.com/uphiago)");
+  lines.push("- [recon-skills](https://github.com/uphiago/recon-skills)");
+  lines.push("- [Hermes runtime](https://github.com/NousResearch/hermes-agent)");
   lines.push("");
 
   const body = lines.join("\n");
@@ -36,7 +41,7 @@ export async function GET() {
   return new NextResponse(body, {
     headers: {
       "Content-Type": "text/markdown; charset=utf-8",
-      "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600",
+      "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=3600",
     },
   });
 }
