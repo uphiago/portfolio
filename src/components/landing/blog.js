@@ -1,22 +1,9 @@
 import { marked } from "marked";
+import { readFileSync, readdirSync } from "node:fs";
+import { join, relative } from "node:path";
 
-const BLOG_ORIGIN = "https://dotmindblog.vercel.app";
-const BLOG_REPO_API = "https://api.github.com/repos/uphiago/dotmindblog";
-const BLOG_RAW_ORIGIN = "https://raw.githubusercontent.com/uphiago/dotmindblog/main";
-
-export const BLOG_FALLBACK_ARTICLES = [
-  {
-    id: "agentic-engineering-guide",
-    title: "Skills Stack, MCP, and Project Context",
-    meta: "Apr 2026 · Dotmind it",
-    date: "2026-04-02T00:00:00-03:00",
-    tags: ["ai", "agents", "mcp"],
-    author: "iceteash",
-    url: `${BLOG_ORIGIN}/posts/2026/ai/agentic-engineering-guide/`,
-    summary: "A practical guide to building interoperable agents across any AI runtime.",
-    html: "<p>A practical guide to building interoperable agents across any AI runtime.</p>",
-  },
-];
+const POSTS_DIR = join(process.cwd(), "content", "posts");
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://hiago.sh";
 
 function parseTomlFrontmatter(markdown) {
   const match = markdown.match(/^\+\+\+\n([\s\S]*?)\n\+\+\+\n?/);
@@ -47,12 +34,12 @@ function formatPostDate(value) {
   return `${date.toLocaleString("en-US", { month: "short", timeZone: "UTC" })} ${date.getUTCFullYear()}`;
 }
 
-function pathToBlogUrl(path) {
-  const slug = path
-    .replace(/^content\//, "")
+function pathToBlogUrl(sourcePath) {
+  const slug = sourcePath
+    .replace(/^content\/posts\//, "")
     .replace(/\.md$/, "")
     .replace(/\/index$/, "");
-  return `${BLOG_ORIGIN}/${slug}/`;
+  return `${SITE_URL}/?post=${slug}`;
 }
 
 function slugify(text) {
@@ -72,22 +59,20 @@ function renderMarkdownHtml(markdown) {
   });
 
   return rendered
-    .replaceAll('href="/', `href="${BLOG_ORIGIN}/`)
-    .replaceAll('src="/', `src="${BLOG_ORIGIN}/`)
     .replace(/<a href="(https?:\/\/[^"]+)"/g, '<a href="$1" target="_blank" rel="noopener noreferrer"')
     .replace(/<a href="(?!https?:\/\/|#)[^"]*"/g, "<a href=\"#\"")
     .replace(/<h([1-6])>([^<]*)<\/h\1>/g, (_, level, text) => `<h${level} id="${slugify(text)}">${text}</h${level}>`)
     .trim();
 }
 
-export function parseBlogMarkdown(path, markdown, index = 0) {
+export function parseBlogMarkdown(sourcePath, markdown) {
   const { frontmatter, body } = parseTomlFrontmatter(markdown);
-  const title = frontmatter.title || path.split("/").pop().replace(/\.md$/, "");
+  const title = frontmatter.title || sourcePath.split("/").pop().replace(/\.md$/, "");
   const summary = frontmatter.description || "";
   const date = frontmatter.date || "";
   const author = frontmatter.author || frontmatter.authors?.[0] || "";
 
-  const slug = frontmatter.slug || path
+  const slug = frontmatter.slug || sourcePath
     .replace(/^content\/posts\//, "")
     .replace(/\.md$/, "")
     .replace(/\/index$/, "")
@@ -97,8 +82,8 @@ export function parseBlogMarkdown(path, markdown, index = 0) {
     id: slug,
     title,
     meta: formatPostDate(date),
-    url: pathToBlogUrl(path),
-    sourcePath: path,
+    url: pathToBlogUrl(sourcePath),
+    sourcePath,
     ...(summary ? { summary } : {}),
     ...(date ? { date } : {}),
     ...(author ? { author } : {}),
@@ -107,36 +92,42 @@ export function parseBlogMarkdown(path, markdown, index = 0) {
   };
 }
 
-async function getMarkdownPostPaths() {
-  const response = await fetch(`${BLOG_REPO_API}/git/trees/main?recursive=1`, { next: { revalidate: 300 } });
-  if (!response.ok) return [];
+function getMarkdownPostPaths() {
+  const paths = [];
 
-  const payload = await response.json();
-  return (payload.tree || [])
-    .filter((item) => item.type === "blob")
-    .map((item) => item.path)
-    .filter((path) => /^content\/posts\/.+\.md$/.test(path))
-    .filter((path) => !/\.pt\.md$/.test(path));
+  function walk(dir) {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      const full = join(dir, entry.name);
+      if (entry.isDirectory()) {
+        walk(full);
+      } else if (entry.name.endsWith(".md") && !entry.name.endsWith(".pt.md")) {
+        paths.push(relative(process.cwd(), full));
+      }
+    }
+  }
+
+  walk(POSTS_DIR);
+  return paths.sort();
 }
 
-export async function getBlogArticles() {
-  try {
-    const paths = await getMarkdownPostPaths();
-    if (paths.length === 0) return BLOG_FALLBACK_ARTICLES;
+export function getBlogArticles() {
+  const paths = getMarkdownPostPaths();
 
-    const articles = await Promise.all(paths.map(async (path, index) => {
-      const response = await fetch(`${BLOG_RAW_ORIGIN}/${path}`, { next: { revalidate: 300 } });
-      if (!response.ok) return null;
-      return parseBlogMarkdown(path, await response.text(), index);
-    }));
+  const articles = paths
+    .map((path) => parseBlogMarkdown(path, readFileSync(path, "utf-8")))
+    .filter((a) => a.title && a.html)
+    .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
 
-    const published = articles
-      .filter(Boolean)
-      .filter((article) => article.title && article.html)
-      .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+  return articles;
+}
 
-    return published.length > 0 ? published : BLOG_FALLBACK_ARTICLES;
-  } catch {
-    return BLOG_FALLBACK_ARTICLES;
-  }
+export function getArticleBySlug(slug) {
+  const articles = getBlogArticles();
+  return articles.find((a) => a.id === slug) || null;
+}
+
+export function getArticleMarkdown(slug) {
+  const article = getArticleBySlug(slug);
+  if (!article) return null;
+  return readFileSync(article.sourcePath, "utf-8");
 }

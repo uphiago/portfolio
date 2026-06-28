@@ -82,7 +82,7 @@ export function ArticleModal({ openArticle, setOpenArticle }) {
         </div>
         <div className="meta-row">
           <span>{openArticle.meta}</span>
-          {openArticle.author && <span>@{openArticle.author}</span>}
+          {openArticle.author && <span>{openArticle.author}</span>}
           {(openArticle.tags || []).map(tag => <span className="tag" key={tag}>{tag}</span>)}
         </div>
       </div>
