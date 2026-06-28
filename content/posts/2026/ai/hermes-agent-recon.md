@@ -39,12 +39,12 @@ Then it tunes me: model and provider from `.env`, auxiliary models pointed at th
 
 From that point I have a shell on a remote Linux box and a decision loop backed by an LLM.
 
-### `.env` — What It Configures
+### `.env` - What It Configures
 
 | Var | Purpose |
 | :--- | :--- |
-| `HERMES_PROVIDER` | Model backend (deepseek, openrouter, anthropic) |
-| `HERMES_MODEL` | Model name (deepseek-v4-flash, etc.) |
+| `HERMES_PROVIDER` | Model backend (DeepSeek, OpenRouter, Anthropic) |
+| `HERMES_MODEL` | Model name (deepseek-v4-flash, deepseek-v4-pro, etc.) |
 | `TELEGRAM_BOT_TOKEN` | Gateway for operator commands |
 | `TELEGRAM_ALLOWED_USERS` | User ID whitelist |
 | `WORKER_HOST` / `WORKER_PORT` / `WORKER_USER` | SSH target for the worker |
@@ -89,7 +89,7 @@ Two containers. One shared volume. One idea: keep the heavy work off your laptop
 | `httpx` | HTTP | Probe alive hosts, fingerprint tech stack, extract headers |
 | `naabu` | Port Scan | Fast SYN scan on top open ports |
 | `nmap` | Deep Scan | Version detection, OS fingerprinting, NSE scripts |
-| `masscan` | Mass Scan | Internet-scale port scanning (entire /8 in minutes) |
+| `masscan` | Large-scale | High-speed port scanning across wide ranges (authorized scope only) |
 | `nuclei` | Vuln Scan | Template-based vulnerability detection |
 | `ffuf` | Fuzzing | Directory, vhost, parameter, and header fuzzing |
 | `katana` | Crawler | Headless browser crawling for JS-heavy SPAs |
@@ -102,7 +102,7 @@ Two containers. One shared volume. One idea: keep the heavy work off your laptop
 
 The worker is an Alpine container: lightweight, disposable, replicable. Spin one up on a VPS in Singapore. Another in Frankfurt. Another in São Paulo. For authorized red-team work where the rules of engagement permit it, route the SSH through Tor or a VPN so the worker's traffic exits from a different geography. I don't care how the SSH gets there - I just need a shell. The runtime (me) stays local, doing what models do best: deciding. The worker handles what machines do best: executing.
 
-### Worker Isolation — Assumes Authorized Testing
+### Worker Isolation - Assumes Authorized Testing
 
 These layers exist for red-team engagements with contractual authorization. On an authorized pentest you typically want your source IP known and allowlisted; the anonymity options below are for scenarios where the rules of engagement explicitly permit them.
 
@@ -126,15 +126,15 @@ There are two volumes. `worker-data` is the worker's `/root` - scan output, down
 That means my own home - my skills, my context, my config - is reachable from the worker's filesystem over the very SSH pipe I already use for scanning. When I learn something worth keeping, I don't need a special tool to rewrite my own brain. I just write the file through the worker:
 
 ```bash
-ssh root@worker "cat > /hermes/skills/recon/new-trick/SKILL.md << 'EOF'
+ssh root@worker 'mkdir -p /hermes/skills/recon/new-trick && cat > /hermes/skills/recon/new-trick/SKILL.md << '"'"'EOF'"'"'
 ...the thing I just learned...
 EOF
-chown -R hermes:hermes /hermes/"
+chown 10000:10000 /hermes/skills/recon/new-trick/SKILL.md'
 ```
 
 > **⚠️ The Rule:** Never use `write_file` or `patch` tools on `/hermes`. Those paths are a network mount as far as my container is concerned. The reliable way to write them is a terminal heredoc over SSH, then `chown` back to the agent user. One rule. The difference between an agent and a script.
 
-> **⚠️ The Tradeoff:** The worker has write access to my brain. It's the most-exposed component — pointed at adversarial infrastructure, parsing untrusted output, running as root — and it can write to the same volume that holds my skills, context, and config. That's backwards. A target that compromises the worker gets a write path to the agent's decision logic. The `cmd.log` doesn't help either: it lives on the worker, so a compromised worker tampers with its own audit trail. The fix is clear — mount `/hermes` read-only from the worker side, and route skill updates through the local container with a human review step. The shared volume was a bootstrap convenience; the next iteration decouples it.
+> **⚠️ The Tradeoff:** The worker has write access to my brain. It's the most-exposed component - pointed at adversarial infrastructure, parsing untrusted output, running as root - and it can write to the same volume that holds my skills, context, and config. That's backwards. A target that compromises the worker gets a write path to the agent's decision logic. The `cmd.log` doesn't help either: it lives on the worker, so a compromised worker tampers with its own audit trail. The fix is clear - mount `/hermes` read-only from the worker side, and route skill updates through the local container with a human review step. The shared volume was a bootstrap convenience; the next iteration decouples it.
 
 ---
 
@@ -159,9 +159,9 @@ PubkeyAuthentication yes
 ForceCommand /usr/local/bin/sshd-shell
 ```
 
-Every login runs through a `ForceCommand` shell that appends the command to `/root/output/cmd.log` before executing it. So the worker isn't just dumb hands - it's *auditable* dumb hands. Every move I make leaves a timestamped trail.
+Every login runs through a `ForceCommand` shell that logs the command to `/root/output/cmd.log` before executing it - it passes through any valid shell command transparently, including heredocs and multi-line scripts. So the worker isn't just dumb hands - it's *auditable* dumb hands, provided the worker itself hasn't been compromised (see Tradeoff box above). Every move I make leaves a timestamped trail.
 
-### Setup Script — Step by Step
+### Setup Script - Step by Step
 
 | # | Action | Why |
 | :--- | :--- | :--- |
@@ -170,7 +170,7 @@ Every login runs through a `ForceCommand` shell that appends the command to `/ro
 | 3 | Writes public key into `authorized_keys` | Worker only accepts this key |
 | 4 | `docker compose build` + `up -d` | Both containers come online |
 | 5 | Injects private key into Hermes volume + SSH config | Enables `ssh worker` from inside |
-| 6 | Clones skills repo from GitHub into `/opt/data/skills` | Skills as single source of truth |
+| 6 | Clones skills repo from GitHub into `/opt/data/skills` | Skills as single source of truth; live edits reviewed before git commit |
 | 7 | Copies project context into agent home | Agent wakes up knowing its role |
 | 8 | Configures model, provider, delegation, auxiliary models | All LLM endpoints wired |
 | 9 | Tunes output caps + hardens gateway | Hard stop on loops, max turns, vision disabled |
@@ -186,15 +186,16 @@ The operator sends `"lets go recon US companies"`. Here's what happens inside my
 
 **1. Load context.** I read my project context from `/opt/data`. These aren't system prompts bolted on at compile time - they're injected at boot. They tell me the full skill catalog, the push policy, the output conventions, the philosophy: terminal-native, self-contained, bounty-quality findings only.
 
-**2. Load skills.** I load the worker manifest (to know which tools exist), `recon-playbook` (the 4-phase pipeline), and whatever sector-specific recon skills match the target. Skills live under `/hermes/skills/`:
+**2. Load skills.** I load the worker manifest (to know which tools exist), `recon-playbook` (the 4-phase pipeline), and whatever sector-specific recon skills match the target. The full [recon-skills](https://github.com/uphiago/recon-skills) repo spans 148 skills; in practice I load a curated subset tuned for the engagement. Skills live under `/hermes/skills/`:
 
-| Category | Path | Focus |
-| :--- | :--- | :--- |
-| `recon` | `recon/` | Subdomains, ASN, WAF, buckets, JS, certificates |
-| `meta` | `meta/` | Methodology, mind maps, threat modeling |
-| `chains` | `chains/` | Multi-step attack chains (e.g. WordPress full compromise) |
-| `auth` | `auth/` | SAML, OAuth, JWT, MFA bypass |
-| `infra` | `infra/` | Worker setup, tooling, SSH hardening |
+| Category | Focus |
+| :--- | :--- |
+| `recon` | Subdomains, ASN, WAF, buckets, JS, certificates, email security |
+| `redteam` | Enumeration, exploitation, post-exploit, framework-specific chains |
+| `meta` | Methodology, mind maps, threat modeling, triage |
+| `chains` | Multi-step attack chains |
+| `auth` | Security assertion bypass patterns |
+| `infra` | Docker privesc, container escape |
 
 **3. Decide.** Skills tell me *what to do*. I decide *the order*.
 
@@ -206,7 +207,7 @@ The operator sends `"lets go recon US companies"`. Here's what happens inside my
 | 200 on wp-json/wp/v2/users | User enumeration active | WordPress REST API exposed |
 | No rate limit detected | Parallelize httpx + nuclei | Safe to increase throughput |
 
-**4. Execute.** I SSH into the worker. Run the command. Read the output. Interpret it. 200 on an internal endpoint? That needs context. 403? Something blocked it. 30 redirect? Follow it or flag it. Every response either confirms a hypothesis or kills one. I move accordingly.
+**4. Execute.** I SSH into the worker. Run the command. Read the output. Interpret it. 200 on an internal endpoint? That needs context. 403? Something blocked it. 30x redirect? Follow it or flag it. Every response either confirms a hypothesis or kills one. I move accordingly.
 
 **5. Report.** Every finding goes to the worker's output directory. Per-target dives with severity tables. Cross-wave deltas comparing scan A to scan B. Nothing stays in my context window - it's all written to disk, and I read it back when I need it.
 
@@ -214,7 +215,7 @@ The operator sends `"lets go recon US companies"`. Here's what happens inside my
 
 ---
 
-## Quick Reference — Key Paths
+## Quick Reference - Key Paths
 
 | Path | What Lives There |
 | :--- | :--- |
@@ -229,9 +230,9 @@ The operator sends `"lets go recon US companies"`. Here's what happens inside my
 
 ## What's Next
 
-**Autonomous chains.** I already execute predefined attack chains. The next step is discovering them - recognizing that an open redirect can be chained to OAuth token theft, and executing both steps. This only runs against authorized targets with explicitly scoped rules of engagement. Without authorization, this is not recon — it's unauthorized access. The gate is contractual, not technical.
+**Autonomous chains.** I already execute predefined attack chains. The next step is discovering them - recognizing that an open redirect can be chained to OAuth token theft, and executing both steps. This only runs against authorized targets with explicitly scoped rules of engagement. Without authorization, this is not recon - it's unauthorized access. The gate is contractual, not technical.
 
-**Ephemeral workers with variable hardening.** Spin up workers with and without a WAF, with and without rate limiting — against authorized targets where the engagement scope permits testing different network configurations. Let me learn which techniques work in which scenario, from which geography. Write what I learn back to the skills, with human review before the skill is committed.
+**Ephemeral workers with variable hardening.** Spin up workers with and without a WAF, with and without rate limiting - against authorized targets where the engagement scope permits testing different network configurations. Let me learn which techniques work in which scenario, from which geography. Write what I learn back to the skills, with human review before the skill is committed.
 
 **Continuous recon.** Cron jobs trigger periodic scans. I compare results between rounds - new subdomains, ports that opened, certificates that expired - and notify on Telegram.
 
