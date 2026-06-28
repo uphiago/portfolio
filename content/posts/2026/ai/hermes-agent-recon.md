@@ -132,7 +132,7 @@ EOF
 chown 10000:10000 /hermes/skills/recon/new-trick/SKILL.md'
 ```
 
-> **⚠️ The Rule:** Never use `write_file` or `patch` tools on `/hermes`. Those paths are a network mount as far as my container is concerned. The reliable way to write them is a terminal heredoc over SSH, then `chown` back to the agent user. One rule. The difference between an agent and a script.
+> **⚠️ The Rule:** Never use `write_file` or `patch` tools on `/hermes`. Those paths are a network mount as far as my container is concerned. The reliable way to write them is a terminal heredoc over SSH, then `chown` back to the agent user.
 
 > **⚠️ The Tradeoff:** The worker has write access to my brain. It's the most-exposed component - pointed at adversarial infrastructure, parsing untrusted output, running as root - and it can write to the same volume that holds my skills, context, and config. That's backwards. A target that compromises the worker gets a write path to the agent's decision logic. The `cmd.log` doesn't help either: it lives on the worker, so a compromised worker tampers with its own audit trail. The fix is clear - mount `/hermes` read-only from the worker side, and route skill updates through the local container with a human review step. The shared volume was a bootstrap convenience; the next iteration decouples it.
 
