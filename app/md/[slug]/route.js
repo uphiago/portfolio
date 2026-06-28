@@ -5,7 +5,8 @@ export async function GET(request, { params }) {
   const { slug } = await params;
   if (!slug) return NextResponse.json({ error: "missing slug" }, { status: 400 });
 
-  const markdown = getArticleMarkdown(slug);
+  const cleanSlug = slug.replace(/\.md$/, "");
+  const markdown = getArticleMarkdown(cleanSlug);
   if (!markdown) return NextResponse.json({ error: "not found" }, { status: 404 });
 
   return new NextResponse(markdown, {
