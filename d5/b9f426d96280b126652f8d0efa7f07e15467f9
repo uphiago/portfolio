@@ -1,0 +1,34 @@
+src/components/landing/blog.js
+  s_9d6b26015d42f7::t_a5cbaf0188bb98 2-3,5-6,37-39,42,68,70,75,85-86,95-107,109-110,113-132
+src/components/landing/modals/ArticleModal.jsx
+  s_9d6b26015d42f7::t_9c8bda40e7c786 85
+next.config.mjs
+  s_9d6b26015d42f7::t_f204885ef60640 6
+  s_9d6b26015d42f7::t_67fe5432a20793 7
+content/posts/2026/ai/hermes-agent-recon.md
+  s_9d6b26015d42f7::t_61f32ffb58eff9 58,60-62,70-74,81-83,133,147,158
+  s_9d6b26015d42f7::t_67244a77469b07 59,63-69,75-80
+  s_9d6b26015d42f7::t_f90570b45fea38 55-57
+  s_9d6b26015d42f7::t_04e99f44cc1206 84-86,130-132
+  s_9d6b26015d42f7::t_d7f9360651721e 134-136,144-146
+  s_9d6b26015d42f7::t_b96de37f314c91 148-150,155-157
+  s_9d6b26015d42f7::t_dce74a965ecfa9 159-161
+app/md/[slug]/route.js
+  s_9d6b26015d42f7::t_4013d90c477483 2,8-9,14
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "d5b9f426d96280b126652f8d0efa7f07e15467f9",
+  "prompts": {},
+  "sessions": {
+    "s_9d6b26015d42f7": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_1060f9af0ffe5fAaIQRtSwckUQ",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
