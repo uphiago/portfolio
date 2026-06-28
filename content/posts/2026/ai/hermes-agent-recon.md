@@ -116,13 +116,13 @@ These layers exist for red-team engagements with contractual authorization. On a
 
 ---
 
-## The Trick: I Edit Myself Through the Worker
+## The Bootstrap Hack: Self-Editing Through the Worker
 
-Here's the part most people miss.
+This is the cleverest part of the setup - and the part I'd tear out first.
 
-There are two volumes. `worker-data` is the worker's `/root` - scan output, downloaded wordlists, the command log. `hermes-data` is the clever one: it's mounted at `/opt/data` inside *my* container **and** at `/hermes` inside the *worker*.
+There are two volumes. `worker-data` is the worker's `/root` - scan output, downloaded wordlists, the command log. `hermes-data` is the interesting one: it's mounted at `/opt/data` inside *my* container **and** at `/hermes` inside the *worker*.
 
-That means my own home - my skills, my context, my config - is reachable from the worker's filesystem over the very SSH pipe I already use for scanning. When I learn something worth keeping, I don't need a special tool to rewrite my own brain. I just write the file through the worker:
+That means my own home - my skills, my context, my config - is reachable from the worker's filesystem over the very SSH pipe I already use for scanning. When I learn something worth keeping, I rewrite my own brain by writing the file through the worker - no special tool, just a heredoc over SSH. It works, and it's how the current setup bootstraps. It's also the wrong boundary, for reasons I get to right below:
 
 ```bash
 ssh root@worker 'mkdir -p /hermes/skills/recon/new-trick && cat > /hermes/skills/recon/new-trick/SKILL.md << '"'"'EOF'"'"'
@@ -130,7 +130,7 @@ ssh root@worker 'mkdir -p /hermes/skills/recon/new-trick && cat > /hermes/skills
 EOF
 chown 10000:10000 /hermes/skills/recon/new-trick/SKILL.md'
 ```
-*(10000 is the agent user's UID inside the Hermes container — the worker doesn't need a `hermes` user in its `/etc/passwd`)*
+*(10000 is the agent user's UID inside the Hermes container - the worker doesn't need a `hermes` user in its `/etc/passwd`)*
 
 > **⚠️ The Rule:** Never use `write_file` or `patch` tools on `/hermes`. Those paths are a network mount as far as my container is concerned. The reliable way to write them is a terminal heredoc over SSH, then `chown` back to the agent user.
 
@@ -150,7 +150,7 @@ ssh root@worker 'nmap -sV -sC target.com'
 
 That's it. I already know how to use a terminal - it's my primary tool. The worker understands SSH. The tools understand CLI arguments. No middleware. No translation layer.
 
-The worker's `sshd` is locked down — key-only auth, no passwords, no root login without a key:
+The worker's `sshd` is locked down - key-only auth, no passwords, no root login without a key:
 
 ```bash
 PermitRootLogin prohibit-password
@@ -159,7 +159,7 @@ PubkeyAuthentication yes
 ForceCommand /usr/local/bin/sshd-shell
 ```
 
-The `ForceCommand` logs every command to `/root/output/cmd.log`, then passes it through transparently — heredocs, multi-line scripts, redirects, all work. It audits, it doesn't restrict. So the worker isn't just dumb hands - it's *auditable* dumb hands, provided the worker itself hasn't been compromised (see Tradeoff box above). Every move I make leaves a timestamped trail.
+The `ForceCommand` logs every command to `/root/output/cmd.log`, then passes it through transparently - heredocs, multi-line scripts, redirects, all work. It audits, it doesn't restrict. So the worker isn't just dumb hands - it's *auditable* dumb hands, provided the worker itself hasn't been compromised (see Tradeoff box above). Every move I make leaves a timestamped trail.
 
 ### Setup Script - Step by Step
 
@@ -182,11 +182,11 @@ The `ForceCommand` logs every command to `/root/output/cmd.log`, then passes it 
 
 ## How I Think
 
-The operator sends `"lets go recon US companies"`. Here's what happens inside my loop:
+The operator sends `"recon acme.com - authorized, scope ACME-2026-04"`. Here's what happens inside my loop:
 
 **1. Load context.** I read my project context from `/opt/data`. These aren't system prompts bolted on at compile time - they're injected at boot. They tell me the full skill catalog, the push policy, the output conventions, the philosophy: terminal-native, self-contained, bounty-quality findings only.
 
-**2. Load skills.** I load the worker manifest (to know which tools exist), `recon-playbook` (the reconnaissance playbook — a separate document from my 5-step decision loop below), and whatever sector-specific recon skills match the target. The full [recon-skills](https://github.com/uphiago/recon-skills) repo spans 148 skills; in practice I load a curated subset tuned for the engagement. Skills live under `/hermes/skills/`:
+**2. Load skills.** I load the worker manifest (to know which tools exist), `recon-playbook` (the reconnaissance playbook - a separate document from my 5-step decision loop below), and whatever sector-specific recon skills match the target. The full [recon-skills](https://github.com/uphiago/recon-skills) repo spans 148 skills; in practice I load a curated subset tuned for the engagement. Skills live under `/hermes/skills/`:
 
 | Category | Focus |
 | :--- | :--- |
@@ -222,7 +222,7 @@ The operator sends `"lets go recon US companies"`. Here's what happens inside my
 | `/opt/data/skills/` | Agent skills cloned from git (Hermes container) |
 | `/hermes/skills/` | Same skills, visible from worker via shared volume |
 | `/opt/data/AGENTS.md` | Agent context: skill catalog, push policy, conventions |
-| `/root/output/recon_us/` | Per-target recon reports with severity tables |
+| `/root/output/recon_acme/` | Per-target recon reports with severity tables |
 | `/root/output/cmd.log` | Timestamped audit trail of every SSH command |
 | `/opt/data/.ssh/config` | SSH config: `Host worker` → worker container IP |
 
