@@ -1,0 +1,22 @@
+content/posts/2026/ai/hermes-agent-recon.md
+  s_cb036e7f463374::t_2c3c33f9577709 119,121,123,125
+  s_cb036e7f463374::t_b6528eabda776a 133,153,162,189
+  s_cb036e7f463374::t_543b8d49e0e587 225
+  s_cb036e7f463374::t_4e917879caa60a 185
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "5d41af89cf2ef3f904c5d0a95de395b19995670c",
+  "prompts": {},
+  "sessions": {
+    "s_cb036e7f463374": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "434e470e-c6fc-4a5a-af1d-02465b1d4108",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
