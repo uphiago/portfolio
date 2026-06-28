@@ -19,7 +19,7 @@ export async function GET() {
     lines.push("## Write-ups");
     lines.push("");
     for (const a of articles) {
-      lines.push(`- [${a.title}](https://hiago.sh/?post=${a.id}.md): ${a.meta}${a.tags.length ? " · " + a.tags.join(", ") : ""}`);
+      lines.push(`- [${a.title}](https://hiago.sh/md/${a.id}): ${a.meta}${a.tags.length ? " · " + a.tags.join(", ") : ""}`);
     }
     lines.push("");
   }

@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
-import { getArticleMarkdown } from "@/src/components/landing/blog";
+import { getArticleMarkdown, getBlogArticles } from "@/src/components/landing/blog";
+
+export function generateStaticParams() {
+  const articles = getBlogArticles();
+  return articles.map((a) => ({ slug: a.id }));
+}
 
 export async function GET(request, { params }) {
   const { slug } = await params;
