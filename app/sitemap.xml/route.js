@@ -15,7 +15,7 @@ export async function GET() {
 
   for (const a of articles) {
     urls.push(
-      `  <url><loc>${escapeXml(`${BASE}/?post=${a.id}`)}</loc><lastmod>${a.date ? a.date.slice(0, 10) : ""}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`
+      `  <url><loc>${escapeXml(`${BASE}/?post=${a.id}`)}</loc><lastmod>${a.lastmod? a.lastmod.slice(0, 10) : a.date ? a.date.slice(0, 10) : ""}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`
     );
   }
 

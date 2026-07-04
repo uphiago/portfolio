@@ -30,6 +30,7 @@ export async function generateMetadata({ searchParams }) {
       locale: "en_US",
       article: {
         publishedTime: article.date || undefined,
+        modifiedTime: article.lastmod || undefined,
         authors: [article.author || "Hiago Felipe"],
         tags: article.tags || [],
       },

@@ -70,6 +70,7 @@ export function parseBlogMarkdown(sourcePath, markdown) {
   const title = frontmatter.title || sourcePath.split("/").pop().replace(/\.md$/, "");
   const summary = frontmatter.description || "";
   const date = frontmatter.date || "";
+  const lastmod = frontmatter.lastmod || "";
   const author = frontmatter.author || frontmatter.authors?.[0] || "";
 
   const slug = frontmatter.slug || sourcePath
@@ -78,14 +79,18 @@ export function parseBlogMarkdown(sourcePath, markdown) {
     .replace(/\/index$/, "")
     .replace(/\//g, "-");
 
+  const dateStr = formatPostDate(date);
+  const lastmodStr = lastmod && lastmod !== date ? ` · updated ${formatPostDate(lastmod)}` : "";
+
   return {
     id: slug,
     title,
-    meta: formatPostDate(date),
+    meta: `${dateStr}${lastmodStr}`,
     url: pathToBlogUrl(sourcePath),
     sourcePath,
     ...(summary ? { summary } : {}),
     ...(date ? { date } : {}),
+    ...(lastmod ? { lastmod } : {}),
     ...(author ? { author } : {}),
     tags: frontmatter.tags || [],
     html: renderMarkdownHtml(body),
