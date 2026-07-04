@@ -1,0 +1,21 @@
+content/posts/2026/ai/agentic-engineering-guide.md
+  s_9d6b26015d42f7::t_6a2961fa7c259f 325
+  s_9d6b26015d42f7::t_9632e9d58ef652 246,248,250
+  s_9d6b26015d42f7::t_b9ab0b8c9ae96b 300-310
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "5672d8f8a2ac1004c65e99a8037fdc80fa617c4d",
+  "prompts": {},
+  "sessions": {
+    "s_9d6b26015d42f7": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_1060f9af0ffe5fAaIQRtSwckUQ",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
