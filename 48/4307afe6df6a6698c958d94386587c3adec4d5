@@ -1,0 +1,24 @@
+app/sitemap.xml/route.js
+  s_9d6b26015d42f7::t_fadd7714adbd0f 18
+app/page.jsx
+  s_9d6b26015d42f7::t_95c70004d8136c 33
+src/components/landing/blog.js
+  s_9d6b26015d42f7::t_fdcc4694f06324 93
+  s_9d6b26015d42f7::t_30770886bff675 73,82-84,88
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "484307afe6df6a6698c958d94386587c3adec4d5",
+  "prompts": {},
+  "sessions": {
+    "s_9d6b26015d42f7": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_1060f9af0ffe5fAaIQRtSwckUQ",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
