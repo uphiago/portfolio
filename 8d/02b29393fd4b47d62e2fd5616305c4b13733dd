@@ -1,0 +1,22 @@
+src/components/landing/modals/ArticleModal.jsx
+  s_367624849be038::t_5fe83033ba2f22 86-91
+  s_367624849be038::t_93b53c27cd2538 2
+src/components/landing/styles/modals.css
+  s_367624849be038::t_85fffa9cff8d6f 204-216
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "8d02b29393fd4b47d62e2fd5616305c4b13733dd",
+  "prompts": {},
+  "sessions": {
+    "s_367624849be038": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_10deae073ffeu16N7PrtvkPbRY",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
