@@ -45,7 +45,7 @@ export const Ico = {
     </svg>
   ),
   external: (
-    <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4">
+    <svg width="10" height="10" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
       <path d="M6 3.2H3.6A1.6 1.6 0 0 0 2 4.8v7.6A1.6 1.6 0 0 0 3.6 14h7.6a1.6 1.6 0 0 0 1.6-1.6V10"/>
       <path d="M8.5 2H14v5.5"/>
       <path d="M7.5 8.5 14 2"/>
