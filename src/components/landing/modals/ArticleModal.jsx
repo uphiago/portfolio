@@ -1,4 +1,5 @@
 import React from "react";
+import { Ico } from "../icons";
 import { BaseModal } from "./BaseModal";
 
 export function ArticleModal({ openArticle, setOpenArticle }) {
@@ -82,7 +83,12 @@ export function ArticleModal({ openArticle, setOpenArticle }) {
         </div>
         <div className="meta-row">
           <span>{openArticle.meta}</span>
-          {openArticle.author && <span>{openArticle.author}</span>}
+          {openArticle.author && <span className="meta-sep">·</span>}
+          {openArticle.author && (
+            <a className="author-link" href="https://x.com/uphiago" target="_blank" rel="noopener noreferrer">
+              @{openArticle.author}{Ico.external}
+            </a>
+          )}
           {(openArticle.tags || []).map(tag => <span className="tag" key={tag}>{tag}</span>)}
         </div>
       </div>

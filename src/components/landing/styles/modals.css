@@ -201,6 +201,19 @@
     display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
     font-family: var(--font-mono); font-size: 11px; color: var(--m-ink-soft);
   }
+  .mfi-article .ahead .meta-sep {
+    color: var(--m-ink-faint);
+  }
+  .mfi-article .ahead .author-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    color: var(--m-ink-soft);
+    text-decoration: none;
+  }
+  .mfi-article .ahead .author-link:hover {
+    color: var(--m-ink);
+  }
   .mfi-article .ahead .tag {
     padding: 2px 8px; border: 1px solid var(--m-line-strong);
     border-radius: 2px; font-size: 10px;
