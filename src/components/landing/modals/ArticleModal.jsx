@@ -86,7 +86,7 @@ export function ArticleModal({ openArticle, setOpenArticle }) {
           {openArticle.author && <span className="meta-sep">·</span>}
           {openArticle.author && (
             <a className="author-link" href="https://x.com/uphiago" target="_blank" rel="noopener noreferrer">
-              @{openArticle.author}{Ico.external}
+              {openArticle.author}{Ico.external}
             </a>
           )}
           {(openArticle.tags || []).map(tag => <span className="tag" key={tag}>{tag}</span>)}
