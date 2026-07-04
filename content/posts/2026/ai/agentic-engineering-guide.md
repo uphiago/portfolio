@@ -243,10 +243,11 @@ Never trust the first output. The secret to quality is an **immediate** feedback
 1. **Action:** The agent executes a task (e.g., generates a JSON).
 2. **Validation:** A script runs immediately to verify integrity (e.g., `validate_json.py`).
 3. **Decision:**
-   - If **Failure**: The agent reads the error, fixes it, and tries again.
+   - If **Failure**: The agent reads the error, fixes it, and retries (max 3 attempts with exponential backoff).
    - If **Success**: Only then is the result presented to the user.
+4. **Circuit Breaker:** If all retries fail, stop and escalate to a human. Don't loop indefinitely.
 
-This prevents cascading errors and ensures robust outputs.
+This prevents cascading errors and ensures robust outputs without burning tokens on infinite retry loops.
 
 ### C. Orchestration (Orchestrator-Workers)
 
@@ -296,6 +297,17 @@ def test_git_safe_block():
     assert agent.tools_called == ["pre_push_check.sh"]
 ```
 
+### F. Observability — You Can't Fix What You Can't See
+
+Agents in production are opaque by default. Without visibility into what they're doing, debugging becomes guesswork.
+
+- **Structured Logging:** Log every tool call, its input, output, and duration. JSON format preferred.
+- **Tracing:** Track the full agent loop (Research → Plan → Execute → Verify) as a single trace with spans for each step. OpenTelemetry is the standard.
+- **Metrics:** Monitor token usage per task, success/failure rate, and latency percentiles (p50/p95/p99).
+- **Alerting:** Trigger alerts when the agent's error rate spikes or when a tool returns unexpected output patterns.
+
+**Practical tip:** Even a simple `scripts/trace.sh` that appends `{timestamp, action, duration_ms, status}` to a JSONL file is better than no observability at all. Start there, evolve to OpenTelemetry later.
+
 ---
 
 ## 6. Quick Reference
@@ -310,7 +322,7 @@ This section is a practical checklist for getting productive with agents, skills
 - **All agents at once:** use [skills.sh](https://skills.sh): installs to one folder, symlinks to Claude Code, Cursor, Codex, and 40+ others automatically.
 - **Rule of thumb:** if it affects the repository's code or rules, keep it in the repository.
 
-**CLAUDE.md / AGENTS.md best practices:** keep it short (200 lines is a widely-used community heuristic, not an official limit); include build, test, and lint commands; document architectural decisions and project conventions; list technical gotchas (e.g., strict mode, import rules); avoid theory; what the linter already enforces doesn't need to live here.
+**CLAUDE.md / AGENTS.md best practices:** keep it short (200 lines is a widely-used community heuristic, not an official limit — beyond ~300 lines, the agent starts missing instructions buried in the middle, consistent with the "Lost in the Middle" effect documented in §2); include build, test, and lint commands; document architectural decisions and project conventions; list technical gotchas (e.g., strict mode, import rules); avoid theory; what the linter already enforces doesn't need to live here.
 
 > **Note:** `.claude/commands/` still works as a simpler alternative: a single `.md` file with no folder structure. Skills are recommended since they support supporting files, scripts, and invocation control.
 
