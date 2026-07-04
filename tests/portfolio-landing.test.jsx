@@ -191,8 +191,8 @@ describe("MidfiV1", () => {
       <MidfiV1 articles={[{
         id: "01",
         title: "Skills Stack, MCP, and Project Context",
-        meta: "Apr 2026 · Dotmind it",
-        url: "https://dotmindblog.vercel.app/posts/2026/ai/agentic-engineering-guide/",
+      meta: "Apr 2026",
+      url: "https://hiago.sh/?post=2026/ai/agentic-engineering-guide",
         html: "<p>A practical guide.</p>",
       }]} />
     );
@@ -281,7 +281,7 @@ npx skills add repo
       id: "2026-ai-agentic-engineering-guide",
       title: "Skills Stack, MCP, and Project Context",
       meta: "Apr 2026",
-      url: "https://dotmindblog.vercel.app/posts/2026/ai/agentic-engineering-guide/",
+      url: "https://hiago.sh/?post=2026/ai/agentic-engineering-guide",
       summary: "A practical guide to building interoperable agents across any AI runtime.",
       date: "2026-04-02T00:00:00-03:00",
       author: "iceteash",
@@ -303,7 +303,7 @@ npx skills add repo
           title: "Markdown Post",
           meta: "Apr 2026 · Dotmind it",
           author: "iceteash",
-          url: "https://dotmindblog.vercel.app/posts/2026/ai/agentic-engineering-guide/",
+      url: "https://hiago.sh/?post=2026/ai/agentic-engineering-guide",
           html: '<h2>Quick Setup</h2><p>Text</p><img src="https://dotmindblog.vercel.app/images/diagram.png" alt="Diagram"><pre><code>echo ok</code></pre>',
         }}
         setOpenArticle={() => {}}
@@ -315,7 +315,7 @@ npx skills add repo
     expect(html).not.toContain("⌘ write-ups");
     expect(html).toContain('<img src="https://dotmindblog.vercel.app/images/diagram.png" alt="Diagram">');
     expect(html).toContain("<pre><code>echo ok</code></pre>");
-    expect(html).toContain("@iceteash");
+    expect(html).toContain("iceteash");
     expect(html).toContain("copy link");
   });
 
