@@ -14,6 +14,7 @@ tags = [
   "claude",
 ]
 authors = ["uphiago"]
+lastmod = 2026-07-04T19:30:00-03:00
 draft = false
 +++
 
