@@ -1,0 +1,25 @@
+app/md/[slug]/route.js
+  s_367624849be038::t_b1bd0e619e367a 2,12-73,75
+tests/portfolio-landing.test.jsx
+  s_367624849be038::t_6e10d00af74065 306
+  s_367624849be038::t_7f5e41ebc43bb3 195
+  s_367624849be038::t_7ea29f8bfd1b79 194
+  s_367624849be038::t_0835b04825ec8b 318
+  s_367624849be038::t_7fb36f1a106791 284
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "4f5c944aadafb5c88c4a4b15ab4c5bda734edceb",
+  "prompts": {},
+  "sessions": {
+    "s_367624849be038": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_10deae073ffeu16N7PrtvkPbRY",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
