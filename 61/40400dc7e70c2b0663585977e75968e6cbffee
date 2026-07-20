@@ -1,0 +1,30 @@
+app/llms.txt/route.js
+  s_367624849be038::t_ab35801f72fb53 10
+src/components/landing/modals/ContactModal.jsx
+  s_367624849be038::t_f897c25ce0b347 28
+app/opengraph-image.jsx
+  s_367624849be038::t_e008a316e398fe 26
+tests/portfolio-landing.test.jsx
+  s_367624849be038::t_0f83a1e14e71a3 152
+app/layout.jsx
+  s_367624849be038::t_9bf03cc5ecfeb7 23,43,50
+  s_367624849be038::t_fd5e6a11261fff 27
+src/components/landing/cards/TerminalHero.jsx
+  s_367624849be038::t_b0f9b15b6f833f 13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "6140400dc7e70c2b0663585977e75968e6cbffee",
+  "prompts": {},
+  "sessions": {
+    "s_367624849be038": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_10deae073ffeu16N7PrtvkPbRY",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
