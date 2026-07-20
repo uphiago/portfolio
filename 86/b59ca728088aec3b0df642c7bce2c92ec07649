@@ -1,0 +1,23 @@
+app/layout.jsx
+  s_367624849be038::t_4c330c542cba64 10,17
+src/components/landing/cards/MusicPlayer.jsx
+  s_367624849be038::t_b68f6a0131b6f4 194
+  s_367624849be038::t_0d01404d346d8c 55
+  s_367624849be038::t_b9d1ee9fe3641b 164-169,171-174
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "86b59ca728088aec3b0df642c7bce2c92ec07649",
+  "prompts": {},
+  "sessions": {
+    "s_367624849be038": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_10deae073ffeu16N7PrtvkPbRY",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
