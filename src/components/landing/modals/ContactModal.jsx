@@ -25,7 +25,7 @@ export function ContactModal({ setContactOpen }) {
       </p>
 
       <div style={{margin:"0 0 16px"}}>
-        <div className="row"><span className="k">role</span><span className="v">DevOps & Platform Engineer</span></div>
+        <div className="row"><span className="k">role</span><span className="v">Sr. Systems Specialist &amp; DevOps</span></div>
         <div className="row"><span className="k">based</span><span className="v">São Paulo, Brasil</span></div>
         <div className="row">
           <span className="k">email</span>

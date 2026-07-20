@@ -7,7 +7,7 @@ export async function GET() {
   const lines = [
     "# hiago.sh — AI agent guide",
     "",
-    "> DevOps & Platform Engineer. Infrastructure, automation, AI workflows.",
+    "> Sr. Systems Specialist & DevOps. Infrastructure, automation, AI workflows.",
     "",
     "## How to use this",
     "",

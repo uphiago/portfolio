@@ -23,7 +23,7 @@ export default function OG() {
           hiago.sh
         </div>
         <div style={{ fontSize: 22, color: "#8c8a86", marginTop: 14 }}>
-          DevOps &amp; Platform Engineer
+          Sr. Systems Specialist &amp; DevOps
         </div>
       </div>
     ),

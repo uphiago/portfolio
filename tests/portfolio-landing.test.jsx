@@ -149,7 +149,7 @@ describe("MidfiV1", () => {
     const html = renderToStaticMarkup(<MidfiV1 />);
 
     expect(html).toContain("hiago");
-    expect(html).toContain("devops &amp; platform engineer · são paulo");
+    expect(html).toContain("sr. systems specialist &amp; devops · são paulo");
     expect(html).toContain("infrastructure, automation, ai workflows, and internal platforms.");
     expect(html).toContain("linux, self-hosted ops, ci/cd, k8s, terraform, n8n.");
     expect(html).toContain("cloud · containers · integrations");

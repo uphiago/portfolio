@@ -10,7 +10,7 @@ export function TerminalHero({ setContactOpen }) {
       </div>
       <div className="terminal-copy">
         <div className="accent">hiago felipe</div>
-        <div>devops & platform engineer · são paulo</div>
+        <div>sr. systems specialist & devops · são paulo</div>
         <div className="terminal-gap" />
         <div>infrastructure, automation, ai workflows, and internal platforms.</div>
         <div>linux, self-hosted ops, ci/cd, k8s, terraform, n8n.</div>

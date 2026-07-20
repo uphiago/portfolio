@@ -20,11 +20,11 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://hiago.sh";
 export const metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Hiago | DevOps & Platform Engineer",
+    default: "Hiago | Sr. Systems Specialist &amp; DevOps",
     template: "%s | Hiago",
   },
   description:
-    "Portfolio of Hiago Felipe — DevOps & platform engineer focused on reliable systems, automation, self-hosted ops, CI/CD, Kubernetes, and infrastructure.",
+    "Portfolio of Hiago Felipe — Sr. Systems Specialist & DevOps focused on infrastructure, automation, self-hosted ops, CI/CD, Kubernetes, and platform engineering.",
   applicationName: "hiago.sh",
   authors: [{ name: "Hiago Felipe", url: siteUrl }],
   creator: "Hiago Felipe",
@@ -40,14 +40,14 @@ export const metadata = {
     type: "website",
     url: siteUrl,
     siteName: "hiago.sh",
-    title: "Hiago | DevOps & Platform Engineer",
+    title: "Hiago | Sr. Systems Specialist &amp; DevOps",
     description:
       "Reliable platforms, automation, and deployment workflows. Self-hosted ops, CI/CD, Kubernetes, Terraform, AI workflows.",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Hiago | DevOps & Platform Engineer",
+    title: "Hiago | Sr. Systems Specialist &amp; DevOps",
     description:
       "Reliable platforms, automation, and deployment workflows. Self-hosted ops, CI/CD, Kubernetes, Terraform, AI workflows.",
     creator: "@uphiago",
