@@ -52,7 +52,7 @@ export function MusicPlayer({ music = DEFAULT_MUSIC }) {
       ? "thanks - you're on the list"
       : "field_notes.subscribe()";
 
-  const [deferredSrc, setDeferredSrc] = React.useState("");
+  const src = music.embedUrl;
 
   const stopFade = () => {
     if (fadeRef.current) {
@@ -161,17 +161,7 @@ export function MusicPlayer({ music = DEFAULT_MUSIC }) {
     setVolumeNow(next);
   };
 
-  const embedLoaded = Boolean(deferredSrc);
-
-  const loadEmbed = () => {
-    if (!embedLoaded) setDeferredSrc(music.embedUrl);
-  };
-
   const togglePlayback = () => {
-    if (!embedLoaded) {
-      loadEmbed();
-      return;
-    }
     if (isPlaying) {
       stopFade();
       playerRef.current?.pauseVideo?.();
@@ -191,7 +181,7 @@ export function MusicPlayer({ music = DEFAULT_MUSIC }) {
             <iframe
               ref={iframeRef}
               title="YouTube playlist player"
-              src={deferredSrc}
+              src={src}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               referrerPolicy="strict-origin-when-cross-origin"
               allowFullScreen
