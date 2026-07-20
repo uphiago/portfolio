@@ -41,11 +41,11 @@
   }
   .mfi-modal .row:last-of-type { border-bottom: none; }
   .mfi-modal .row .k {
-    font-family: var(--font-mono); font-size: 11px;
+    font-family: var(--font-mono); font-size: 12px;
     color: var(--m-ink-soft); letter-spacing: 0.02em;
   }
   .mfi-modal .row .v {
-    font-family: var(--font-ibm); font-size: 13.5px; color: var(--m-ink);
+    font-family: var(--font-ibm); font-size: 14px; color: var(--m-ink);
     line-height: 1.45;
   }
   .mfi-modal .copy-email {
@@ -89,12 +89,12 @@
   .mfi-modal .copy-status {
     margin-left: 8px;
     font-family: var(--font-mono);
-    font-size: 10.5px;
+    font-size: 10px;
     color: var(--m-ink-soft);
   }
   .mfi-modal label {
     display: block;
-    font-family: var(--font-mono); font-size: 11px; color: var(--m-ink-soft);
+    font-family: var(--font-mono); font-size: 12px; color: var(--m-ink-soft);
     margin-bottom: 6px;
   }
   .mfi-modal input, .mfi-modal textarea {
@@ -105,7 +105,7 @@
     border-radius: 3px;
     background: rgba(255, 255, 255, 0.28);
     padding: 10px 12px;
-    font-family: var(--font-ibm); font-size: 13.5px;
+    font-family: var(--font-ibm); font-size: 14px;
     color: var(--m-ink); outline: none;
     transition: border-color .15s ease, background .15s ease, box-shadow .15s ease;
     resize: vertical;
@@ -168,12 +168,12 @@
     border: 0; background: transparent;
     color: var(--m-ink-soft);
     cursor: pointer; display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-mono); font-size: 13px; line-height: 1;
+    font-family: var(--font-mono); font-size: 14px; line-height: 1;
     transition: background .15s ease, color .15s ease;
   }
   .mfi-article .article-close:hover { background: transparent; color: var(--m-ink); }
   .mfi-article .ahead .crumb {
-    font-family: var(--font-mono); font-size: 10.5px;
+    font-family: var(--font-mono); font-size: 10px;
     color: var(--m-ink-soft); letter-spacing: 0.04em;
   }
   .mfi-article .ahead .ti {
@@ -199,7 +199,7 @@
   }
   .mfi-article .ahead .meta-row {
     display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
-    font-family: var(--font-mono); font-size: 11px; color: var(--m-ink-soft);
+    font-family: var(--font-mono); font-size: 12px; color: var(--m-ink-soft);
   }
   .mfi-article .ahead .meta-sep {
     color: var(--m-ink-faint);
@@ -295,7 +295,7 @@
     min-width: 540px;
     border-collapse: collapse;
     margin: 12px 0 16px;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.45;
   }
   .mfi-article .abody table {
@@ -313,7 +313,7 @@
   }
   .mfi-article .abody th {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 12px;
     color: var(--m-ink-soft);
     background: rgba(255,255,255,0.34);
   }
@@ -324,7 +324,7 @@
     border-top: 1px solid var(--m-line);
     padding: 14px 28px;
     display: flex; justify-content: space-between; align-items: center;
-    font-family: var(--font-mono); font-size: 11px;
+    font-family: var(--font-mono); font-size: 12px;
     color: var(--m-ink-soft);
     background: var(--m-paper-2);
   }
@@ -427,7 +427,7 @@
     position: absolute; right: 12px; bottom: 12px;
     padding: 4px 10px; border-radius: 2px;
     background: rgba(0,0,0,0.85); color: #f1efe8;
-    font-family: var(--font-mono); font-size: 11px;
+    font-family: var(--font-mono); font-size: 12px;
   }
   .mfi-video .vplayer .vbadge {
     position: absolute; left: 12px; top: 12px;
@@ -442,11 +442,11 @@
   }
   .mfi-video .vinfo-block .vt {
     font-family: var(--font-ibm); font-weight: 600;
-    font-size: 19px; line-height: 1.25; letter-spacing: -0.015em;
+    font-size: 20px; line-height: 1.25; letter-spacing: -0.015em;
     color: #f1efe8; margin: 0 0 8px;
   }
   .mfi-video .vinfo-block .vm {
-    font-family: var(--font-mono); font-size: 11px;
+    font-family: var(--font-mono); font-size: 12px;
     color: #888; margin-bottom: 14px;
   }
   .mfi-video .vinfo-block .vdesc {
@@ -462,7 +462,7 @@
     padding: 8px 14px;
     background: transparent; color: #f1efe8;
     border: 1px solid #2a2a2a; border-radius: 3px;
-    font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+    font-family: var(--font-mono); font-size: 12px; font-weight: 500;
     cursor: pointer; text-decoration: none;
     transition: background .15s ease, border-color .15s ease;
   }
