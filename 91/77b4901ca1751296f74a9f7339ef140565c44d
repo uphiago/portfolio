@@ -1,0 +1,56 @@
+src/components/landing/styles/base.css
+  s_367624849be038::t_0b7de49746eddd 136
+  s_367624849be038::t_198331ff470ed5 110
+  s_367624849be038::t_61f9dff2e15a23 84
+  s_367624849be038::t_62614fba5c79f7 120,124
+src/components/landing/styles/cards.css
+  s_367624849be038::t_34dd0ebe9f6a0b 514
+  s_367624849be038::t_af3c6439fccbcd 477
+  s_367624849be038::t_30d5893dba2ed7 285,292-293
+  s_367624849be038::t_6193a991f0f144 53,56
+  s_367624849be038::t_613b243bb470c8 260
+  s_367624849be038::t_6a26118ba08e2b 437
+  s_367624849be038::t_38fcd58853b085 208
+  s_367624849be038::t_2443f50444dd04 508
+  s_367624849be038::t_3e7c7e63a32913 526
+  s_367624849be038::t_2a5a86d9e06423 446
+  s_367624849be038::t_b1cba114ff5dc9 123
+  s_367624849be038::t_3a5d3fcecf87a1 61
+  s_367624849be038::t_f0c1bf181d6f9c 456
+  s_367624849be038::t_dfb42fdfbac831 245
+  s_367624849be038::t_094ba89a5caa9e 20
+  s_367624849be038::t_b98b4f5658ab6f 185
+src/components/landing/styles/modals.css
+  s_367624849be038::t_1072e9dccefce8 449
+  s_367624849be038::t_867143de0ac167 176
+  s_367624849be038::t_f0a24a8b511e61 465
+  s_367624849be038::t_e6d462b9ddc843 44,48
+  s_367624849be038::t_28564e563bccad 316
+  s_367624849be038::t_6476ec83ab6416 445
+  s_367624849be038::t_feeb1880777dd6 171
+  s_367624849be038::t_c838e616f938fd 92,97
+  s_367624849be038::t_c2369dc923132b 327
+  s_367624849be038::t_0559d22bc1e2ee 298
+  s_367624849be038::t_c0d125fbb58bba 430
+  s_367624849be038::t_768c5a1dd65cb3 108
+  s_367624849be038::t_52a9c032575321 202
+src/components/landing/styles/responsive.css
+  s_367624849be038::t_b9ef47b9b7f7b1 223
+  s_367624849be038::t_e2535ca461817e 154
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "9177b4901ca1751296f74a9f7339ef140565c44d",
+  "prompts": {},
+  "sessions": {
+    "s_367624849be038": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_10deae073ffeu16N7PrtvkPbRY",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
