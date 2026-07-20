@@ -81,7 +81,7 @@
     transition: transform .2s cubic-bezier(.2,.7,.3,1), box-shadow .2s ease;
     position: relative;
     overflow: hidden;
-    border-top-color: var(--m-highlight);
+    box-shadow: 0 10px 28px rgba(44, 39, 28, 0.055), inset 0 1px 0 var(--m-highlight);
   }
   /* Cards are static surfaces - no hover.
      Hover lives only on clickable children: .btn, .star-row, .drag-tile, .social. */
