@@ -20,7 +20,7 @@ export function WriteupsCard({ ARTICLES, setOpenArticle, music }) {
             const isNew = i === 0;
             const rowContent = (
               <>
-              <span className="idx">{String(i + 1).padStart(2, "0")}</span>
+              <span className="idx">{String(ARTICLES.length - i).padStart(2, "0")}</span>
               <div>
                 <div className="ti">{a.title}{isNew && <span className="new-badge">new</span>}</div>
               </div>
