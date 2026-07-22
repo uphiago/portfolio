@@ -1,0 +1,54 @@
+content/posts/2026/iot/iot-malware-autopsy.md
+  s_9b136eeab32680::t_1cc0162b510374 248
+  s_9b136eeab32680::t_712853a2967e9d 88-89
+  s_9b136eeab32680::t_f3d6d81b54f339 252
+  s_9b136eeab32680::t_92ea01c8e3b291 354
+  s_9b136eeab32680::t_16be74440ebeb2 250-251
+  s_9b136eeab32680::t_cd1458cd919d27 346
+  s_9b136eeab32680::t_2dea2657a05702 197
+  s_9b136eeab32680::t_e43a369a4a4300 348
+  s_9b136eeab32680::t_127ae32c7492aa 15
+  s_9b136eeab32680::t_656ebb9364c97b 330
+  s_9b136eeab32680::t_8b1377670f3bc4 3
+  s_9b136eeab32680::t_7d2b8430664bbc 19
+  s_9b136eeab32680::t_baa2c043e2d4d1 334
+  s_9b136eeab32680::t_6d66a70755b8e4 17
+  s_9b136eeab32680::t_a33cb94cb26126 235
+  s_9b136eeab32680::t_b74fcf6e250d9b 82
+  s_9b136eeab32680::t_9c9cd642dbe352 18
+  s_9b136eeab32680::t_425e31fa5d8360 342
+  s_9b136eeab32680::t_6c5d750f87fc80 332
+  s_9b136eeab32680::t_7a3fc2e9430a2d 1-2
+  s_9b136eeab32680::t_ebcc667ecae0fc 4-6,12-14
+  s_9b136eeab32680::t_9efb968050a385 16
+  s_9b136eeab32680::t_ce00944d0f4dd0 20-22,79-81
+  s_9b136eeab32680::t_91e304fb21352f 83-87
+  s_9b136eeab32680::t_af8b3850e14840 90-92,194-196
+  s_9b136eeab32680::t_3fcbde0dc91456 198-200,232-234
+  s_9b136eeab32680::t_a77cfa827a3e22 236-238,245-247
+  s_9b136eeab32680::t_3d97c4abdeba13 249
+  s_9b136eeab32680::t_bddc8ab7d26c8e 253-255,327-329
+  s_9b136eeab32680::t_05fe6a462d05d0 331
+  s_9b136eeab32680::t_f21dd7c90adcd8 333
+  s_9b136eeab32680::t_b43f38c9cfd3d1 335-337,339-341
+  s_9b136eeab32680::t_a5d3f80c4f53c1 343-345
+  s_9b136eeab32680::t_6b3f1c6337b161 347
+  s_9b136eeab32680::t_5c97b93ada58b9 349-353
+  s_9b136eeab32680::t_e3ad59e9fb9b7b 355-357
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "1cb8138ff1d8b97d6ed5b455e10720508400f639",
+  "prompts": {},
+  "sessions": {
+    "s_9b136eeab32680": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_079891c56ffe9B95GJ8Gt4uhBG",
+        "model": "deepseek-v4-flash-free"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
