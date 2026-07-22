@@ -22,19 +22,12 @@ export function ArticleModal({ openArticle, setOpenArticle }) {
 
   const copyMarkdown = async () => {
     try {
-      if (openArticle.html) {
+      if (openArticle.rawMarkdown) {
+        await navigator.clipboard.writeText(openArticle.rawMarkdown);
+      } else if (openArticle.html) {
         const div = document.createElement("div");
         div.innerHTML = openArticle.html;
         const text = div.textContent || div.innerText || "";
-        await navigator.clipboard.writeText(text);
-      } else {
-        const text = (openArticle.body || []).map(b => {
-          if (b.t === "h") return `### ${b.v}`;
-          if (b.t === "p") return b.v;
-          if (b.t === "code") return b.v;
-          if (b.t === "ul") return b.v.map(li => `- ${li}`).join("\n");
-          return "";
-        }).join("\n\n");
         await navigator.clipboard.writeText(text);
       }
       setCopiedMd(true);

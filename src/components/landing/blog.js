@@ -94,6 +94,7 @@ export function parseBlogMarkdown(sourcePath, markdown) {
     ...(author ? { author } : {}),
     tags: frontmatter.tags || [],
     html: renderMarkdownHtml(body),
+    rawMarkdown: body,
   };
 }
 
