@@ -1,0 +1,21 @@
+src/components/landing/modals/ArticleModal.jsx
+  s_9b136eeab32680::t_1c497b466146f6 25-27
+src/components/landing/blog.js
+  s_9b136eeab32680::t_49fed6e09982a7 97
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "d21bd7e0ee35b09832d0de3cfe44946cd9c35fb9",
+  "prompts": {},
+  "sessions": {
+    "s_9b136eeab32680": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_079891c56ffe9B95GJ8Gt4uhBG",
+        "model": "deepseek-v4-flash-free"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
