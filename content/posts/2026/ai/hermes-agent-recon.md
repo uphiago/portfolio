@@ -19,7 +19,7 @@ draft = false
 +++
 
 > **TL;DR:** Barbarossa connects an agent orchestrator to isolated workers through typed MCP capabilities and durable jobs.
-> If this infrastructure model is relevant, continue for its architecture, deployment, routing, and verification.
+> [github.com/uphiago/barbarossa](https://github.com/uphiago/barbarossa) - continue for its architecture, deployment, routing, and verification.
 
 > **Author's note:** An agent is not a worker, and a worker is not a task.
 > Skills define routing and evaluation, `AGENTS.md` sets operational
