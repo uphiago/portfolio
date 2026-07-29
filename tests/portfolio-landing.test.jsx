@@ -3,12 +3,12 @@ import { readFileSync } from "node:fs";
 import { generateKeyPairSync } from "node:crypto";
 import { act } from "react";
 import { createRoot } from "react-dom/client";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { generateMetadata } from "@/app/page";
 import { MidfiV1 } from "@/src/components/landing/MidfiV1";
 import { ContactModal } from "@/src/components/landing/modals/ContactModal";
-import { ArticleModal } from "@/src/components/landing/modals/ArticleModal";
+import { ArticleModal, getArticleScrollDelta } from "@/src/components/landing/modals/ArticleModal";
 import { VideoModal } from "@/src/components/landing/modals/VideoModal";
 import { MUSIC_DEFAULT_VOLUME, MUSIC_FADE_MS, MUSIC_FADE_STEPS } from "@/src/components/landing/cards/MusicPlayer";
 import { ARTICLES, VIDEOS } from "@/src/components/landing/data";
@@ -328,6 +328,49 @@ npx skills add repo
     expect(html).toContain("<pre><code>echo ok</code></pre>");
     expect(html).toContain("iceteash");
     expect(html).toContain("copy link");
+  });
+
+  it("maps standard scroll keys to article-body deltas", () => {
+    expect(getArticleScrollDelta("ArrowDown", 480)).toBe(40);
+    expect(getArticleScrollDelta("ArrowUp", 480)).toBe(-40);
+    expect(getArticleScrollDelta("PageDown", 480)).toBe(480);
+    expect(getArticleScrollDelta("PageUp", 480)).toBe(-480);
+    expect(getArticleScrollDelta("Enter", 480)).toBeNull();
+  });
+
+  it("scrolls the article body without intercepting editable targets", async () => {
+    const rootElement = document.createElement("div");
+    document.body.appendChild(rootElement);
+    const root = createRoot(rootElement);
+
+    await act(async () => {
+      root.render(
+        <ArticleModal
+          openArticle={{ id: "01", title: "Keyboard test", meta: "Today", html: "<input aria-label=\"editor\">" }}
+          setOpenArticle={() => {}}
+        />
+      );
+    });
+
+    const body = rootElement.querySelector(".abody");
+    const scrollBy = vi.fn();
+    Object.defineProperty(body, "clientHeight", { configurable: true, value: 360 });
+    body.scrollBy = scrollBy;
+
+    const pageDown = new KeyboardEvent("keydown", { key: "PageDown", bubbles: true, cancelable: true });
+    await act(async () => window.dispatchEvent(pageDown));
+
+    expect(scrollBy).toHaveBeenCalledWith({ top: 360 });
+    expect(pageDown.defaultPrevented).toBe(true);
+
+    const arrowDown = new KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true, cancelable: true });
+    await act(async () => rootElement.querySelector("input").dispatchEvent(arrowDown));
+
+    expect(scrollBy).toHaveBeenCalledTimes(1);
+    expect(arrowDown.defaultPrevented).toBe(false);
+
+    await act(async () => root.unmount());
+    document.body.removeChild(rootElement);
   });
 
   it("renders the selected social icon row in the topbar", () => {

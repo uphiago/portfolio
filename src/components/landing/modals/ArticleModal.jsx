@@ -2,10 +2,36 @@ import React from "react";
 import { Ico } from "../icons";
 import { BaseModal } from "./BaseModal";
 
+export function getArticleScrollDelta(key, clientHeight) {
+  if (key === "ArrowDown") return 40;
+  if (key === "ArrowUp") return -40;
+  if (key === "PageDown") return clientHeight;
+  if (key === "PageUp") return -clientHeight;
+  return null;
+}
+
 export function ArticleModal({ openArticle, setOpenArticle }) {
   const [copied, setCopied] = React.useState(false);
   const [copiedMd, setCopiedMd] = React.useState(false);
   const bodyRef = React.useRef(null);
+
+  React.useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.target instanceof Element && event.target.closest("input, textarea, select, [contenteditable]")) return;
+
+      const body = bodyRef.current;
+      if (!body) return;
+
+      const delta = getArticleScrollDelta(event.key, body.clientHeight);
+      if (delta === null) return;
+
+      event.preventDefault();
+      body.scrollBy({ top: delta });
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   if (!openArticle) return null;
 
