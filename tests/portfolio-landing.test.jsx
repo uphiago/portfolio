@@ -412,7 +412,8 @@ npx skills add repo
     expect(html).toContain('title="x"');
     expect(html).not.toContain('title="youtube"');
     expect(html).not.toContain('title="tiktok"');
-    expect(html).not.toContain('class="brand"');
+    expect(html).toContain('class="brand-key"');
+    expect(html).toContain('src="/icon.svg"');
     expect(html).toContain("2026 hiago");
     expect(css).toMatch(/\.mfi-socials\s*\{[^}]*margin-left:\s*auto/);
   });
