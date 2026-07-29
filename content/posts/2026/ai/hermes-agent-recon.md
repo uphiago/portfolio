@@ -135,13 +135,14 @@ BARBAROSSA_CODEX_AUTH_FILE=
 BARBAROSSA_GITHUB_TOKEN_FILE=
 ```
 
-`.env` is a trusted, POSIX-shell-compatible `KEY=value` file because the
-bootstrap and Compose wrapper source it. Quote literal values when needed and
-never place command substitutions or untrusted content in it.
+Keep `.env` to simple configuration assignments such as `NAME=value` and
+paths. Barbarossa reads it on the host before Compose starts, so it is not a
+place for shell commands, command substitutions, or copied untrusted content.
 
-Empty credential paths select restricted files under
-`BARBAROSSA_RUNTIME_DIR`; these variables never contain raw tokens. Configure
-Hermes in `hermes.env`:
+Leave the three `*_FILE` variables empty to use restricted files created under
+`BARBAROSSA_RUNTIME_DIR`. Put the actual Codex or GitHub credential in those
+files, not in `.env`; the variables only override their paths. Configure Hermes
+in `hermes.env`:
 
 ```dotenv
 HERMES_MODEL_PROVIDER=deepseek
