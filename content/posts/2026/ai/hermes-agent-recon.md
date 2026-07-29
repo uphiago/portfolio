@@ -133,9 +133,8 @@ BARBAROSSA_CODEX_AUTH_FILE=
 BARBAROSSA_GITHUB_TOKEN_FILE=
 ```
 
-Leave the three `*_FILE` variables empty to use restricted files created under
-`BARBAROSSA_RUNTIME_DIR`. Put the actual Codex or GitHub credential in those
-files, not in `.env`; the variables only override their paths. Configure Hermes
+Codex and GitHub credentials stay in separate files. The optional `*_FILE`
+entries in `.env` only override where Barbarossa finds them. Configure Hermes
 in `hermes.env`:
 
 ```dotenv
