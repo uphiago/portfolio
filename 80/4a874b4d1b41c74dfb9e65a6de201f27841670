@@ -1,0 +1,23 @@
+docs/superpowers/specs/2026-07-29-stable-tab-title-design.md
+  s_984d5fd06bf290::t_0c0e89d70df358 1-13
+tests/portfolio-landing.test.jsx
+  s_984d5fd06bf290::t_7fe577b7ff469a 8,29-38
+docs/superpowers/plans/2026-07-29-stable-tab-title.md
+  s_984d5fd06bf290::t_0c0e89d70df358 1-72
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "804a874b4d1b41c74dfb9e65a6de201f27841670",
+  "prompts": {},
+  "sessions": {
+    "s_984d5fd06bf290": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019faf95-1e92-79d0-800a-c12c0cacf1c3",
+        "model": "gpt-5.6-terra"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
