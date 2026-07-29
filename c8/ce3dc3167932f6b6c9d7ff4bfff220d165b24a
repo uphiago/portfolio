@@ -1,0 +1,25 @@
+src/components/landing/MidfiV1.jsx
+  s_ca67b08826dd73::t_111cd032321b27 58-62
+  s_ca67b08826dd73::t_ba00559a74f6d3 57,69
+src/components/landing/styles/cards.css
+  s_ca67b08826dd73::t_111cd032321b27 219-223
+tests/portfolio-landing.test.jsx
+  s_ca67b08826dd73::t_4c98ea6c7a2871 414
+  s_ca67b08826dd73::t_212492689a642c 416-418
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "c8ce3dc3167932f6b6c9d7ff4bfff220d165b24a",
+  "prompts": {},
+  "sessions": {
+    "s_ca67b08826dd73": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fafd4-7976-7f41-894c-999f03702ca2",
+        "model": "gpt-5.6-terra"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
