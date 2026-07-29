@@ -5,6 +5,7 @@ import { act } from "react";
 import { createRoot } from "react-dom/client";
 import { describe, expect, it } from "vitest";
 
+import { generateMetadata } from "@/app/page";
 import { MidfiV1 } from "@/src/components/landing/MidfiV1";
 import { ContactModal } from "@/src/components/landing/modals/ContactModal";
 import { ArticleModal } from "@/src/components/landing/modals/ArticleModal";
@@ -25,6 +26,16 @@ import {
 } from "@/src/lib/newsletterSheet";
 
 describe("MidfiV1", () => {
+  it("keeps the root title when generating metadata for a blog post", async () => {
+    const metadata = await generateMetadata({
+      searchParams: Promise.resolve({ post: "pentest-playbook" }),
+    });
+
+    expect(metadata.title).toBeUndefined();
+    expect(metadata.openGraph.title).toBeTruthy();
+    expect(metadata.twitter.title).toBeTruthy();
+  });
+
   it("installs Vercel Analytics in the root layout", () => {
     const layout = readFileSync("app/layout.jsx", "utf8");
 

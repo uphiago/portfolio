@@ -19,7 +19,6 @@ export async function generateMetadata({ searchParams }) {
   const url = `https://hiago.sh/?post=${article.id}`;
 
   return {
-    title: `${article.title} — hiago.sh`,
     description: article.summary || `Write-up by Hiago Felipe.`,
     openGraph: {
       title: article.title,
