@@ -40,16 +40,6 @@ export function MidfiV1({ articles = ARTICLES, music = DEFAULT_MUSIC }) {
   return (
     <section data-screen-label="v1·midfi - Builder-led" className="mfi">
       <div className="mfi-shell">
-        {/* TOPBAR */}
-        <header className="mfi-topbar">
-          <img className="brand-key" src="/icon.svg" alt="Hiago" />
-          <nav className="mfi-socials" aria-label="Social links">
-            <a className="social" title="github" aria-label="GitHub" href="https://github.com/uphiago/portfolio" target="_blank" rel="noopener noreferrer">{Ico.github}</a>
-            <a className="social" title="linkedin" aria-label="LinkedIn" href="https://www.linkedin.com/in/uphiago" target="_blank" rel="noopener noreferrer">{Ico.linkedin}</a>
-            <a className="social" title="x" aria-label="X (Twitter)" href="https://x.com/uphiago" target="_blank" rel="noopener noreferrer">{Ico.x}</a>
-          </nav>
-        </header>
-
         {/* BENTO */}
         <main className="mfi-grid">
           <TerminalHero setContactOpen={setContactOpen} />
@@ -64,14 +54,19 @@ export function MidfiV1({ articles = ARTICLES, music = DEFAULT_MUSIC }) {
             <span className="footer-dot">·</span>
             <span>2026 hiago<span style={{color:"var(--m-ink-soft)"}}>.sh</span></span>
           </span>
-          <span className="footer-right">
+          <div className="footer-right">
+            <nav className="footer-socials" aria-label="Social links">
+              <a className="social" title="github" aria-label="GitHub" href="https://github.com/uphiago/portfolio" target="_blank" rel="noopener noreferrer">{Ico.github}</a>
+              <a className="social" title="linkedin" aria-label="LinkedIn" href="https://www.linkedin.com/in/uphiago" target="_blank" rel="noopener noreferrer">{Ico.linkedin}</a>
+              <a className="social" title="x" aria-label="X (Twitter)" href="https://x.com/uphiago" target="_blank" rel="noopener noreferrer">{Ico.x}</a>
+            </nav>
             <a href="https://cloud.umami.is/share/NatKsfXwWLsGotHM" target="_blank" rel="noreferrer" className="social footer-stats" title="View Analytics">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M3 3v18h18" />
                 <path d="m19 9-5 5-4-4-3 3" />
               </svg>
             </a>
-          </span>
+          </div>
         </footer>
       </div>
 

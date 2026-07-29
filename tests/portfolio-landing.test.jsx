@@ -405,17 +405,17 @@ npx skills add repo
 
   it("renders the selected social icon row in the topbar", () => {
     const html = renderToStaticMarkup(<MidfiV1 />);
-    const css = readFileSync("src/components/landing/styles/base.css", "utf8");
 
     expect(html).toContain('title="github"');
     expect(html).toContain('title="linkedin"');
     expect(html).toContain('title="x"');
     expect(html).not.toContain('title="youtube"');
     expect(html).not.toContain('title="tiktok"');
-    expect(html).toContain('class="brand-key"');
-    expect(html).toContain('src="/icon.svg"');
+    expect(html).not.toContain('class="brand-key"');
     expect(html).toContain("2026 hiago");
-    expect(css).toMatch(/\.mfi-socials\s*\{[^}]*margin-left:\s*auto/);
+    expect(html).not.toContain('class="mfi-topbar"');
+    expect(html).toContain('class="footer-socials"');
+    expect(html.indexOf('class="footer-socials"')).toBeGreaterThan(html.indexOf("<footer"));
   });
 
   it("does not focus the contact close button when the modal opens", async () => {

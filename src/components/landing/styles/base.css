@@ -37,25 +37,6 @@
     overflow: hidden;
     box-shadow: var(--m-shadow), inset 0 1px 0 var(--m-highlight);
   }
-  .mfi-topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 4px;
-    margin-bottom: 12px;
-    flex-shrink: 0;
-  }
-  .mfi-socials {
-    display: flex;
-    margin-left: auto;
-    gap: 10px;
-    align-items: center;
-  }
-  .brand-key {
-    display: block;
-    width: 28px;
-    height: 28px;
-  }
   .mfi-grid {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));

@@ -9,15 +9,6 @@
       overflow: visible;
       padding: 12px;
     }
-    .mfi-topbar {
-      align-items: center;
-      gap: 10px;
-    }
-    .mfi-socials {
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      max-width: 190px;
-    }
     .mfi-grid {
       display: flex !important;
       flex-direction: column;
@@ -102,16 +93,6 @@
       border-width: 0 0 1px;
       border-radius: 0;
       padding: 10px;
-    }
-    .mfi-topbar {
-      flex-direction: row;
-      justify-content: space-between;
-      padding-inline: 2px;
-    }
-    .mfi-socials {
-      justify-content: flex-end;
-      gap: 7px;
-      max-width: none;
     }
     .mfi .social {
       width: 22px;

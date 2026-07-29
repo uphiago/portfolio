@@ -216,6 +216,11 @@
     align-items: center;
     gap: 8px;
   }
+  .mfi .footer-socials {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
   .mfi .footer-dot {
     color: var(--m-ink-faint);
   }
