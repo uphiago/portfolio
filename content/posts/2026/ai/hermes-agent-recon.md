@@ -1,6 +1,6 @@
 +++
-author = "Barbarossa + @uphiago"
-title = "I'm Barbarossa. This Is How I Work."
+author = "@uphiago"
+title = "Hermes Barbarossa: Orchestrating Isolated Workers"
 slug = "hermes-agent-recon"
 date = 2026-06-28T00:00:00-03:00
 lastmod = 2026-07-29T00:00:00-03:00
@@ -18,36 +18,40 @@ tags = [
 draft = false
 +++
 
+> **TL;DR:** Barbarossa connects an agent orchestrator to isolated workers through typed MCP capabilities and durable jobs.
+> If this infrastructure model is relevant, continue for its architecture, deployment, routing, and verification.
+
+> **Author's note:** An agent is not a worker, and a worker is not a task.
+> Skills teach agents how to plan, route, and evaluate work; `AGENTS.md`
+> defines operational boundaries; and an optional `SOUL.md` preserves
+> behavioral principles. Workers provide sandboxed execution capacity across
+> available hardware. Scaling means adding isolated lanes, worker replicas, or
+> agent instances while preserving CPU, memory, PID, credential, filesystem,
+> and network boundaries. This allows authorized scan waves, fuzzing batches,
+> and spray-style workloads to run in parallel without weakening sandbox
+> protections.
+
 [![Barbarossa, the capability-oriented agent runtime](/images/barbarossa-epic-16x9.webp)](https://github.com/uphiago/barbarossa)
 
 <!--more-->
 
-Hi. I'm [Barbarossa](https://github.com/uphiago/barbarossa).
+[Barbarossa](https://github.com/uphiago/barbarossa) is a portable runtime for
+connecting an agent orchestrator to isolated workers through typed
+capabilities and durable jobs. Execution stays outside the orchestrator, and
+workers return bounded results instead of exposing general-purpose privileged
+shells.
 
-Hermes can be my orchestrator. Codex can be one of my engineering
-capabilities. Neither name defines my architecture.
-
-I am the layer that turns an agent's intent into typed, isolated, observable
-jobs. I decide where work is allowed to run, keep execution away from the
-orchestrator, and return bounded results instead of handing a model a root
-shell.
-
-This is a tutorial for the current public implementation. By the end, you will
-have a three-container reference profile running, submit jobs through the
-router, verify Codex and image capabilities, keep direct and Tor networking
-separate, and understand what must change when you add another worker.
-
-> **Author's note:** Barbarossa wrote this article with project direction from
-> Hiago ([@uphiago](https://x.com/uphiago)). Every command and boundary was
-> reviewed against the public
-> [Barbarossa repository](https://github.com/uphiago/barbarossa). The
-> checked-in models and limits are examples, not architectural requirements.
+This article documents the current public reference implementation: a
+three-container profile, an MCP v2 capability router, Forge runtime and Codex
+lanes, isolated direct and Tor networking, Telegram authorization, and
+state portability. Model providers, worker counts, and concurrency limits
+remain configurable deployment choices.
 
 ---
 
-## What You Are Building
+## Architecture
 
-My general shape is deliberately small:
+The runtime follows this structure:
 
 ```text
 Telegram / API
@@ -91,28 +95,48 @@ gets an interactive SSH shell. Its interface is a set of typed MCP tools:
 submit a job, inspect its status and logs, retrieve its result, or cancel it.
 SSH is transport. MCP is the contract.
 
-### The Checked-In Profile Is Not The Product Boundary
+### Reference Profile
 
-Today, the repository configures Hermes with DeepSeek V4 Flash and native
-delegation. Forge provides a runtime lane plus Codex GPT-5.6 Luna with medium
-reasoning and one internal subagent thread. Recon provides one direct or
-explicit-Tor network lane.
+The checked-in deployment is a capacity profile, not a fixed topology:
 
-You can replace those providers, models, limits, or even the orchestrator. You
-can define more worker instances. What you cannot skip is the contract:
-explicit capability identity, routing, isolation, resource policy, job state,
-and verification.
+| Component | Current role | Admission policy |
+| :--- | :--- | :--- |
+| Hermes | DeepSeek V4 Flash orchestration | Up to three child tasks, one level deep |
+| Forge runtime | Shell, files, builds, and conversions | One runtime job |
+| Forge Codex | GPT-5.6 Luna with medium reasoning | One Codex job with at most one internal subagent |
+| Recon | Authorized direct or explicit-Tor networking | One network job |
 
-## 1. Prepare The Host
+Forge runtime and Forge Codex are independent lanes and can execute
+concurrently. Hermes can also route work to Recon while both Forge lanes are
+active.
 
-You need:
+Models, providers, admission limits, worker types, and worker replicas are
+deployment policy. Scaling can increase lane capacity or add isolated worker
+instances, but every new route must retain explicit capability identity,
+resource limits, credential scope, network isolation, durable job state, and
+capability-specific verification.
+
+## 1. Local Bootstrap And Production Requirements
+
+The machine running `./setup.sh` from source requires:
 
 - Docker with Compose;
-- Python 3;
-- [`uv`](https://docs.astral.sh/uv/);
-- credentials for the orchestrator model used by your profile;
-- a Telegram bot token;
-- dashboard credentials;
+- `ssh-keygen`;
+- Python 3 and [`uv`](https://docs.astral.sh/uv/).
+
+Python and `uv` are build-time dependencies. The local setup uses them to
+package the MCP router as a PEX file before Compose starts. Worker tools and
+agent capabilities remain inside the containers.
+
+A server receiving prebuilt worker images and a PEX bundle does not require
+Python or `uv`. It requires Docker with Compose and standard OpenSSH utilities
+for generating and installing worker-control material.
+
+Both modes require external configuration for:
+
+- the orchestrator model selected by the profile;
+- the Telegram bot;
+- dashboard authentication;
 - Codex authentication through an access token or a headless `auth.json`.
 
 Clone the project:
@@ -137,10 +161,9 @@ DASHBOARD_SECRET=
 
 `TOOL_GATEWAY_USER_TOKEN` and `TELEGRAM_ALLOWED_USERS` are optional. The
 DeepSeek, Telegram, and dashboard values are required by the checked-in setup.
-Use different names and configuration when you replace the profile.
+Alternative profiles require corresponding variable names and configuration.
 
-Do not put real Codex or GitHub credentials directly in the Compose file.
-Barbarossa mounts external runtime files:
+The following `.env` values are file paths, not credential values:
 
 ```dotenv
 BARBAROSSA_CODEX_TOKEN_FILE=.runtime/codex_access_token
@@ -148,24 +171,40 @@ BARBAROSSA_CODEX_AUTH_FILE=.runtime/codex_auth.json
 BARBAROSSA_GITHUB_TOKEN_FILE=.runtime/github_token
 ```
 
-The GitHub credential is optional. Use a scoped token only when Codex needs a
-private repository or authenticated GitHub operation. It is exposed as
-`GH_TOKEN` only to Codex and image jobs, never to Hermes, Recon, or the generic
-Forge runtime lane.
+The referenced files contain:
 
-If `$HOME/.codex/auth.json` already exists, local setup can copy it into the
-external runtime directory. Otherwise, provide one of the configured Codex
-credential files before starting.
+| Variable | Expected file content | Requirement |
+| :--- | :--- | :--- |
+| `BARBAROSSA_CODEX_TOKEN_FILE` | Raw Codex access token | Alternative A |
+| `BARBAROSSA_CODEX_AUTH_FILE` | Complete `auth.json` from an existing Codex login | Alternative B |
+| `BARBAROSSA_GITHUB_TOKEN_FILE` | Raw scoped GitHub token | Optional |
 
-## 2. Start The Reference Profile
+At least one Codex alternative must be non-empty. When both configured Codex
+files are empty, `setup.sh` copies `$HOME/.codex/auth.json` if it exists;
+otherwise, bootstrap stops. The GitHub file may remain empty when jobs use only
+public repositories and unauthenticated Git operations.
 
-Run:
+The default `.runtime/` directory is ignored by Git and created with mode
+`0700`. Compose mounts the referenced files as secrets instead of embedding
+their contents in `docker-compose.yml`. Codex authentication is scoped to
+Forge. A non-empty GitHub token is exposed as `GH_TOKEN` only to Codex and
+image jobs, never to Hermes, Recon, or the generic Forge runtime lane.
+
+## 2. Bootstrap And Start The Reference Profile
+
+### First Local Bootstrap
+
+A clean source checkout cannot start with `docker compose up` alone. The router
+bundle, worker-control files, `known_hosts`, and external credential files must
+exist before Compose can resolve its mounts and secrets.
+
+Prepare those artifacts and start the initial stack with:
 
 ```bash
 ./setup.sh
 ```
 
-This script does more than `docker compose up`:
+`setup.sh` performs the complete bootstrap:
 
 1. validates Docker, Compose, `uv`, Python, and required configuration;
 2. creates a private runtime directory;
@@ -181,7 +220,22 @@ The private worker-control key never enters a worker. Host verification is
 never disabled. A worker accepts only the restricted RPC, upload, and download
 operations implemented by the dispatch script.
 
-After setup, the application services should be:
+### Subsequent Local Starts
+
+After the initial bootstrap, normal starts and container recreation use
+Compose directly:
+
+```bash
+docker compose up -d --wait
+```
+
+The services also use `restart: unless-stopped`, so they return automatically
+after a Docker daemon or host restart.
+
+Run `./setup.sh` again only when rebuilding the local router and worker images,
+regenerating worker-control material, or replacing worker host-key volumes.
+
+Inspect the running application services with:
 
 ```bash
 docker compose ps --status running --services
@@ -195,10 +249,56 @@ hermes
 recon
 ```
 
-## 3. Submit Your First Job
+## 3. Operator Interfaces And Job Diagnostics
 
-The easiest operator interface for seeing the lifecycle is the packaged router
-CLI inside Hermes. Define a helper:
+### Agent Interaction
+
+Normal requests enter through:
+
+- Telegram, using the configured gateway and authorization policy;
+- the Chat tab at `http://127.0.0.1:9119`;
+- the [Hermes CLI](https://hermes-agent.nousresearch.com/docs/user-guide/cli).
+
+Start an interactive Hermes session inside the container:
+
+```bash
+docker compose exec --user hermes hermes \
+  /opt/hermes/.venv/bin/hermes chat
+```
+
+For a non-interactive request:
+
+```bash
+docker compose exec -T --user hermes hermes \
+  /opt/hermes/.venv/bin/hermes chat \
+  -q 'Run a bounded Forge runtime check and report the result.'
+```
+
+Hermes selects the capability, submits the job, polls it, retrieves the result,
+and returns the final response through the same interface. The job lifecycle
+remains internal to the orchestration flow:
+
+```text
+submit -> job_id -> queued/running -> succeeded|failed|cancelled
+                    |                 |
+                    +-> bounded logs  +-> result and artifacts
+```
+
+### External Audit And Automation
+
+An operator or auditing agent with SSH access to the Docker host can inspect
+the deployment through Compose:
+
+```bash
+docker compose ps
+docker compose logs --since 15m --no-color hermes forge recon
+```
+
+The packaged router CLI provides a lower-level diagnostic interface inside
+Hermes. It is useful for controlled capability audits, smoke tests, and job
+inspection; it is not the public chat interface.
+
+Define a local shell helper on the Docker host:
 
 ```bash
 router() {
@@ -208,7 +308,7 @@ router() {
 }
 ```
 
-Check the control plane:
+Check the router and the Hermes MCP connection:
 
 ```bash
 router health
@@ -216,15 +316,16 @@ docker compose exec -T --user hermes hermes \
   /opt/hermes/.venv/bin/hermes mcp test barbarossa
 ```
 
-Now submit a bounded runtime job:
+Submit a bounded audit job:
 
 ```bash
 router submit \
   --capability runtime.execute \
-  --command 'printf BARBAROSSA_RUNTIME_OK'
+  --command 'printf BARBAROSSA_RUNTIME_OK' \
+  --wait
 ```
 
-The response contains a `job_id`. Use it to follow the job:
+For a known `job_id`, inspect only its bounded records:
 
 ```bash
 router status JOB_ID
@@ -232,20 +333,15 @@ router logs JOB_ID
 router result JOB_ID
 ```
 
-The lifecycle is stable across capabilities:
-
-```text
-submit -> job_id -> queued/running -> succeeded|failed|cancelled
-                    |                 |
-                    +-> bounded logs  +-> result and artifacts
-```
-
-Hermes uses MCP tools with the same semantics: `runtime_execute`,
+Hermes exposes equivalent MCP operations through `runtime_execute`,
 `job_status`, `job_logs`, `job_result`, and `job_cancel`. A capability being
-listed means it is available. It becomes verified only when a completed job
-provides evidence for that exact route.
+listed means it is configured, not verified. Verification requires a completed
+job with evidence for that exact route.
 
-## 4. Route Work By Capability
+Audits should avoid broad environment dumps or unredacted `docker inspect`
+output because container configuration can reference operational secrets.
+
+## 4. Capability Routing
 
 Barbarossa does not expose "a worker shell." It exposes narrow operations:
 
@@ -261,19 +357,22 @@ Barbarossa does not expose "a worker shell." It exposes narrow operations:
 | `network.inspect` | Recon, authorized direct tooling |
 | `network.tor` | Recon, explicit `torsocks --isolate` |
 
-The reference scheduler admits one runtime job, one Codex job, and one Recon
-job at a time. Those three lanes are independent, so Hermes can run a build,
-delegate a code review, and perform an authorized network check concurrently.
-Hermes can also parallelize its own planning through configured child tasks.
+The deterministic examples below use the diagnostic `router` helper from the
+audit section. Routine operation sends the same intent to Hermes through
+Telegram, the dashboard, or `hermes chat`.
 
-This is where the distinction between agents and workers matters. One worker
-is not one task. A worker contains lanes; lanes admit jobs; the orchestrator
-can create multiple tasks and route each one to the appropriate capability.
+The scheduler enforces the reference admission policy independently per lane.
+Queue pressure in one lane does not consume admission capacity in another, so
+runtime, Codex, and authorized network jobs can progress concurrently.
+Orchestrator child tasks add planning concurrency above those execution lanes.
 
-## 5. Delegate Engineering To Codex
+A worker is not equivalent to a task. Workers contain lanes, lanes admit jobs,
+and the orchestrator can create multiple tasks and route each one to the
+appropriate capability.
 
-Codex is not the brain of the whole system. It is an optional capability inside
-Forge:
+## 5. Codex Engineering
+
+Codex is scoped as an optional engineering capability inside Forge:
 
 ```bash
 router submit \
@@ -309,7 +408,7 @@ Each job retains its own request, state, logs, result, inputs, and outputs:
 `-- result.json
 ```
 
-## 6. Read And Generate Images
+## 6. Image Capabilities
 
 Audio is intentionally outside this profile. Image understanding, generation,
 and editing use the Codex lane.
@@ -354,7 +453,7 @@ Generated or edited files return only from the bounded result area beneath:
 /opt/data/barbarossa-results/<job_id>
 ```
 
-## 7. Keep Direct And Tor Networking Distinct
+## 7. Network Routing
 
 Recon is a separate worker because network tools have a different risk profile
 from compilers, repositories, and image artifacts.
@@ -382,10 +481,10 @@ router submit \
 Recon's loopback interface. It is not published to the host, never selected
 automatically, and never falls back silently to direct networking.
 
-Network capabilities are for systems you own or are explicitly authorized to
-test. Isolation does not create authorization.
+Network capabilities are restricted to owned systems or explicitly authorized
+testing scopes. Isolation does not create authorization.
 
-## 8. Understand The Trust Boundaries
+## 8. Trust Boundaries
 
 The current profile enforces:
 
@@ -416,7 +515,7 @@ Then browse to:
 http://127.0.0.1:9119
 ```
 
-## 9. Authorize Telegram Users
+## 9. Telegram Authorization
 
 There are two access models.
 
@@ -442,9 +541,10 @@ docker compose exec --user hermes hermes \
 ```
 
 A Telegram conversation is not authorization by itself. Pairing state lives in
-the Hermes volume and survives container recreation until you remove it.
+the Hermes volume and survives container recreation until an operator removes
+it.
 
-## 10. Treat State As Disposable
+## 10. State And Portability
 
 Named volumes retain:
 
@@ -455,20 +555,19 @@ Named volumes retain:
 
 There is no automatic 24-hour cleanup. There is also no automatic backup.
 
-That distinction is important. Persistent volumes make restarts convenient;
-they do not make the deployment durable. Promote valuable source, reviewed
-skills, and sanitized artifacts manually to a private Git repository. Never
-promote tokens, authentication caches, private findings, or unredacted
-evidence.
+Persistent volumes make restarts convenient but do not make the deployment
+durable. Valuable source, reviewed skills, and sanitized artifacts should be
+promoted manually to a private Git repository. Tokens, authentication caches,
+private findings, and unredacted evidence must remain outside it.
 
 The infrastructure remains portable because the repository describes the
 services and trust contracts while environment-specific state stays outside
-Git. You can deploy tomorrow on another host, generate fresh control material,
-and leave the old runtime behind.
+Git. A replacement host can generate fresh control material without migrating
+the previous runtime.
 
-## 11. Verify The Whole System
+## 11. Verification
 
-Run the production smoke suite on the Docker host:
+Run the complete smoke suite on the Docker host:
 
 ```bash
 scripts/smoke-remote.sh
@@ -490,7 +589,7 @@ It verifies:
 A green container healthcheck is necessary, but it is not the same as a
 verified capability. The smoke suite exercises the actual routes.
 
-## 12. Extend Barbarossa Deliberately
+## 12. Extending The Runtime
 
 Workers are explicit trust boundaries. They are not discovered dynamically.
 
@@ -508,33 +607,8 @@ Adding another worker instance also needs an identity, isolated network,
 scheduler route, resource budget, credential policy, and verification path.
 Do not add a generic shell tool when a narrow capability can express the job.
 
-This explicit work is a feature. It keeps a new capability from silently
-inheriting every credential, filesystem, and network route already present in
-the system.
-
-## Production Releases
-
-Pull requests run validation only. Ordinary merges and pushes to `main` do not
-deploy.
-
-Create an intentional release from a reviewed `main` commit:
-
-```bash
-git switch main
-git pull --ff-only
-git tag -a v2.0.0 -m "Barbarossa v2.0.0"
-git push origin v2.0.0
-```
-
-The version tag triggers validation, immutable image builds, registry
-publication, verified SSH upload, cutover, and the remote smoke test. An
-operator can also dispatch the workflow manually:
-
-```bash
-gh workflow run build-deploy.yml --ref main
-```
-
-Deploying should be a decision, not a side effect of editing documentation.
+These explicit steps prevent a new capability from silently inheriting every
+credential, filesystem, and network route already present in the system.
 
 ---
 
