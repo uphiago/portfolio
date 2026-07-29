@@ -1,0 +1,29 @@
+content/posts/2026/ai/hermes-agent-recon.md
+  s_ab7b9f3ec54234::t_1dc04353163620 230-277,279,289,297,302-303,306,314,316-317,319-320
+  s_ab7b9f3ec54234::t_bb11a6f8c932f3 3
+  s_ab7b9f3ec54234::t_9e598b7c27b8a6 2,35-39,41-43,49,51,95,102-104,185,322,347-349,351,353,389,434,465,496,525,536-539,546,570,588-589
+  s_ab7b9f3ec54234::t_8cd2c6753110b5 151,462-463,522-523,543-544
+  s_ab7b9f3ec54234::t_1c28e7b75e9025 338-341
+  s_ab7b9f3ec54234::t_4f6b8825c7ce4b 21-30
+  s_ab7b9f3ec54234::t_bff6343cb6ab12 162-163,171,173-179,201-216
+  s_ab7b9f3ec54234::t_7b6c88e254b8dc 44-45,118-120
+  s_ab7b9f3ec54234::t_e46e76ae934c03 106,108,111-117,121-126
+  s_ab7b9f3ec54234::t_44a64a4b781dff 318
+  s_ab7b9f3ec54234::t_0736dce39d095b 548
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "e788b609e5fa5a19dcc6d5d22ee39c2b75b73d43",
+  "prompts": {},
+  "sessions": {
+    "s_ab7b9f3ec54234": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fa4df-8a8e-7be3-94df-62ef4b4c9ba5",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": null
+    }
+  }
+}
