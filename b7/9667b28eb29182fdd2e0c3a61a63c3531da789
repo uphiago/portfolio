@@ -1,0 +1,35 @@
+content/posts/2026/ai/hermes-agent-recon.md
+  s_ab7b9f3ec54234::t_0736dce39d095b 561
+  s_ab7b9f3ec54234::t_4b6f3209b1ef8e 21-22
+  s_ab7b9f3ec54234::t_1c28e7b75e9025 351-353
+  s_ab7b9f3ec54234::t_9be2e9743cc10b 34
+  s_ab7b9f3ec54234::t_e46e76ae934c03 119-121,124-130,134-139
+  s_ab7b9f3ec54234::t_bff6343cb6ab12 175-176,184-190,192,214-229
+  s_ab7b9f3ec54234::t_bf3be6d31d2792 355-358
+  s_ab7b9f3ec54234::t_1dc04353163620 243-247,249-292,302,310,315-316,319,327,329-330,332-333
+  s_ab7b9f3ec54234::t_44a64a4b781dff 331,365
+  s_ab7b9f3ec54234::t_bb11a6f8c932f3 3
+  s_ab7b9f3ec54234::t_20fbdd61c74d28 36
+  s_ab7b9f3ec54234::t_7b6c88e254b8dc 47-48,131-133
+  s_ab7b9f3ec54234::t_67a7d06bb6fe4f 100,102-107,109-111,113-117
+  s_ab7b9f3ec54234::t_8cd2c6753110b5 164,475-476,535-536,556-557
+  s_ab7b9f3ec54234::t_9e598b7c27b8a6 2,38-42,44-46,52,54,98,198,335,360-362,364,366,402,447,478,509,538,549-552,559,583,601-602
+  s_ab7b9f3ec54234::t_4f6b8825c7ce4b 24-32
+  s_ab7b9f3ec54234::t_10d8652bbf41b7 118
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "b79667b28eb29182fdd2e0c3a61a63c3531da789",
+  "prompts": {},
+  "sessions": {
+    "s_ab7b9f3ec54234": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fa4df-8a8e-7be3-94df-62ef4b4c9ba5",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": null
+    }
+  }
+}
