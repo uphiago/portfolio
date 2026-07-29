@@ -416,6 +416,11 @@ npx skills add repo
     expect(html).not.toContain('class="mfi-topbar"');
     expect(html).toContain('class="footer-socials"');
     expect(html.indexOf('class="footer-socials"')).toBeGreaterThan(html.indexOf("<footer"));
+
+    const footer = document.createElement("div");
+    footer.innerHTML = html;
+    expect(footer.querySelector(".footer-left .footer-stats")).not.toBeNull();
+    expect(footer.querySelector(".footer-right .footer-stats")).toBeNull();
   });
 
   it("does not focus the contact close button when the modal opens", async () => {
