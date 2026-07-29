@@ -1,0 +1,27 @@
+docs/superpowers/plans/2026-07-29-article-keyboard-scroll.md
+  s_ca67b08826dd73::t_0ec5c19529a848 1-115
+src/components/landing/modals/ArticleModal.jsx
+  s_ca67b08826dd73::t_45d43b5a9f6f7c 5-12
+  s_ca67b08826dd73::t_7c12a5fb93bec3 18-35
+tests/portfolio-landing.test.jsx
+  s_ca67b08826dd73::t_e6514b03014975 6
+  s_ca67b08826dd73::t_99687248957b37 339,341-375
+  s_ca67b08826dd73::t_9cdf516af8b036 11,333-338
+  s_ca67b08826dd73::t_95cdfad2c0598b 340
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "6f5bb9ab02870f467112e1c25acde96ceb8c6210",
+  "prompts": {},
+  "sessions": {
+    "s_ca67b08826dd73": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fafd4-7976-7f41-894c-999f03702ca2",
+        "model": "gpt-5.6-terra"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
