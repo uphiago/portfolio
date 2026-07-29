@@ -1,0 +1,21 @@
+content/posts/2026/ai/hermes-agent-recon.md
+  s_ab7b9f3ec54234::t_e46e76ae934c03 96,98,101-117
+  s_ab7b9f3ec54234::t_9e598b7c27b8a6 2-3,25-29,31-35,39,41,85,92-94,153,170,200,250,271-273,275,277,313,358,389,420,449,460-463,470,494,512-513,537
+  s_ab7b9f3ec54234::t_8cd2c6753110b5 142,386-387,446-447,467-468
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "72914882789825db74fcf9fcad855f1065f40503",
+  "prompts": {},
+  "sessions": {
+    "s_ab7b9f3ec54234": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fa4df-8a8e-7be3-94df-62ef4b4c9ba5",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
