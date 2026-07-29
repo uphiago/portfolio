@@ -1,0 +1,19 @@
+content/posts/2026/ai/hermes-agent-recon.md
+  s_bb929435059764::t_6fadf83ffaeae2 22
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "f44b097f32884a7a99abd6b173f7349df82f39d4",
+  "prompts": {},
+  "sessions": {
+    "s_bb929435059764": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019faf4f-811e-7140-a83c-a7757cca713b",
+        "model": "gpt-5.6-terra"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
