@@ -158,10 +158,9 @@ HERMES_DASHBOARD_BASIC_AUTH_PASSWORD=
 HERMES_DASHBOARD_BASIC_AUTH_SECRET=
 ```
 
-Empty delegation provider/model values inherit the main model. Changing
-provider requires its provider name, model name, and native Hermes credential
-variable, not a source edit. Tool Gateway and Telegram allowlist values are
-optional.
+Changing provider requires its provider name, model name, and native Hermes
+credential variable, not a source edit. Tool Gateway and Telegram allowlist
+values are optional.
 
 The external Codex files selected in `.env` contain:
 
