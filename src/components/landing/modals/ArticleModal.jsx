@@ -36,7 +36,7 @@ export function ArticleModal({ openArticle, setOpenArticle }) {
 
       event.preventDefault();
       body.scrollBy(
-        event.key === "PageDown" || event.key === "PageUp"
+        (event.key === "PageDown" || event.key === "PageUp") && !event.repeat
           ? { top: delta, behavior: "smooth" }
           : { top: delta }
       );

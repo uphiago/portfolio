@@ -12,7 +12,7 @@ import { ArticleModal, getArticleScrollDelta } from "@/src/components/landing/mo
 import { VideoModal } from "@/src/components/landing/modals/VideoModal";
 import { MUSIC_DEFAULT_VOLUME, MUSIC_FADE_MS, MUSIC_FADE_STEPS } from "@/src/components/landing/cards/MusicPlayer";
 import { ARTICLES, VIDEOS } from "@/src/components/landing/data";
-import { parseBlogMarkdown } from "@/src/components/landing/blog";
+import { getArticleBySlug, parseBlogMarkdown } from "@/src/components/landing/blog";
 import { buildYoutubeEmbedUrl, buildYoutubeThumbnailUrl, parsePlaylistId } from "@/src/components/landing/youtube";
 import {
   buildSheetsAppendUrl,
@@ -306,6 +306,14 @@ npx skills add repo
     expect(article.html).toContain('<code class="language-bash">npx skills add repo');
   });
 
+  it("omits Barbarossa and automation from the Hermes article tags", () => {
+    const article = getArticleBySlug("hermes-barbarossa");
+
+    expect(article.tags).not.toContain("barbarossa");
+    expect(article.tags).not.toContain("automation");
+    expect(article.tags).toEqual(["agents", "mcp", "infra", "docker", "codex", "security"]);
+  });
+
   it("renders synced markdown HTML inside the local field-note modal", () => {
     const html = renderToStaticMarkup(
       <ArticleModal
@@ -368,6 +376,11 @@ npx skills add repo
     expect(scrollBy).toHaveBeenCalledWith({ top: 360, behavior: "smooth" });
     expect(pageDown.defaultPrevented).toBe(true);
 
+    const heldPageDown = new KeyboardEvent("keydown", { key: "PageDown", repeat: true, bubbles: true, cancelable: true });
+    await act(async () => window.dispatchEvent(heldPageDown));
+
+    expect(scrollBy).toHaveBeenLastCalledWith({ top: 360 });
+
     const end = new KeyboardEvent("keydown", { key: "End", bubbles: true, cancelable: true });
     await act(async () => window.dispatchEvent(end));
 
@@ -383,7 +396,7 @@ npx skills add repo
     const arrowDown = new KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true, cancelable: true });
     await act(async () => rootElement.querySelector("input").dispatchEvent(arrowDown));
 
-    expect(scrollBy).toHaveBeenCalledTimes(1);
+    expect(scrollBy).toHaveBeenCalledTimes(2);
     expect(arrowDown.defaultPrevented).toBe(false);
 
     await act(async () => root.unmount());

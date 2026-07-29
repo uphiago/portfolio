@@ -6,13 +6,11 @@ date = 2026-06-28T00:00:00-03:00
 lastmod = 2026-07-29T00:00:00-03:00
 description = "A practical guide to Barbarossa: typed MCP capabilities, isolated workers, durable jobs, Codex engineering, image tools, and explicit network routing."
 tags = [
-  "barbarossa",
   "agents",
   "mcp",
   "infra",
   "docker",
   "codex",
-  "automation",
   "security",
 ]
 draft = false
