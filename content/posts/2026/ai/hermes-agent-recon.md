@@ -128,7 +128,6 @@ BARBAROSSA_CODEX_MODEL=gpt-5.6-luna
 BARBAROSSA_CODEX_REASONING_EFFORT=medium
 BARBAROSSA_CODEX_MAX_SUBAGENTS=1
 
-BARBAROSSA_CODEX_TOKEN_FILE=
 BARBAROSSA_CODEX_AUTH_FILE=
 BARBAROSSA_GITHUB_TOKEN_FILE=
 ```
@@ -162,19 +161,17 @@ Changing provider requires its provider name, model name, and matching
 credential variable; see the [Hermes provider documentation](https://hermes-agent.nousresearch.com/docs/integrations/providers).
 Tool Gateway and Telegram allowlist values are optional.
 
-The external Codex files selected in `.env` contain:
+The external credential files selected in `.env` contain:
 
 | Variable | Expected file content | Requirement |
 | :--- | :--- | :--- |
-| `BARBAROSSA_CODEX_TOKEN_FILE` | Raw Codex access token | Alternative A |
-| `BARBAROSSA_CODEX_AUTH_FILE` | Complete `auth.json` from an existing Codex login | Alternative B |
+| `BARBAROSSA_CODEX_AUTH_FILE` | Complete `auth.json` from an existing Codex login | Required for Codex |
 | `BARBAROSSA_GITHUB_TOKEN_FILE` | Raw scoped GitHub token | Optional |
 
-Codex needs either the raw token or `auth.json`; `setup.sh` can import an
-existing `$HOME/.codex/auth.json`. GitHub authentication is optional for public
-repositories. Git ignores `.runtime/` and both real environment files. Compose
-mounts credentials as secrets, and exposes `GH_TOKEN` only to Codex and image
-jobs.
+`setup.sh` can import an existing `$HOME/.codex/auth.json`. GitHub
+authentication is optional for public repositories. Git ignores `.runtime/`
+and both real environment files. Compose mounts credentials as secrets, and
+exposes `GH_TOKEN` only to Codex and image jobs.
 
 ## 2. Bootstrap And Start The Reference Profile
 
