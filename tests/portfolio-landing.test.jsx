@@ -328,6 +328,8 @@ npx skills add repo
     expect(html).toContain("<pre><code>echo ok</code></pre>");
     expect(html).toContain("iceteash");
     expect(html).toContain("copy link");
+    expect(html).not.toContain("esc to close");
+    expect(html).toContain('aria-label="Scroll to top"');
   });
 
   it("maps standard scroll keys to article-body deltas", () => {
