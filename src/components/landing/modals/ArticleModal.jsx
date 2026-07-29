@@ -22,11 +22,24 @@ export function ArticleModal({ openArticle, setOpenArticle }) {
       const body = bodyRef.current;
       if (!body) return;
 
+      if (event.key === "Home" || event.key === "End") {
+        event.preventDefault();
+        body.scrollTo({
+          top: event.key === "Home" ? 0 : body.scrollHeight,
+          behavior: "smooth",
+        });
+        return;
+      }
+
       const delta = getArticleScrollDelta(event.key, body.clientHeight);
       if (delta === null) return;
 
       event.preventDefault();
-      body.scrollBy({ top: delta });
+      body.scrollBy(
+        event.key === "PageDown" || event.key === "PageUp"
+          ? { top: delta, behavior: "smooth" }
+          : { top: delta }
+      );
     };
 
     window.addEventListener("keydown", handleKeyDown);

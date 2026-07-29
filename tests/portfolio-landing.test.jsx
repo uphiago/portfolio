@@ -354,14 +354,29 @@ npx skills add repo
 
     const body = rootElement.querySelector(".abody");
     const scrollBy = vi.fn();
+    const scrollTo = vi.fn();
     Object.defineProperty(body, "clientHeight", { configurable: true, value: 360 });
+    Object.defineProperty(body, "scrollHeight", { configurable: true, value: 1200 });
     body.scrollBy = scrollBy;
+    body.scrollTo = scrollTo;
 
     const pageDown = new KeyboardEvent("keydown", { key: "PageDown", bubbles: true, cancelable: true });
     await act(async () => window.dispatchEvent(pageDown));
 
-    expect(scrollBy).toHaveBeenCalledWith({ top: 360 });
+    expect(scrollBy).toHaveBeenCalledWith({ top: 360, behavior: "smooth" });
     expect(pageDown.defaultPrevented).toBe(true);
+
+    const end = new KeyboardEvent("keydown", { key: "End", bubbles: true, cancelable: true });
+    await act(async () => window.dispatchEvent(end));
+
+    expect(scrollTo).toHaveBeenCalledWith({ top: 1200, behavior: "smooth" });
+    expect(end.defaultPrevented).toBe(true);
+
+    const home = new KeyboardEvent("keydown", { key: "Home", bubbles: true, cancelable: true });
+    await act(async () => window.dispatchEvent(home));
+
+    expect(scrollTo).toHaveBeenCalledWith({ top: 0, behavior: "smooth" });
+    expect(home.defaultPrevented).toBe(true);
 
     const arrowDown = new KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true, cancelable: true });
     await act(async () => rootElement.querySelector("input").dispatchEvent(arrowDown));
