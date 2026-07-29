@@ -133,10 +133,6 @@ BARBAROSSA_CODEX_AUTH_FILE=
 BARBAROSSA_GITHUB_TOKEN_FILE=
 ```
 
-Keep `.env` to simple configuration assignments such as `NAME=value` and
-paths. Barbarossa reads it on the host before Compose starts, so it is not a
-place for shell commands, command substitutions, or copied untrusted content.
-
 Leave the three `*_FILE` variables empty to use restricted files created under
 `BARBAROSSA_RUNTIME_DIR`. Put the actual Codex or GitHub credential in those
 files, not in `.env`; the variables only override their paths. Configure Hermes
