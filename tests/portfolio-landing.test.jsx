@@ -411,6 +411,8 @@ npx skills add repo
     expect(html).toContain('title="x"');
     expect(html).not.toContain('title="youtube"');
     expect(html).not.toContain('title="tiktok"');
+    expect(html).not.toContain('class="brand"');
+    expect(html).toContain("2026 hiago");
   });
 
   it("does not focus the contact close button when the modal opens", async () => {
