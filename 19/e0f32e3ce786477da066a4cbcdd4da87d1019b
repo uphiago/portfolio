@@ -1,0 +1,32 @@
+content/posts/2026/ai/hermes-agent-recon.md
+  s_ab7b9f3ec54234::t_9e598b7c27b8a6 2,38-42,44-46,52,54,98,105-107,188,325,350-352,354,356,392,437,468,499,528,539-542,549,573,591-592
+  s_ab7b9f3ec54234::t_4f6b8825c7ce4b 24-32
+  s_ab7b9f3ec54234::t_7b6c88e254b8dc 47-48,121-123
+  s_ab7b9f3ec54234::t_e46e76ae934c03 109,111,114-120,124-129
+  s_ab7b9f3ec54234::t_8cd2c6753110b5 154,465-466,525-526,546-547
+  s_ab7b9f3ec54234::t_bff6343cb6ab12 165-166,174,176-182,204-219
+  s_ab7b9f3ec54234::t_4b6f3209b1ef8e 21-22
+  s_ab7b9f3ec54234::t_1dc04353163620 233-248,250-282,292,300,305-306,309,317,319-320,322-323
+  s_ab7b9f3ec54234::t_9be2e9743cc10b 34
+  s_ab7b9f3ec54234::t_44a64a4b781dff 321
+  s_ab7b9f3ec54234::t_1c28e7b75e9025 341-344
+  s_ab7b9f3ec54234::t_0736dce39d095b 551
+  s_ab7b9f3ec54234::t_bb11a6f8c932f3 3
+  s_ab7b9f3ec54234::t_20fbdd61c74d28 36
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "19e0f32e3ce786477da066a4cbcdd4da87d1019b",
+  "prompts": {},
+  "sessions": {
+    "s_ab7b9f3ec54234": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fa4df-8a8e-7be3-94df-62ef4b4c9ba5",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": null
+    }
+  }
+}
