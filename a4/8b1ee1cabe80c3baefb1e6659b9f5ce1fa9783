@@ -1,0 +1,21 @@
+tests/portfolio-landing.test.jsx
+  s_ca67b08826dd73::t_a4c445d6f1173b 419-423
+src/components/landing/MidfiV1.jsx
+  s_ca67b08826dd73::t_e0b7856b0b2164 56-61
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "a48b1ee1cabe80c3baefb1e6659b9f5ce1fa9783",
+  "prompts": {},
+  "sessions": {
+    "s_ca67b08826dd73": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fafd4-7976-7f41-894c-999f03702ca2",
+        "model": "gpt-5.6-terra"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
