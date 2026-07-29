@@ -27,8 +27,6 @@ draft = false
 > isolated lanes, workers, or agent instances without sharing resource,
 > credential, filesystem, or network boundaries.
 
-[![Barbarossa, the capability-oriented agent runtime](/images/barbarossa-epic-16x9.webp)](https://github.com/uphiago/barbarossa)
-
 <!--more-->
 
 [Barbarossa](https://github.com/uphiago/barbarossa) is a portable runtime that
