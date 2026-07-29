@@ -1,0 +1,19 @@
+docs/superpowers/specs/2026-07-29-barbarossa-blog-tutorial-design.md
+  s_ab7b9f3ec54234::t_666b0d69d2a210 1-63
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "87149e6a3598d398fab6ccc6de9e06e66a4217a2",
+  "prompts": {},
+  "sessions": {
+    "s_ab7b9f3ec54234": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fa4df-8a8e-7be3-94df-62ef4b4c9ba5",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
