@@ -120,7 +120,8 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .mfi .star-row .new-badge {
+  .mfi .star-row .new-badge,
+  .mfi .star-row .updated-badge {
     font-family: var(--font-ibm); font-size: 10px; font-weight: 600;
     color: var(--m-ink);
     background: var(--m-line);

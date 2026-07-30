@@ -214,6 +214,20 @@ describe("MidfiV1", () => {
     expect(html).not.toContain('rel="noopener noreferrer">Skills Stack');
   });
 
+  it("marks non-new articles with a newer last-modified date as updated", () => {
+    const html = renderToStaticMarkup(
+      <MidfiV1 articles={[
+        { id: "01", title: "Newest article", date: "2026-07-30", html: "<p>New</p>" },
+        { id: "02", title: "Updated article", date: "2026-06-01", lastmod: "2026-07-29", html: "<p>Updated</p>" },
+        { id: "03", title: "Unchanged article", date: "2026-05-01", html: "<p>Unchanged</p>" },
+      ]} />
+    );
+
+    expect(html).toContain('Newest article<span class="new-badge">new</span>');
+    expect(html).toContain('Updated article<span class="updated-badge">updated</span>');
+    expect(html).not.toContain('Unchanged article<span class="updated-badge">updated</span>');
+  });
+
   it("parses the configured YouTube playlist URL and start offset", () => {
     const playlistUrl = "https://youtube.com/playlist?list=PL4NWyqf4Mpp2gOfgZFhOc9W3P--QKoprV&si=pINjpqGtEc8RVy9S";
 

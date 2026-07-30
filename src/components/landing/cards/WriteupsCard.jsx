@@ -18,11 +18,16 @@ export function WriteupsCard({ ARTICLES, setOpenArticle, music }) {
         <div className="wlist">
           {ARTICLES.map((a, i) => {
             const isNew = i === 0;
+            const isUpdated = !isNew && a.lastmod && a.lastmod !== a.date;
             const rowContent = (
               <>
               <span className="idx">{String(ARTICLES.length - i).padStart(2, "0")}</span>
               <div>
-                <div className="ti">{a.title}{isNew && <span className="new-badge">new</span>}</div>
+                <div className="ti">
+                  {a.title}
+                  {isNew && <span className="new-badge">new</span>}
+                  {isUpdated && <span className="updated-badge">updated</span>}
+                </div>
               </div>
               <span className="arr">↗</span>
               </>
