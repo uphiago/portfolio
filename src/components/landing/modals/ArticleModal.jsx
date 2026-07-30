@@ -46,6 +46,14 @@ export function ArticleModal({ openArticle, setOpenArticle }) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  React.useEffect(() => {
+    const body = bodyRef.current;
+    if (!body || !openArticle) return;
+
+    const savedTop = Number(window.sessionStorage.getItem(`article-scroll:${openArticle.id}`));
+    if (Number.isFinite(savedTop) && savedTop > 0) body.scrollTo({ top: savedTop });
+  }, [openArticle?.id]);
+
   if (!openArticle) return null;
 
   const copyLink = async () => {
@@ -99,6 +107,10 @@ export function ArticleModal({ openArticle, setOpenArticle }) {
     }
   };
 
+  const handleBodyScroll = (event) => {
+    window.sessionStorage.setItem(`article-scroll:${openArticle.id}`, String(event.currentTarget.scrollTop));
+  };
+
   return (
     <BaseModal onClose={() => setOpenArticle(null)} modalBgClass="mfi-article-bg" modalClass="mfi-article" closeButtonClass="article-close" restoreFocusOnClose={false} label={openArticle.title}>
       <div className="ahead">
@@ -124,7 +136,7 @@ export function ArticleModal({ openArticle, setOpenArticle }) {
           {(openArticle.tags || []).map(tag => <span className="tag" key={tag}>{tag}</span>)}
         </div>
       </div>
-      <div className="abody" ref={bodyRef} onClick={handleBodyClick}>
+      <div className="abody" ref={bodyRef} onClick={handleBodyClick} onScroll={handleBodyScroll}>
         {openArticle.html ? (
           <div className="markdown-body" dangerouslySetInnerHTML={{ __html: openArticle.html }} />
         ) : (

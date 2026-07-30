@@ -417,6 +417,41 @@ npx skills add repo
     document.body.removeChild(rootElement);
   });
 
+  it("restores and saves each article scroll position for a refresh", async () => {
+    const rootElement = document.createElement("div");
+    document.body.appendChild(rootElement);
+    const root = createRoot(rootElement);
+    const originalScrollTo = HTMLElement.prototype.scrollTo;
+    const scrollTo = vi.fn();
+    HTMLElement.prototype.scrollTo = scrollTo;
+    window.sessionStorage.clear();
+    window.sessionStorage.setItem("article-scroll:article-01", "180");
+
+    try {
+      await act(async () => {
+        root.render(
+          <ArticleModal
+            openArticle={{ id: "article-01", title: "Saved position", meta: "Today", html: "<p>Article</p>" }}
+            setOpenArticle={() => {}}
+          />
+        );
+      });
+
+      expect(scrollTo).toHaveBeenCalledWith({ top: 180 });
+
+      const body = rootElement.querySelector(".abody");
+      Object.defineProperty(body, "scrollTop", { configurable: true, value: 360 });
+      await act(async () => body.dispatchEvent(new Event("scroll", { bubbles: true })));
+
+      expect(window.sessionStorage.getItem("article-scroll:article-01")).toBe("360");
+    } finally {
+      await act(async () => root.unmount());
+      HTMLElement.prototype.scrollTo = originalScrollTo;
+      window.sessionStorage.clear();
+      document.body.removeChild(rootElement);
+    }
+  });
+
   it("renders the selected social icon row in the topbar", () => {
     const html = renderToStaticMarkup(<MidfiV1 />);
 
