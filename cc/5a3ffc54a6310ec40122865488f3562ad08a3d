@@ -1,0 +1,23 @@
+src/components/landing/styles/cards.css
+  s_ca67b08826dd73::t_9746dcf990e42a 123-124
+src/components/landing/cards/WriteupsCard.jsx
+  s_ca67b08826dd73::t_9746dcf990e42a 21,26-30
+tests/portfolio-landing.test.jsx
+  s_ca67b08826dd73::t_0fda44a3b41e94 217-230
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "cc5a3ffc54a6310ec40122865488f3562ad08a3d",
+  "prompts": {},
+  "sessions": {
+    "s_ca67b08826dd73": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fafd4-7976-7f41-894c-999f03702ca2",
+        "model": "gpt-5.6-terra"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
