@@ -7,3 +7,12 @@ alter table public.dino_scores
 
 create index if not exists dino_scores_flagged_idx
   on public.dino_scores (flagged, created_at desc);
+
+-- No 50k+ score can enter unflagged: either via the API (server sets it) or
+-- via direct PostgREST (the row is rejected unless flagged is true).
+update public.dino_scores
+  set flagged = (score >= 50000);
+
+alter table public.dino_scores
+  add constraint dino_scores_flag_check
+  check (flagged = (score >= 50000));
