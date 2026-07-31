@@ -516,8 +516,14 @@
     vertical-align: -1px;
   }
   .mfi-modal .dino-rank-list .flag-tip {
-    position: relative;
+    margin-left: 2px;
     cursor: help;
+    color: var(--m-ink-faint);
+  }
+  .mfi-modal .dino-rank-list .flag-tip::before {
+    content: "·";
+    font-size: 13px;
+    line-height: 1;
   }
   .mfi-modal .dino-rank-list .flag-tip .flag-note {
     display: none;

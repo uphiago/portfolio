@@ -92,18 +92,8 @@ export function RankingModal({ open, onClose, nickname, scores: initialScores })
                 <span className="nm">
                   {entry.nickname}
                   {isFlagged && (
-                    <span
-                      className="flag-tip"
-                      aria-label={entry.note || "flagged"}
-                      title={entry.note || "flagged — likely tampered"}
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        className="flag"
-                        src="/incognito.png"
-                        alt="flagged"
-                      />
-                      {entry.note && <span className="flag-note mono">{entry.note}</span>}
+                    <span className="flag-tip" title="hacker">
+                      <span className="flag-note mono">{entry.note}</span>
                     </span>
                   )}
                 </span>

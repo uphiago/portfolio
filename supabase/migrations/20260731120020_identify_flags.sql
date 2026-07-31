@@ -5,10 +5,10 @@ alter table public.dino_scores
 create index if not exists dino_scores_flagged_idx
   on public.dino_scores (flagged, created_at desc);
 
--- Scores >= 5k can never enter unflagged.
+-- Scores >= 10k can never enter unflagged.
 update public.dino_scores
-  set flagged = (score >= 5000);
+  set flagged = (score >= 10000);
 
 alter table public.dino_scores
   add constraint dino_scores_flag_check
-  check (flagged = (score >= 5000));
+  check (flagged = (score >= 10000));
