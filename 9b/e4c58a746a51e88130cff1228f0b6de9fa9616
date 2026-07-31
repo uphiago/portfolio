@@ -1,0 +1,60 @@
+src/components/landing/cards/DinoGame.jsx
+  s_94786c0d0ffb5f::t_49b171222668e7 1-55,57-60,62,64,66,72,77-135,141-165,167-246
+  s_94786c0d0ffb5f::t_e32a740aa65770 166
+  s_94786c0d0ffb5f::t_af559ff5db3db5 56,61,63,65,67-71,73-76,136-140
+content/posts/2026/ai/pentest-recon.md
+  s_b289a61e8ec1ec::t_697587f34861a3 892
+  s_b289a61e8ec1ec::t_f821556f8842c3 589,592-593,595-596,598,601,604
+  s_b289a61e8ec1ec::t_7e02fe5e705562 137
+  s_b289a61e8ec1ec::t_6d8025ed940b4b 958-971
+  s_b289a61e8ec1ec::t_60559d36dd16d3 611-623
+  s_b289a61e8ec1ec::t_6eee1ab035d8c6 668-670
+  s_b289a61e8ec1ec::t_78a5ba7054c626 809,815-847
+  s_b289a61e8ec1ec::t_fa717e4517828c 885,887
+tests/portfolio-landing.test.jsx
+  s_94786c0d0ffb5f::t_18209bf6d3d7d8 187-190,225
+tests/dino-ranking.test.js
+  s_94786c0d0ffb5f::t_18209bf6d3d7d8 1-160
+public/dino/runner.js
+  s_94786c0d0ffb5f::t_dbe8d2b9fb9d10 1-2785
+.env.example
+  s_94786c0d0ffb5f::t_b33c14280fa557 14-18
+src/components/landing/cards/VideoCard.jsx
+  s_94786c0d0ffb5f::t_fe7e9e67e956ed 3,17
+src/components/landing/styles/cards.css
+  s_94786c0d0ffb5f::t_980198769c95c1 270,273-276,301-456
+src/components/landing/styles/responsive.css
+  s_94786c0d0ffb5f::t_ae9edc8d295737 62-64
+app/api/dino/score/route.js
+  s_94786c0d0ffb5f::t_0ed22cca895985 1-64
+app/api/dino/scores/route.js
+  s_94786c0d0ffb5f::t_b00fb0d63d8b22 1-24
+src/lib/dinoRanking.js
+  s_94786c0d0ffb5f::t_ef015d9ae21fae 1-70
+supabase/migrations/20260731120000_dino_scores.sql
+  s_94786c0d0ffb5f::t_eac460a670cf5f 1-28
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.18",
+  "base_commit_sha": "9be4c58a746a51e88130cff1228f0b6de9fa9616",
+  "prompts": {},
+  "sessions": {
+    "s_94786c0d0ffb5f": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fb90a-a374-7770-8b21-a36e971dc34c",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    },
+    "s_b289a61e8ec1ec": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_04b0da549ffeJ8Ig7pf6lfBde6",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
