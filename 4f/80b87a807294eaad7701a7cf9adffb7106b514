@@ -1,0 +1,32 @@
+supabase/migrations/20260731120020_identify_flags.sql
+  s_1f45da4076bcb1::t_e62440336efcc5 2,8
+src/lib/dinoRanking.js
+  s_1f45da4076bcb1::t_d149c827bca752 2,7-9,12-26,64-67,79,97,112-113,121
+src/components/landing/styles/cards.css
+  s_1f45da4076bcb1::t_2cf7f6bd38d464 511-534
+src/components/landing/cards/RankingModal.jsx
+  s_1f45da4076bcb1::t_52ad4c9d307cb4 76
+  s_1f45da4076bcb1::t_5f47adc7b14ea7 57-65,67-72
+  s_1f45da4076bcb1::t_2f055b12cb2b4d 66
+tests/dino-ranking.test.js
+  s_1f45da4076bcb1::t_ab3375fe52800e 96
+  s_1f45da4076bcb1::t_ad9c41fd9abca6 128,131,137,139,141,143-144,231,256,265-266,273-276
+app/api/dino/score/route.js
+  s_1f45da4076bcb1::t_74679e174282c3 57
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.19",
+  "base_commit_sha": "4f80b87a807294eaad7701a7cf9adffb7106b514",
+  "prompts": {},
+  "sessions": {
+    "s_1f45da4076bcb1": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_0703e5918ffeF2kIBL4FvuJCv2",
+        "model": "deepseek-v4-flash-free"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
