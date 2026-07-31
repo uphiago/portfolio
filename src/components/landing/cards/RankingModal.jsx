@@ -46,7 +46,7 @@ export function RankingModal({ open, onClose, nickname, scores: initialScores })
         <div className="dino-modal-head">
         <span className="dino-modal-title">
           <Trophy size={14} strokeWidth={1.7} />
-          dino · last 10
+          dino
         </span>
         <span className="dino-modal-sub mono">latest qualifying runs</span>
       </div>

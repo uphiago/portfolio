@@ -94,6 +94,8 @@ export function DinoGame() {
             window.setTimeout(() => setHackerNotice(false), 5000);
           }
           await tryRefreshTop();
+        } else {
+          console.warn("dino score rejected", { status: res.status, error: data?.error });
         }
       } catch {
         // ranking stays stale until next game over
@@ -179,7 +181,6 @@ export function DinoGame() {
       <div className="dino-bar">
         <button type="button" className="dino-trophy" onClick={() => setRankOpen(true)} onKeyDown={(e) => { e.key === " " && e.preventDefault(); }}>
           <Trophy size={13} strokeWidth={1.7} />
-          last 10
         </button>
       </div>
 

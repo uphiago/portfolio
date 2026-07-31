@@ -202,7 +202,7 @@ describe("MidfiV1", () => {
     expect(html).toContain("dino-game");
     expect(html).toContain("dino-trophy");
     expect(html).toContain("offline-resources-1x");
-    expect(html).toContain("last 10");
+    expect(html).toContain("dino-trophy");
     expect(html).not.toContain("work in progress");
     expect(html).not.toContain("reels-soon");
     expect(html).not.toContain("drag-row");
