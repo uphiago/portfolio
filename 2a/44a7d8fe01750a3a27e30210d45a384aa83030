@@ -1,0 +1,19 @@
+tests/portfolio-landing.test.jsx
+  s_94786c0d0ffb5f::t_4a97c1956cc6da 13,30-46,202-207,242
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.19",
+  "base_commit_sha": "2a44a7d8fe01750a3a27e30210d45a384aa83030",
+  "prompts": {},
+  "sessions": {
+    "s_94786c0d0ffb5f": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fb90a-a374-7770-8b21-a36e971dc34c",
+        "model": "unknown"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
