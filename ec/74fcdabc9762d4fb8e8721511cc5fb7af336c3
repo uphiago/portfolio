@@ -1,0 +1,31 @@
+supabase/migrations/20260731120000_dino_scores.sql
+  s_94786c0d0ffb5f::t_0a73f69c1dbf9d 1-28
+.env.example
+  s_94786c0d0ffb5f::t_431ac78866438b 14-21
+app/api/dino/score/route.js
+  s_94786c0d0ffb5f::t_b75c10711f6169 1-68
+app/api/dino/scores/route.js
+  s_94786c0d0ffb5f::t_ce8a09e45e0c4e 1-28
+src/lib/dinoRanking.js
+  s_94786c0d0ffb5f::t_8f3b60a45ac317 1-106
+supabase/migrations/20260731120010_harden_dino_scores.sql
+  s_94786c0d0ffb5f::t_a1b68f8b8211e9 1-10
+tests/dino-ranking.test.js
+  s_94786c0d0ffb5f::t_3c469b3c84368b 1-238
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.19",
+  "base_commit_sha": "ec74fcdabc9762d4fb8e8721511cc5fb7af336c3",
+  "prompts": {},
+  "sessions": {
+    "s_94786c0d0ffb5f": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fb90a-a374-7770-8b21-a36e971dc34c",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
