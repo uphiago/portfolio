@@ -1,0 +1,21 @@
+src/components/landing/cards/RankingModal.jsx
+  s_94786c0d0ffb5f::t_ffd3ff8a554e62 4,16-28,32,36,50,57-60
+src/components/landing/styles/cards.css
+  s_94786c0d0ffb5f::t_ffd3ff8a554e62 387,389-430,450,456-467,478-479,490-497
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.19",
+  "base_commit_sha": "69a6dbaac2a40013792ca29ab0cfb9adc627f624",
+  "prompts": {},
+  "sessions": {
+    "s_94786c0d0ffb5f": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fb90a-a374-7770-8b21-a36e971dc34c",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
