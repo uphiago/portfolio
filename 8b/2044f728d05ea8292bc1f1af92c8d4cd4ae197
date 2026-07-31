@@ -1,0 +1,19 @@
+src/components/landing/styles/cards.css
+  s_94786c0d0ffb5f::t_1e78b965f875f4 361-362,365-368,371-372,376-377,388-389
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.18",
+  "base_commit_sha": "8b2044f728d05ea8292bc1f1af92c8d4cd4ae197",
+  "prompts": {},
+  "sessions": {
+    "s_94786c0d0ffb5f": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fb90a-a374-7770-8b21-a36e971dc34c",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
