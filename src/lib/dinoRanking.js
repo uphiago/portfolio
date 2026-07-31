@@ -1,19 +1,32 @@
 // Dino game top 10 ranking -> Supabase (PostgREST, publishable key + RLS).
-
-import crypto from "node:crypto";
+// No tracking. The honeypot is playful — flagged entries get a funny note.
 
 export const DINO_MAX_NICKNAME = 24;
 export const DINO_MAX_SCORE = 99999;
 export const DINO_TOP_LIMIT = 10;
-// Playful honeypot: anything this high is tampering (the legit game tops out
-// far below). Scores at/over this get flagged and trigger the hacker notice.
+
+// Playful honeypot: the legit game tops out far below. Scores over this
+// threshold get flagged and stored with a random ASCII easter-egg note.
 export const DINO_HACKER_THRESHOLD = 50000;
+
+const HONEYPOT_NOTES = [
+  "┌∩┐(◣_◢)┌∩┐  nice try, agent!",
+  "(╯°□°)╯︵ ┻━┻  score of 50k?  really?",
+  "⬆️  server validation > client tampering",
+  "🦡  badger says: no spoon-feeding",
+  "🍯  you found the honeypot!  hi from the server",
+  "⚡  owasp top 10: a01 broken access control",
+  "🔍  the server sees all.  try harder next time",
+  "🎯  flagged.  this note lives in the db forever",
+];
+
+function pickNote() {
+  return HONEYPOT_NOTES[Math.floor(Math.random() * HONEYPOT_NOTES.length)];
+}
 
 function supabaseConfig() {
   return {
     url: process.env.SUPABASE_URL || "",
-    // Prefer the secret (service role) key: it bypasses RLS so inserts stay
-    // server-only. Falls back to the publishable key for local dev.
     key:
       process.env.SUPABASE_SERVICE_ROLE_KEY ||
       process.env.SUPABASE_PUBLISHABLE_KEY ||
@@ -48,6 +61,10 @@ export function qualifiesForTop10(score, scores, limit = DINO_TOP_LIMIT) {
   return score > Number(scores[limit - 1]?.score || 0);
 }
 
+export function isHackerScore(score) {
+  return Number.isInteger(score) && score >= DINO_HACKER_THRESHOLD;
+}
+
 function restHeaders(key) {
   return {
     apikey: key,
@@ -56,26 +73,10 @@ function restHeaders(key) {
   };
 }
 
-export function hashCallerIp(ip) {
-  if (!ip) {
-    return null;
-  }
-  const pepper = process.env.DINO_IP_PEPPER || "dino-honeypot";
-  return crypto
-    .createHash("sha256")
-    .update(`${pepper}:${ip}`)
-    .digest("hex")
-    .slice(0, 32);
-}
-
-export function isHackerScore(score) {
-  return Number.isInteger(score) && score >= DINO_HACKER_THRESHOLD;
-}
-
 export async function fetchTopScores(limit = DINO_TOP_LIMIT) {
   const { url, key } = supabaseConfig();
   const params = new URLSearchParams({
-    select: "nickname,score,created_at,flagged",
+    select: "nickname,score,created_at,flagged,note",
     order: "score.desc,created_at.asc",
     limit: String(limit),
   });
@@ -93,7 +94,7 @@ export async function fetchTopScores(limit = DINO_TOP_LIMIT) {
 export async function fetchLastScores(limit = DINO_TOP_LIMIT) {
   const { url, key } = supabaseConfig();
   const params = new URLSearchParams({
-    select: "nickname,score,created_at,flagged",
+    select: "nickname,score,created_at,flagged,note",
     order: "created_at.desc",
     limit: String(limit),
   });
@@ -108,13 +109,8 @@ export async function fetchLastScores(limit = DINO_TOP_LIMIT) {
   return res.json();
 }
 
-export async function insertScore({
-  nickname,
-  score,
-  ipHash = null,
-  userAgent = null,
-  flagged = false,
-}) {
+export async function insertScore({ nickname, score, flagged = false }) {
+  const note = flagged ? pickNote() : null;
   const { url, key } = supabaseConfig();
   const res = await fetch(`${url}/rest/v1/dino_scores`, {
     method: "POST",
@@ -122,13 +118,7 @@ export async function insertScore({
       ...restHeaders(key),
       Prefer: "return=minimal",
     },
-    body: JSON.stringify({
-      nickname,
-      score,
-      ...(ipHash ? { ip_hash: ipHash } : {}),
-      ...(userAgent ? { user_agent: userAgent } : {}),
-      ...(flagged ? { flagged: true } : {}),
-    }),
+    body: JSON.stringify({ nickname, score, flagged, note }),
   });
   if (!res.ok) {
     throw new Error(`supabase insert failed: ${res.status}`);

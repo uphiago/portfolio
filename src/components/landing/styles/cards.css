@@ -508,6 +508,30 @@
     height: 12px;
     vertical-align: -1px;
   }
+  .mfi-modal .dino-rank-list .flag-tip {
+    position: relative;
+    cursor: help;
+  }
+  .mfi-modal .dino-rank-list .flag-tip .flag-note {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px 8px;
+    background: var(--m-ink-2);
+    color: var(--m-paper);
+    font-size: 10px;
+    line-height: 1.45;
+    white-space: nowrap;
+    border-radius: 3px;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  }
+  .mfi-modal .dino-rank-list .flag-tip:hover .flag-note,
+  .mfi-modal .dino-rank-list .flag-tip:focus-within .flag-note {
+    display: block;
+  }
   .mfi-modal .dino-rank-list li.empty .nm,
   .mfi-modal .dino-rank-list li.empty .sc {
     color: var(--m-ink-faint);

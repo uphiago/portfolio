@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import {
-  hashCallerIp,
   insertScore,
   isRankingConfigured,
   isHackerScore,
@@ -44,8 +43,6 @@ export async function POST(request) {
   }
 
   const key = getClientKey(request);
-  const ipHash = hashCallerIp(key);
-  const userAgent = request.headers.get("user-agent");
   const flagged = isHackerScore(score);
   const now = Date.now();
   if (now - (attempts.get(key) || 0) < DINO_SCORE_RATE_LIMIT_MS) {
@@ -57,13 +54,7 @@ export async function POST(request) {
   attempts.set(key, now);
 
   try {
-    await insertScore({
-      nickname,
-      score,
-      ipHash,
-      userAgent,
-      flagged,
-    });
+    await insertScore({ nickname, score, flagged });
     return NextResponse.json({
       ok: true,
       hacker: flagged,

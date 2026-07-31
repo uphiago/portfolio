@@ -4,11 +4,6 @@ import React from "react";
 import { Trophy } from "lucide-react";
 import { BaseModal } from "../modals/BaseModal";
 import { DINO_HACKER_THRESHOLD } from "@/src/lib/dinoRanking";
-import incognitoIcon from "@/incognito.png";
-
-// Next static imports are objects ({ src, height, width }) — plain <img>
-// needs the resolved URL string.
-const incognitoSrc = typeof incognitoIcon === "string" ? incognitoIcon : incognitoIcon.src;
 
 export function RankingModal({ open, onClose, ranking, scores, nickname }) {
   if (!open) {
@@ -59,11 +54,26 @@ export function RankingModal({ open, onClose, ranking, scores, nickname }) {
               <span className="nm">{entry.nickname}</span>
               <span className="sc">
                 {entry.score}
-                {isFlagged && (
+                {isFlagged && entry.note && (
+                  <span
+                    className="flag-tip"
+                    aria-label={entry.note}
+                    title={entry.note}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      className="flag"
+                      src="/incognito.png"
+                      alt="flagged"
+                    />
+                    <span className="flag-note mono">{entry.note}</span>
+                  </span>
+                )}
+                {isFlagged && !entry.note && (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     className="flag"
-                    src={incognitoSrc}
+                    src="/incognito.png"
                     alt="flagged"
                     title="flagged — likely tampered"
                   />
