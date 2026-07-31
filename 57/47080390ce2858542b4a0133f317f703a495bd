@@ -1,0 +1,26 @@
+src/components/landing/cards/DinoGame.jsx
+  s_1f45da4076bcb1::t_d0d64b135a4f08 61,66-72,75-77,96,99,104,149,175,180
+src/components/landing/cards/RankingModal.jsx
+  s_1f45da4076bcb1::t_8098bdf17bf70c 8-10,30,33
+  s_1f45da4076bcb1::t_75065fd7de0958 3,11-29,31-32,34,61-83,85-109,114,116-121
+  s_1f45da4076bcb1::t_52fd58b89866f3 43-46
+  s_1f45da4076bcb1::t_7d658aebe20116 127
+src/components/landing/styles/cards.css
+  s_1f45da4076bcb1::t_7a8234d212ccce 414
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.19",
+  "base_commit_sha": "5747080390ce2858542b4a0133f317f703a495bd",
+  "prompts": {},
+  "sessions": {
+    "s_1f45da4076bcb1": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_0703e5918ffeF2kIBL4FvuJCv2",
+        "model": "deepseek-v4-flash-free"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
