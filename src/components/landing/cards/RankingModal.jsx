@@ -36,6 +36,7 @@ export function RankingModal({ open, onClose, nickname, scores: initialScores })
   }
 
   const rows = Array.from({ length: 10 }, (_, index) => scores[index] || null);
+  const flaggedCount = scores.filter((s) => s.flagged === true).length;
 
   return (
     <BaseModal onClose={onClose} label="Dino top 10 ranking">
@@ -43,14 +44,17 @@ export function RankingModal({ open, onClose, nickname, scores: initialScores })
       {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
       <div onKeyDown={(e) => { e.key === " " && e.stopPropagation(); }}>
         <div className="dino-modal-head">
-        <span className="dino-modal-title">
-          <Trophy size={14} strokeWidth={1.7} />
-          dino
-        </span>
-        <span className="dino-modal-sub mono">latest qualifying runs</span>
-      </div>
+          <span className="dino-modal-title">
+            <Trophy size={14} strokeWidth={1.7} />
+            dino
+          </span>
+          {flaggedCount > 0 && (
+            <span className="dino-modal-sub mono">🏴‍☠️ {flaggedCount}</span>
+          )}
+          <span className="dino-modal-sub mono">latest qualifying runs</span>
+        </div>
 
-      <div className="dino-rank-cols mono">
+        <div className="dino-rank-cols mono">
         <span className="rk">#</span>
         <span className="nm">player</span>
         <span className="sc">score</span>
@@ -99,7 +103,6 @@ export function RankingModal({ open, onClose, nickname, scores: initialScores })
       </ol>
 
       <div className="dino-modal-foot mono">
-        newest first
       </div>
       </div>
     </BaseModal>

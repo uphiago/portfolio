@@ -208,7 +208,6 @@ export function DinoGame() {
             </form>
           )}
 
-          )}
         </div>
       </div>
 
