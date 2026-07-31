@@ -1,0 +1,30 @@
+tests/dino-ranking.test.js
+  s_1f45da4076bcb1::t_489c0b3cf70119 75-76
+  s_1f45da4076bcb1::t_675506cfb081e5 216-221
+  s_1f45da4076bcb1::t_a108063dd4fdab 238-243
+  s_1f45da4076bcb1::t_5dbd03b2548bb3 284-285
+  s_1f45da4076bcb1::t_5e4e0849fd6e13 268-273
+src/components/landing/cards/RankingModal.jsx
+  s_1f45da4076bcb1::t_d648a3fd5f588f 89
+app/api/dino/score/route.js
+  s_1f45da4076bcb1::t_779ddb64f518b4 3
+  s_1f45da4076bcb1::t_d6a9de9e610b80 58-62
+src/lib/dinoRanking.js
+  s_1f45da4076bcb1::t_d7b05c21c5888c 109-128
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.19",
+  "base_commit_sha": "0ac0f78e8f462379f34580aa6d496dfff475aa50",
+  "prompts": {},
+  "sessions": {
+    "s_1f45da4076bcb1": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_0703e5918ffeF2kIBL4FvuJCv2",
+        "model": "deepseek-v4-flash-free"
+      },
+      "human_author": null
+    }
+  }
+}
