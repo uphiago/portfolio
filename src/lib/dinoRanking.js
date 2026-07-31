@@ -5,7 +5,7 @@ export const DINO_MAX_SCORE = 99999;
 export const DINO_TOP_LIMIT = 10;
 
 // Scores >= 10k get flagged as tampered.
-export const DINO_HACKER_THRESHOLD = 10000;
+export const DINO_HACKER_THRESHOLD = 49999;
 
 function supabaseConfig() {
   return {

@@ -53,8 +53,7 @@ export function DinoGame() {
   const [started, setStarted] = useState(false);
   const [ranking, setRanking] = useState("loading"); // loading | ok | disabled
   const [submitting, setSubmitting] = useState(false);
-  const [rankOpen, setRankOpen] = useState(false);
-    const [hackerNotice, setHackerNotice] = useState(false);
+    const [rankOpen, setRankOpen] = useState(false);
   const rankingRef = useRef(ranking);
 
   const tryRefreshTop = useCallback(async () => {
@@ -88,10 +87,6 @@ export function DinoGame() {
         });
         const data = await res.json().catch(() => null);
         if (res.ok) {
-          if (data?.hacker) {
-            setHackerNotice(true);
-            window.setTimeout(() => setHackerNotice(false), 5000);
-          }
           await tryRefreshTop();
         } else {
           console.warn("dino score rejected", { status: res.status, error: data?.error });
@@ -213,10 +208,6 @@ export function DinoGame() {
             </form>
           )}
 
-          {hackerNotice && (
-            <div className="dino-hack" role="status">
-              🏴☠️ hacker detected — 10k+ gets flagged (nice try)
-            </div>
           )}
         </div>
       </div>
