@@ -266,38 +266,252 @@
   .mfi .video-head .meta {
     color: #808080;
   }
-  .mfi .reels-soon {
+  /* Dino game + top 10 ranking */
+  .mfi .dino-game-stage {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .mfi .dino-bar {
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 11px 15px 10px;
+  }
+  .mfi .dino-trophy {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: 0;
+    color: #f1efe8;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 4px 0;
+    cursor: pointer;
+  }
+  .mfi .dino-trophy:hover {
+    color: #cfcdc5;
+  }
+  .mfi .dino-trophy svg {
+    width: 13px;
+    height: 13px;
+    flex-shrink: 0;
+  }
+  .mfi .dino-game-holder {
     flex: 1;
     min-height: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 14px;
-    padding: 18px;
-    color: #f1efe8;
+    padding: 12px 15px 14px;
   }
-  .mfi .reels-soon-mark {
-    width: 22px;
-    height: 22px;
-    display: inline-flex;
+  .mfi .dino-game-wrap {
+    position: relative;
+    width: 100%;
+  }
+  .mfi .dino-game-wrap > img,
+  .mfi .dino-game-wrap .icon-offline {
+    display: none;
+  }
+  .mfi .dino-game .runner-container {
+    position: relative;
+    height: 150px;
+    margin: 0 auto;
+  }
+  .mfi .dino-game .runner-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    filter: invert(1);
+    image-rendering: pixelated;
+  }
+  .mfi .dino-game .controller {
+    display: none;
+  }
+  .mfi .dino-hint {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: flex;
     align-items: center;
     justify-content: center;
-    color: rgba(241,239,232,.74);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    color: rgba(241, 239, 232, 0.82);
+    text-transform: lowercase;
+    pointer-events: none;
   }
-  .mfi .reels-soon-copy {
-    min-width: 0;
+  .mfi .dino-name {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    z-index: 4;
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: #141414;
+    border: 1px solid #333;
   }
-  .mfi .reels-soon-title {
-    font-family: var(--font-ibm);
-    font-size: 20px;
-    font-weight: 560;
-    line-height: 1.1;
+  .mfi .dino-name input {
+    width: 96px;
+    background: #0f0f0f;
+    color: #f1efe8;
+    border: 1px solid #333;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 3px 6px;
+    outline: none;
   }
-  .mfi .reels-soon-meta {
-    margin-top: 5px;
+  .mfi .dino-name input:focus {
+    border-color: #6dd49a;
+  }
+  .mfi .dino-name button {
+    background: #6dd49a;
+    color: #0a0a0a;
+    border: 0;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    padding: 3px 7px;
+    cursor: pointer;
+  }
+  .mfi .dino-hack {
+    position: absolute;
+    left: 8px;
+    bottom: 8px;
+    z-index: 5;
+    padding: 4px 8px;
+    background: rgba(225, 55, 42, 0.14);
+    border: 1px solid rgba(225, 55, 42, 0.45);
+    color: #ffb4a8;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    animation: mfi-fade 0.18s ease;
+  }
+
+  /* Ranking modal (light theme) */
+  .mfi-modal .dino-modal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 0 12px;
+  }
+  .mfi-modal .dino-modal-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     font-family: var(--font-mono);
     font-size: 12px;
-    color: #808080;
+    letter-spacing: 0.03em;
+    color: var(--m-ink);
+  }
+  .mfi-modal .dino-modal-title svg {
+    width: 14px;
+    height: 14px;
+    color: var(--m-green);
+  }
+  .mfi-modal .dino-modal-sub {
+    font-size: 10px;
+    color: var(--m-ink-faint);
+  }
+  .mfi-modal .dino-rank-cols {
+    display: flex;
+    gap: 12px;
+    padding: 0 0 6px;
+    border-bottom: 1px solid var(--m-line);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--m-ink-faint);
+  }
+  .mfi-modal .dino-rank-cols .rk {
+    width: 26px;
+    text-align: right;
+  }
+  .mfi-modal .dino-rank-cols .nm {
+    flex: 1;
+    min-width: 0;
+  }
+  .mfi-modal .dino-rank-cols .sc {
+    flex: none;
+    width: 64px;
+    text-align: right;
+  }
+  .mfi-modal .dino-rank-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .mfi-modal .dino-rank-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--m-line);
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+  .mfi-modal .dino-rank-list li:last-child {
+    border-bottom: none;
+  }
+  .mfi-modal .dino-rank-list .rk {
+    width: 26px;
+    flex: none;
+    text-align: right;
+    font-size: 11px;
+    color: var(--m-ink-faint);
+  }
+  .mfi-modal .dino-rank-list .rk.top1 {
+    color: #b8860b;
+    font-weight: 700;
+  }
+  .mfi-modal .dino-rank-list .rk.top2 {
+    color: #8a8f98;
+    font-weight: 600;
+  }
+  .mfi-modal .dino-rank-list .rk.top3 {
+    color: #a97142;
+    font-weight: 600;
+  }
+  .mfi-modal .dino-rank-list .nm {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--m-ink);
+  }
+  .mfi-modal .dino-rank-list .sc {
+    flex: none;
+    width: 64px;
+    text-align: right;
+    font-weight: 600;
+    color: var(--m-ink-2);
+  }
+  .mfi-modal .dino-rank-list .flag {
+    margin-left: 4px;
+    color: #d97706;
+  }
+  .mfi-modal .dino-rank-list li.empty .nm,
+  .mfi-modal .dino-rank-list li.empty .sc {
+    color: var(--m-ink-faint);
+  }
+  .mfi-modal .dino-rank-list li.me .rk,
+  .mfi-modal .dino-rank-list li.me .nm,
+  .mfi-modal .dino-rank-list li.me .sc {
+    color: var(--m-green);
+  }
+  .mfi-modal .dino-modal-foot {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--m-line);
+    font-size: 10px;
+    color: var(--m-ink-faint);
   }
   .mfi .shorts-stage {
     flex: 1;

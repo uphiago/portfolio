@@ -1,0 +1,251 @@
+"use client";
+
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { Trophy } from "lucide-react";
+import { RankingModal } from "./RankingModal";
+import { qualifiesForTop10 } from "@/src/lib/dinoRanking";
+
+const NICKNAME_KEY = "dino-nickname";
+const RUNNER_SRC = "/dino/runner.js";
+const NICKNAME_MAX = 24;
+
+function readNickname() {
+  try {
+    return window.localStorage.getItem(NICKNAME_KEY) || "";
+  } catch {
+    return "";
+  }
+}
+
+function writeNickname(name) {
+  try {
+    window.localStorage.setItem(NICKNAME_KEY, name);
+  } catch {
+    // private mode / storage disabled — game still works
+  }
+}
+
+function sanitizeNickname(value) {
+  return String(value || "").replace(/\s+/g, " ").trim().slice(0, NICKNAME_MAX);
+}
+
+function loadRunnerScript() {
+  return new Promise((resolve, reject) => {
+    if (window.Runner) {
+      resolve();
+      return;
+    }
+    const script = document.createElement("script");
+    script.src = RUNNER_SRC;
+    script.async = true;
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error("failed to load dino runner"));
+    document.head.appendChild(script);
+  });
+}
+
+export function DinoGame() {
+  const stageRef = useRef(null);
+  const pendingScoreRef = useRef(null);
+  const topRef = useRef([]);
+  const [nickname, setNickname] = useState("");
+  const [nameDraft, setNameDraft] = useState("");
+  const [askName, setAskName] = useState(false);
+  const [started, setStarted] = useState(false);
+  const [scores, setScores] = useState([]);
+  const [ranking, setRanking] = useState("loading"); // loading | ok | disabled
+  const [submitting, setSubmitting] = useState(false);
+  const [rankOpen, setRankOpen] = useState(false);
+  const [hackerNotice, setHackerNotice] = useState(false);
+  const scoresRef = useRef(scores);
+  const rankingRef = useRef(ranking);
+
+  const fetchRanking = useCallback(async () => {
+    try {
+      const res = await fetch("/api/dino/scores", { cache: "no-store" });
+      const data = await res.json();
+      if (data?.ok && !data.disabled) {
+        return { scores: data.scores || [], top: data.top || [], state: "ok" };
+      }
+      return { scores: [], top: [], state: "disabled" };
+    } catch {
+      return { scores: [], top: [], state: "disabled" };
+    }
+  }, []);
+
+  const applyRanking = useCallback(({ scores, top, state }) => {
+    scoresRef.current = scores;
+    topRef.current = top;
+    rankingRef.current = state;
+    setScores(scores);
+    setRanking(state);
+  }, []);
+
+  const refreshRanking = useCallback(async () => {
+    applyRanking(await fetchRanking());
+  }, [applyRanking, fetchRanking]);
+
+  const submitScore = useCallback(
+    async (name, score) => {
+      setSubmitting(true);
+      try {
+        const res = await fetch("/api/dino/score", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ nickname: name, score }),
+        });
+        const data = await res.json().catch(() => null);
+        if (res.ok) {
+          if (data?.hacker) {
+            setHackerNotice(true);
+            window.setTimeout(() => setHackerNotice(false), 5000);
+          }
+          await refreshRanking();
+        }
+      } catch {
+        // ranking just stays stale until the next refresh
+      } finally {
+        setSubmitting(false);
+      }
+    },
+    [refreshRanking]
+  );
+
+  const handleGameOver = useCallback(
+    (score) => {
+      // Only ask for a nickname when the score actually enters the top 10.
+      if (
+        rankingRef.current !== "ok" ||
+        !qualifiesForTop10(score, topRef.current)
+      ) {
+        return;
+      }
+      const name = readNickname();
+      if (name) {
+        submitScore(name, score);
+      } else {
+        pendingScoreRef.current = score;
+        setNameDraft("");
+        setAskName(true);
+      }
+    },
+    [submitScore]
+  );
+
+  const handleNicknameSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
+      const name = sanitizeNickname(nameDraft);
+      if (!name) {
+        return;
+      }
+      writeNickname(name);
+      setNickname(name);
+      setAskName(false);
+      const score = pendingScoreRef.current;
+      if (score) {
+        submitScore(name, score);
+      }
+    },
+    [nameDraft, submitScore]
+  );
+
+  const openRanking = useCallback(() => {
+    setRankOpen(true);
+    refreshRanking();
+  }, [refreshRanking]);
+
+  useEffect(() => {
+    let disposed = false;
+    let runner = null;
+
+    fetchRanking().then((result) => {
+      if (!disposed) {
+        applyRanking(result);
+      }
+    });
+
+    loadRunnerScript()
+      .then(() => {
+        if (disposed || !stageRef.current) {
+          return;
+        }
+        runner = new window.Runner(".dino-game", {
+          onGameStart: () => setStarted(true),
+          onGameOver: handleGameOver,
+        });
+      })
+      .catch(() => {
+        // game script failed to load — keep the static stage, no crash
+      });
+
+    return () => {
+      disposed = true;
+      if (runner) {
+        try {
+          runner.destroy();
+        } catch {
+          // ignore teardown errors
+        }
+      }
+    };
+  }, [refreshRanking, handleGameOver, fetchRanking, applyRanking]);
+
+  return (
+    <div className="dino-game-stage">
+      <div className="dino-bar">
+        <button type="button" className="dino-trophy" onClick={openRanking}>
+          <Trophy size={13} strokeWidth={1.7} />
+          last 10
+        </button>
+      </div>
+
+      <div className="dino-game-holder">
+        <div className="dino-game-wrap">
+          <div className="interstitial-wrapper dino-game" ref={stageRef} />
+          <div className="icon-offline" aria-hidden="true" />
+          {/* The game reads these exact <img> ids from the DOM (hidden). */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img id="offline-resources-1x" src="/dino/100-offline-sprite.png" alt="" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img id="offline-resources-2x" src="/dino/200-offline-sprite.png" alt="" />
+
+          {!started && (
+            <div className="dino-hint" aria-hidden="true">
+              press space · tap to start
+            </div>
+          )}
+
+          {askName && (
+            <form className="dino-name" onSubmit={handleNicknameSubmit}>
+              <input
+                autoFocus
+                maxLength={NICKNAME_MAX}
+                value={nameDraft}
+                onChange={(event) => setNameDraft(event.target.value)}
+                placeholder="nickname"
+                aria-label="Nickname for the ranking"
+              />
+              <button type="submit" disabled={submitting}>
+                save score
+              </button>
+            </form>
+          )}
+
+          {hackerNotice && (
+            <div className="dino-hack" role="status">
+              🏴☠️ hacker detected — 50k+ gets flagged (nice try)
+            </div>
+          )}
+        </div>
+      </div>
+
+      <RankingModal
+        open={rankOpen}
+        onClose={() => setRankOpen(false)}
+        scores={scores}
+        nickname={nickname}
+      />
+    </div>
+  );
+}
