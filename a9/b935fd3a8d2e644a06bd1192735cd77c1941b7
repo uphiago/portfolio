@@ -1,0 +1,19 @@
+supabase/migrations/20260731120020_identify_flags.sql
+  s_94786c0d0ffb5f::t_6fb82e7459e141 10-18
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.19",
+  "base_commit_sha": "a9b935fd3a8d2e644a06bd1192735cd77c1941b7",
+  "prompts": {},
+  "sessions": {
+    "s_94786c0d0ffb5f": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fb90a-a374-7770-8b21-a36e971dc34c",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
