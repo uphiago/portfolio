@@ -1,0 +1,29 @@
+src/lib/dinoRanking.js
+  s_94786c0d0ffb5f::t_1e78b965f875f4 36-45
+  s_94786c0d0ffb5f::t_184d20443632f5 10-15
+.env.example
+  s_94786c0d0ffb5f::t_184d20443632f5 19-21
+tests/dino-ranking.test.js
+  s_94786c0d0ffb5f::t_1e78b965f875f4 10,42-51
+  s_94786c0d0ffb5f::t_184d20443632f5 56,65-76
+  s_94786c0d0ffb5f::t_0a71542f947334 52-53
+  s_94786c0d0ffb5f::t_8cc92a95e389cb 77-78
+supabase/migrations/20260731120010_harden_dino_scores.sql
+  s_94786c0d0ffb5f::t_184d20443632f5 1-10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.18",
+  "base_commit_sha": "e2ef989a41015c245dcd7c9603a408e2bcfaa976",
+  "prompts": {},
+  "sessions": {
+    "s_94786c0d0ffb5f": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fb90a-a374-7770-8b21-a36e971dc34c",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
