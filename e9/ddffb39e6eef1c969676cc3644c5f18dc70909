@@ -1,0 +1,23 @@
+src/components/landing/cards/DinoGame.jsx
+  s_1f45da4076bcb1::t_9ae5e189e74fde 56
+src/lib/dinoRanking.js
+  s_1f45da4076bcb1::t_65a92694266d04 8
+supabase/migrations/20260731120020_identify_flags.sql
+  s_1f45da4076bcb1::t_a8772e0b10166e 8,10,14
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.19",
+  "base_commit_sha": "e9ddffb39e6eef1c969676cc3644c5f18dc70909",
+  "prompts": {},
+  "sessions": {
+    "s_1f45da4076bcb1": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_0703e5918ffeF2kIBL4FvuJCv2",
+        "model": "deepseek-v4-flash-free"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
