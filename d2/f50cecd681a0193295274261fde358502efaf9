@@ -1,0 +1,31 @@
+app/api/dino/score/route.js
+  s_94786c0d0ffb5f::t_17c03786eea567 3,57-60
+src/components/landing/styles/cards.css
+  s_94786c0d0ffb5f::t_17c03786eea567 383-395,442,491,496-499
+tests/dino-ranking.test.js
+  s_94786c0d0ffb5f::t_5f00516852a1cb 6,213-236
+  s_94786c0d0ffb5f::t_1743d4964ecf81 237
+src/lib/dinoRanking.js
+  s_94786c0d0ffb5f::t_17c03786eea567 6-8
+src/components/landing/cards/RankingModal.jsx
+  s_94786c0d0ffb5f::t_17c03786eea567 6,46,54-61
+src/components/landing/cards/DinoGame.jsx
+  s_94786c0d0ffb5f::t_17c03786eea567 59,97,99-102,234-238
+  s_94786c0d0ffb5f::t_b8656fc757a646 239
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.19",
+  "base_commit_sha": "d2f50cecd681a0193295274261fde358502efaf9",
+  "prompts": {},
+  "sessions": {
+    "s_94786c0d0ffb5f": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fb90a-a374-7770-8b21-a36e971dc34c",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
