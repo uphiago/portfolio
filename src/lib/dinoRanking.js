@@ -56,12 +56,22 @@ function restHeaders(key) {
   };
 }
 
+function dedupByNickname(rows) {
+  const seen = new Set();
+  return rows.filter((row) => {
+    const key = row.nickname?.toLowerCase();
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
 export async function fetchTopScores(limit = DINO_TOP_LIMIT) {
   const { url, key } = supabaseConfig();
   const params = new URLSearchParams({
     select: "nickname,score,created_at,flagged",
     order: "score.desc,created_at.asc",
-    limit: String(limit),
+    limit: String(limit * 3),
   });
 
   const res = await fetch(`${url}/rest/v1/dino_scores?${params}`, {
@@ -71,7 +81,8 @@ export async function fetchTopScores(limit = DINO_TOP_LIMIT) {
   if (!res.ok) {
     throw new Error(`supabase select failed: ${res.status}`);
   }
-  return res.json();
+  const rows = await res.json();
+  return dedupByNickname(rows).slice(0, limit);
 }
 
 export async function fetchLastScores(limit = DINO_TOP_LIMIT) {
@@ -79,7 +90,7 @@ export async function fetchLastScores(limit = DINO_TOP_LIMIT) {
   const params = new URLSearchParams({
     select: "nickname,score,created_at,flagged",
     order: "created_at.desc",
-    limit: String(limit),
+    limit: String(limit * 3),
   });
 
   const res = await fetch(`${url}/rest/v1/dino_scores?${params}`, {
@@ -89,18 +100,12 @@ export async function fetchLastScores(limit = DINO_TOP_LIMIT) {
   if (!res.ok) {
     throw new Error(`supabase select failed: ${res.status}`);
   }
-  return res.json();
+  const rows = await res.json();
+  return dedupByNickname(rows).slice(0, limit);
 }
 
 export async function insertScore({ nickname, score, flagged = false }) {
   const { url, key } = supabaseConfig();
-
-  // Replace: delete any older entries for this nickname first.
-  await fetch(
-    `${url}/rest/v1/dino_scores?nickname=eq.${encodeURIComponent(nickname)}`,
-    { method: "DELETE", headers: restHeaders(key) }
-  );
-
   const res = await fetch(`${url}/rest/v1/dino_scores`, {
     method: "POST",
     headers: {

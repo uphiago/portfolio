@@ -54,7 +54,7 @@ export function DinoGame() {
   const [ranking, setRanking] = useState("loading"); // loading | ok | disabled
   const [submitting, setSubmitting] = useState(false);
   const [rankOpen, setRankOpen] = useState(false);
-  const [hackerNotice, setHackerNotice] = useState(false);
+    const [hackerNotice, setHackerNotice] = useState(null); // null | true | "skipped"
   const rankingRef = useRef(ranking);
 
   const tryRefreshTop = useCallback(async () => {
@@ -91,6 +91,10 @@ export function DinoGame() {
           if (data?.hacker) {
             setHackerNotice(true);
             window.setTimeout(() => setHackerNotice(false), 5000);
+          }
+          if (data?.skipped) {
+            setHackerNotice("skipped");
+            window.setTimeout(() => setHackerNotice(false), 3000);
           }
           await tryRefreshTop();
         } else {
@@ -215,7 +219,9 @@ export function DinoGame() {
 
           {hackerNotice && (
             <div className="dino-hack" role="status">
-              🏴☠️ hacker detected — 50k+ gets flagged (nice try)
+              {hackerNotice === "skipped"
+                ? "didn't beat your best — keep going"
+                : "🏴☠️ hacker detected — 10k+ gets flagged (nice try)"}
             </div>
           )}
         </div>
