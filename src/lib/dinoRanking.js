@@ -94,6 +94,13 @@ export async function fetchLastScores(limit = DINO_TOP_LIMIT) {
 
 export async function insertScore({ nickname, score, flagged = false }) {
   const { url, key } = supabaseConfig();
+
+  // Replace: delete any older entries for this nickname first.
+  await fetch(
+    `${url}/rest/v1/dino_scores?nickname=eq.${encodeURIComponent(nickname)}`,
+    { method: "DELETE", headers: restHeaders(key) }
+  );
+
   const res = await fetch(`${url}/rest/v1/dino_scores`, {
     method: "POST",
     headers: {

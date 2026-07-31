@@ -122,7 +122,8 @@ describe("dinoRanking lib", () => {
 
     await insertScore({ nickname: "red", score: 777 });
 
-    const [url, options] = fetchMock.mock.calls[0];
+    // calls[0] = DELETE old, calls[1] = POST new
+    const [url, options] = fetchMock.mock.calls[1];
     expect(url).toBe("https://x.supabase.co/rest/v1/dino_scores");
     expect(options.method).toBe("POST");
     expect(JSON.parse(options.body)).toEqual({ nickname: "red", score: 777, flagged: false });
@@ -136,7 +137,7 @@ describe("dinoRanking lib", () => {
 
     await insertScore({ nickname: "haxor", score: DINO_HACKER_THRESHOLD, flagged: true });
 
-    const [, options] = fetchMock.mock.calls[0];
+    const [, options] = fetchMock.mock.calls[1];
     const body = JSON.parse(options.body);
     expect(body.nickname).toBe("haxor");
     expect(body.flagged).toBe(true);
@@ -280,8 +281,8 @@ describe("POST /api/dino/score", () => {
       })
     );
 
-    // calls[0] is personal-best query, calls[1] is the insert
-    const [, options] = fetchMock.mock.calls[1];
+    // calls[0]=personal-best, calls[1]=delete-old, calls[2]=insert
+    const [, options] = fetchMock.mock.calls[2];
     const body = JSON.parse(options.body);
     expect(body.flagged).toBe(true);
     expect(body.nickname).toBe("good");
