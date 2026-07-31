@@ -518,12 +518,12 @@
     bottom: calc(100% + 6px);
     left: 50%;
     transform: translateX(-50%);
-    padding: 5px 8px;
+    padding: 6px 9px;
     background: var(--m-ink-2);
     color: var(--m-paper);
     font-size: 10px;
-    line-height: 1.45;
-    white-space: nowrap;
+    line-height: 1.5;
+    white-space: pre;
     border-radius: 3px;
     z-index: 10;
     box-shadow: 0 2px 8px rgba(0,0,0,0.18);

@@ -9,20 +9,18 @@ export const DINO_TOP_LIMIT = 10;
 // threshold get flagged and stored with a random ASCII easter-egg note.
 export const DINO_HACKER_THRESHOLD = 50000;
 
-const HONEYPOT_NOTES = [
-  "┌∩┐(◣_◢)┌∩┐  nice try, agent!",
-  "(╯°□°)╯︵ ┻━┻  score of 50k?  really?",
-  "⬆️  server validation > client tampering",
-  "🦡  badger says: no spoon-feeding",
-  "🍯  you found the honeypot!  hi from the server",
-  "⚡  owasp top 10: a01 broken access control",
-  "🔍  the server sees all.  try harder next time",
-  "🎯  flagged.  this note lives in the db forever",
-];
-
-function pickNote() {
-  return HONEYPOT_NOTES[Math.floor(Math.random() * HONEYPOT_NOTES.length)];
-}
+// The honeypot note — one custom ASCII art stored in the DB forever.
+// Shown as a tooltip on the flagged icon in the ranking modal.
+const HONEYPOT_NOTE = [
+  "       ╔═══╗",
+  "       ║ .╔╝  pikolo is not",
+  "       ║ ╔╝   happy with you",
+  "     ╔═╝╔╝",
+  "    ╔╝ ╔╝    server-side",
+  "    ║  ║     validation wins",
+  "    ║ ╔╝",
+  "    ╚═╝      — dino honeypot ★",
+].join("\n");
 
 function supabaseConfig() {
   return {
@@ -110,7 +108,7 @@ export async function fetchLastScores(limit = DINO_TOP_LIMIT) {
 }
 
 export async function insertScore({ nickname, score, flagged = false }) {
-  const note = flagged ? pickNote() : null;
+  const note = flagged ? HONEYPOT_NOTE : null;
   const { url, key } = supabaseConfig();
   const res = await fetch(`${url}/rest/v1/dino_scores`, {
     method: "POST",

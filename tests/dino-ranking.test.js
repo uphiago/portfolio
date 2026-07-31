@@ -128,7 +128,7 @@ describe("dinoRanking lib", () => {
     expect(JSON.parse(options.body)).toEqual({ nickname: "red", score: 777, flagged: false, note: null });
   });
 
-  it("stores a random honeypot note when the score is flagged", async () => {
+  it("stores the honeypot note when the score is flagged", async () => {
     process.env.SUPABASE_URL = "https://x.supabase.co";
     process.env.SUPABASE_PUBLISHABLE_KEY = "key-1";
     const fetchMock = vi.fn().mockResolvedValue({ ok: true, status: 201 });
@@ -141,7 +141,8 @@ describe("dinoRanking lib", () => {
     expect(body.nickname).toBe("haxor");
     expect(body.flagged).toBe(true);
     expect(typeof body.note).toBe("string");
-    expect(body.note.length).toBeGreaterThan(0);
+    expect(body.note).toContain("pikolo is not");
+    expect(body.note).toContain("happy with you");
   });
 });
 
@@ -271,7 +272,7 @@ describe("POST /api/dino/score", () => {
     const body = JSON.parse(options.body);
     expect(body.flagged).toBe(true);
     expect(typeof body.note).toBe("string");
-    expect(body.note.length).toBeGreaterThan(0);
+    expect(body.note).toContain("pikolo");
     expect(body.nickname).toBe("good");
     expect(body.score).toBe(50000);
   });
