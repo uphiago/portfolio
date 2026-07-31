@@ -355,32 +355,36 @@
     bottom: 8px;
     z-index: 4;
     display: flex;
-    gap: 4px;
+    gap: 5px;
     padding: 4px;
-    background: #141414;
-    border: 1px solid #333;
+    background: #11100d;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
   }
   .mfi .dino-name input {
     width: 96px;
-    background: #0f0f0f;
+    background: transparent;
     color: #f1efe8;
-    border: 1px solid #333;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
     font-family: var(--font-mono);
-    font-size: 10px;
-    padding: 3px 6px;
+    font-size: 11px;
+    padding: 5px 7px;
     outline: none;
   }
   .mfi .dino-name input:focus {
-    border-color: #6dd49a;
+    border-color: rgba(241, 239, 232, 0.44);
   }
   .mfi .dino-name button {
-    background: #6dd49a;
+    background: #f1efe8;
     color: #0a0a0a;
     border: 0;
+    border-radius: 3px;
     font-family: var(--font-mono);
-    font-size: 10px;
-    padding: 3px 7px;
+    font-size: 11px;
+    padding: 5px 8px;
     cursor: pointer;
+    white-space: nowrap;
   }
   .mfi .dino-hack {
     position: absolute;
