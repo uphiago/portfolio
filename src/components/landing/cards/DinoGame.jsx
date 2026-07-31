@@ -3,7 +3,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Trophy } from "lucide-react";
 import { RankingModal } from "./RankingModal";
-import { qualifiesForTop10 } from "@/src/lib/dinoRanking";
 
 const NICKNAME_KEY = "dino-nickname";
 const RUNNER_SRC = "/dino/runner.js";
@@ -108,10 +107,7 @@ export function DinoGame() {
 
   const handleGameOver = useCallback(
     (score) => {
-      if (
-        rankingRef.current !== "ok" ||
-        !qualifiesForTop10(score, topRef.current)
-      ) {
+      if (rankingRef.current !== "ok") {
         return;
       }
       const name = readNickname();

@@ -124,7 +124,7 @@ export function RankingModal({ open, onClose, nickname, scores: initialScores })
       </ol>
 
       <div className="dino-modal-foot mono">
-        newest first · only runs that crack the top 10 get saved
+        newest first
       </div>
       </div>
     </BaseModal>
