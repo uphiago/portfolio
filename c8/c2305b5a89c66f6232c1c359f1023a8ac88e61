@@ -1,0 +1,19 @@
+content/posts/2026/ai/pentest-recon.md
+  s_94786c0d0ffb5f::t_a26feb856b3c17 24-27,317,497-498,577,604,619,629-631,635-636,640-641,644-648
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.19",
+  "base_commit_sha": "c8c2305b5a89c66f6232c1c359f1023a8ac88e61",
+  "prompts": {},
+  "sessions": {
+    "s_94786c0d0ffb5f": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fb90a-a374-7770-8b21-a36e971dc34c",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
