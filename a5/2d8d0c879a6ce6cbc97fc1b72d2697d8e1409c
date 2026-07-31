@@ -1,0 +1,29 @@
+src/components/landing/cards/DinoGame.jsx
+  s_94786c0d0ffb5f::t_7d3ed650ba8713 4-5,57,135-139,178-185,188-201,203-217,221-228
+src/components/landing/styles/cards.css
+  s_94786c0d0ffb5f::t_6ba418cc1de104 269-276,280,282,285-294,297-305,307-309,311-314,316,320-321,326,397-399,402-404,406-407,409,414,417-419,421,423-424,426-427,430-431,433,439,441,443-449,451,453-455
+tests/portfolio-landing.test.jsx
+  s_94786c0d0ffb5f::t_6ba418cc1de104 185,188-189
+public/dino/runner.js
+  s_94786c0d0ffb5f::t_ac675055da31f3 808-811
+.gitignore
+  s_94786c0d0ffb5f::t_a426e1bdfef259 11
+src/components/landing/cards/RankingModal.jsx
+  s_94786c0d0ffb5f::t_ac675055da31f3 1-54
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.18",
+  "base_commit_sha": "a52d8d0c879a6ce6cbc97fc1b72d2697d8e1409c",
+  "prompts": {},
+  "sessions": {
+    "s_94786c0d0ffb5f": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fb90a-a374-7770-8b21-a36e971dc34c",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
