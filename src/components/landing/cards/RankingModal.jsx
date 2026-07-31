@@ -1,11 +1,37 @@
 "use client";
 
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Trophy } from "lucide-react";
 import { BaseModal } from "../modals/BaseModal";
 import { DINO_HACKER_THRESHOLD } from "@/src/lib/dinoRanking";
 
-export function RankingModal({ open, onClose, ranking, scores, nickname }) {
+export function RankingModal({ open, onClose, nickname, scores: initialScores }) {
+  const [scores, setScores] = useState(initialScores || []);
+  const [loading, setLoading] = useState(!initialScores);
+
+  const fetchScores = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/dino/scores", { cache: "no-store" });
+      const data = await res.json();
+      if (data?.ok && !data.disabled) {
+        setScores(data.scores || []);
+      } else {
+        setScores([]);
+      }
+    } catch {
+      setScores([]);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (open && !initialScores) {
+      fetchScores();
+    }
+  }, [open, initialScores, fetchScores]);
+
   if (!open) {
     return null;
   }
@@ -14,7 +40,10 @@ export function RankingModal({ open, onClose, ranking, scores, nickname }) {
 
   return (
     <BaseModal onClose={onClose} label="Dino top 10 ranking">
-      <div className="dino-modal-head">
+      {/* Prevent space from bubbling to the document (dino game listens there). */}
+      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
+      <div onKeyDown={(e) => { e.key === " " && e.stopPropagation(); }}>
+        <div className="dino-modal-head">
         <span className="dino-modal-title">
           <Trophy size={14} strokeWidth={1.7} />
           dino · last 10
@@ -29,63 +58,72 @@ export function RankingModal({ open, onClose, ranking, scores, nickname }) {
       </div>
 
       <ol className="dino-rank-list">
-        {rows.map((entry, index) => {
-          const rank = index + 1;
-          if (!entry) {
+        {loading && rows.every((r) => !r) ? (
+          <li className="empty">
+            <span className="rk">—</span>
+            <span className="nm">loading…</span>
+            <span className="sc">—</span>
+          </li>
+        ) : (
+          rows.map((entry, index) => {
+            const rank = index + 1;
+            if (!entry) {
+              return (
+                <li key={`empty-${index}`} className="empty">
+                  <span className="rk">{rank}</span>
+                  <span className="nm">—</span>
+                  <span className="sc">—</span>
+                </li>
+              );
+            }
+            const isMe =
+              nickname &&
+              entry.nickname?.toLowerCase() === nickname.toLowerCase();
+            const isFlagged =
+              entry.flagged === true || entry.score >= DINO_HACKER_THRESHOLD;
             return (
-              <li key={`empty-${index}`} className="empty">
-                <span className="rk">{rank}</span>
-                <span className="nm">—</span>
-                <span className="sc">—</span>
-              </li>
-            );
-          }
-          const isMe =
-            nickname &&
-            entry.nickname?.toLowerCase() === nickname.toLowerCase();
-          const isFlagged =
-            entry.flagged === true || entry.score >= DINO_HACKER_THRESHOLD;
-          return (
-            <li
-              key={`${entry.nickname}-${entry.score}-${index}`}
-              className={isMe ? "me" : ""}
-            >
-              <span className={`rk top${rank}`}>{rank}</span>
-              <span className="nm">{entry.nickname}</span>
-              <span className="sc">
-                {entry.score}
-                {isFlagged && entry.note && (
-                  <span
-                    className="flag-tip"
-                    aria-label={entry.note}
-                    title={entry.note}
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
+              <li
+                key={`${entry.nickname}-${entry.score}-${index}`}
+                className={isMe ? "me" : ""}
+              >
+                <span className={`rk top${rank}`}>{rank}</span>
+                <span className="nm">{entry.nickname}</span>
+                <span className="sc">
+                  {entry.score}
+                  {isFlagged && entry.note && (
+                    <span
+                      className="flag-tip"
+                      aria-label={entry.note}
+                      title={entry.note}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        className="flag"
+                        src="/incognito.png"
+                        alt="flagged"
+                      />
+                      <span className="flag-note mono">{entry.note}</span>
+                    </span>
+                  )}
+                  {isFlagged && !entry.note && (
+                    // eslint-disable-next-line @next/next/no-img-element
                     <img
                       className="flag"
                       src="/incognito.png"
                       alt="flagged"
+                      title="flagged — likely tampered"
                     />
-                    <span className="flag-note mono">{entry.note}</span>
-                  </span>
-                )}
-                {isFlagged && !entry.note && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    className="flag"
-                    src="/incognito.png"
-                    alt="flagged"
-                    title="flagged — likely tampered"
-                  />
-                )}
-              </span>
-            </li>
-          );
-        })}
+                  )}
+                </span>
+              </li>
+            );
+          })
+        )}
       </ol>
 
       <div className="dino-modal-foot mono">
         newest first · only runs that crack the top 10 get saved
+      </div>
       </div>
     </BaseModal>
   );

@@ -52,38 +52,31 @@ export function DinoGame() {
   const [nameDraft, setNameDraft] = useState("");
   const [askName, setAskName] = useState(false);
   const [started, setStarted] = useState(false);
-  const [scores, setScores] = useState([]);
   const [ranking, setRanking] = useState("loading"); // loading | ok | disabled
   const [submitting, setSubmitting] = useState(false);
   const [rankOpen, setRankOpen] = useState(false);
   const [hackerNotice, setHackerNotice] = useState(false);
-  const scoresRef = useRef(scores);
   const rankingRef = useRef(ranking);
 
-  const fetchRanking = useCallback(async () => {
+  const tryRefreshTop = useCallback(async () => {
     try {
       const res = await fetch("/api/dino/scores", { cache: "no-store" });
       const data = await res.json();
       if (data?.ok && !data.disabled) {
-        return { scores: data.scores || [], top: data.top || [], state: "ok" };
+        topRef.current = data.top || [];
+        rankingRef.current = "ok";
+        setRanking("ok");
+      } else {
+        topRef.current = [];
+        rankingRef.current = "disabled";
+        setRanking("disabled");
       }
-      return { scores: [], top: [], state: "disabled" };
     } catch {
-      return { scores: [], top: [], state: "disabled" };
+      topRef.current = [];
+      rankingRef.current = "disabled";
+      setRanking("disabled");
     }
   }, []);
-
-  const applyRanking = useCallback(({ scores, top, state }) => {
-    scoresRef.current = scores;
-    topRef.current = top;
-    rankingRef.current = state;
-    setScores(scores);
-    setRanking(state);
-  }, []);
-
-  const refreshRanking = useCallback(async () => {
-    applyRanking(await fetchRanking());
-  }, [applyRanking, fetchRanking]);
 
   const submitScore = useCallback(
     async (name, score) => {
@@ -100,20 +93,19 @@ export function DinoGame() {
             setHackerNotice(true);
             window.setTimeout(() => setHackerNotice(false), 5000);
           }
-          await refreshRanking();
+          await tryRefreshTop();
         }
       } catch {
-        // ranking just stays stale until the next refresh
+        // ranking stays stale until next game over
       } finally {
         setSubmitting(false);
       }
     },
-    [refreshRanking]
+    [tryRefreshTop]
   );
 
   const handleGameOver = useCallback(
     (score) => {
-      // Only ask for a nickname when the score actually enters the top 10.
       if (
         rankingRef.current !== "ok" ||
         !qualifiesForTop10(score, topRef.current)
@@ -150,20 +142,11 @@ export function DinoGame() {
     [nameDraft, submitScore]
   );
 
-  const openRanking = useCallback(() => {
-    setRankOpen(true);
-    refreshRanking();
-  }, [refreshRanking]);
-
   useEffect(() => {
     let disposed = false;
     let runner = null;
 
-    fetchRanking().then((result) => {
-      if (!disposed) {
-        applyRanking(result);
-      }
-    });
+    tryRefreshTop();
 
     loadRunnerScript()
       .then(() => {
@@ -189,12 +172,12 @@ export function DinoGame() {
         }
       }
     };
-  }, [refreshRanking, handleGameOver, fetchRanking, applyRanking]);
+  }, [tryRefreshTop, handleGameOver]);
 
   return (
     <div className="dino-game-stage">
       <div className="dino-bar">
-        <button type="button" className="dino-trophy" onClick={openRanking} onKeyDown={(e) => { e.key === " " && e.preventDefault(); }}>
+        <button type="button" className="dino-trophy" onClick={() => setRankOpen(true)} onKeyDown={(e) => { e.key === " " && e.preventDefault(); }}>
           <Trophy size={13} strokeWidth={1.7} />
           last 10
         </button>
@@ -243,7 +226,6 @@ export function DinoGame() {
       <RankingModal
         open={rankOpen}
         onClose={() => setRankOpen(false)}
-        scores={scores}
         nickname={nickname}
       />
     </div>
