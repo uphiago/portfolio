@@ -397,13 +397,14 @@
   /* Ranking modal (light theme) */
   .mfi-modal .dino-modal-head {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
     margin: 0 0 12px;
+    padding-right: 28px;
   }
   .mfi-modal .dino-modal-title {
     display: inline-flex;
-    align-items: center;
+    align-items: baseline;
     gap: 8px;
     font-family: var(--font-mono);
     font-size: 12px;
@@ -413,7 +414,8 @@
   .mfi-modal .dino-modal-title svg {
     width: 14px;
     height: 14px;
-    color: var(--m-green);
+    flex-shrink: 0;
+    color: #c9a351;
   }
   .mfi-modal .dino-modal-sub {
     font-size: 10px;

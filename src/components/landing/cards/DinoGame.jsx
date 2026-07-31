@@ -194,7 +194,7 @@ export function DinoGame() {
   return (
     <div className="dino-game-stage">
       <div className="dino-bar">
-        <button type="button" className="dino-trophy" onClick={openRanking}>
+        <button type="button" className="dino-trophy" onClick={openRanking} onKeyDown={(e) => { e.key === " " && e.preventDefault(); }}>
           <Trophy size={13} strokeWidth={1.7} />
           last 10
         </button>
