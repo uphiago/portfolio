@@ -476,8 +476,13 @@
             if (!this.activated && !this.crashed) {
                 this.playingIntro = true;
                 this.tRex.playingIntro = true;
-                // Embedded: skip the intro-width animation (causes flicker).
+                this.playing = true;
+                this.activated = true;
+                // Embedded: skip the width-expand animation (flickers in
+                // small containers). Start the game loop immediately.
                 this.startGame();
+            } else if (this.crashed) {
+                this.restart();
             }
         },
 
@@ -486,7 +491,6 @@
          * Update the game status to started.
          */
         startGame: function () {
-            this.adjustDimensions();
             this.setArcadeMode();
             this.runningTime = 0;
             this.playingIntro = false;
