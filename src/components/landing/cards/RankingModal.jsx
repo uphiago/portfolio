@@ -48,7 +48,8 @@ export function RankingModal({ open, onClose, ranking, scores, nickname }) {
           const isMe =
             nickname &&
             entry.nickname?.toLowerCase() === nickname.toLowerCase();
-          const isFlagged = entry.score >= DINO_HACKER_THRESHOLD;
+          const isFlagged =
+            entry.flagged === true || entry.score >= DINO_HACKER_THRESHOLD;
           return (
             <li
               key={`${entry.nickname}-${entry.score}-${index}`}

@@ -6,6 +6,7 @@ import {
   DINO_HACKER_THRESHOLD,
   fetchLastScores,
   fetchTopScores,
+  hashCallerIp,
   insertScore,
   isRankingConfigured,
   normalizeScore,
@@ -126,6 +127,29 @@ describe("dinoRanking lib", () => {
     expect(options.method).toBe("POST");
     expect(JSON.parse(options.body)).toEqual({ nickname: "red", score: 777 });
   });
+
+  it("stores caller metadata and the flagged marker on inserts", async () => {
+    process.env.SUPABASE_URL = "https://x.supabase.co";
+    process.env.SUPABASE_PUBLISHABLE_KEY = "key-1";
+    process.env.DINO_IP_PEPPER = "pepper-1";
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true, status: 201 });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await insertScore({
+      nickname: "red",
+      score: 50000,
+      ipHash: hashCallerIp("1.2.3.4"),
+      userAgent: "curl/8",
+      flagged: true,
+    });
+
+    const [url, options] = fetchMock.mock.calls[0];
+    const body = JSON.parse(options.body);
+    expect(body.ip_hash).toBe(hashCallerIp("1.2.3.4"));
+    expect(body.user_agent).toBe("curl/8");
+    expect(body.flagged).toBe(true);
+    expect(url).toBe("https://x.supabase.co/rest/v1/dino_scores");
+  });
 });
 
 describe("GET /api/dino/scores", () => {
@@ -234,5 +258,31 @@ describe("POST /api/dino/score", () => {
     );
     expect(high.status).toBe(200);
     expect((await high.json()).hacker).toBe(true);
+  });
+
+  it("captures caller ip hash and user-agent on flagged submissions", async () => {
+    process.env.SUPABASE_URL = "https://x.supabase.co";
+    process.env.SUPABASE_PUBLISHABLE_KEY = "key-1";
+    process.env.DINO_IP_PEPPER = "pepper-1";
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true, status: 201 });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await POST(
+      new Request("http://localhost/api/dino/score", {
+        method: "POST",
+        headers: {
+          "x-forwarded-for": "7.7.7.7",
+          "user-agent": "pentest-bot/1.0",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ nickname: "red", score: DINO_HACKER_THRESHOLD }),
+      })
+    );
+
+    const [, options] = fetchMock.mock.calls[0];
+    const body = JSON.parse(options.body);
+    expect(body.ip_hash).toBe(hashCallerIp("7.7.7.7"));
+    expect(body.user_agent).toBe("pentest-bot/1.0");
+    expect(body.flagged).toBe(true);
   });
 });

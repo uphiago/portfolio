@@ -1,5 +1,7 @@
 // Dino game top 10 ranking -> Supabase (PostgREST, publishable key + RLS).
 
+import crypto from "node:crypto";
+
 export const DINO_MAX_NICKNAME = 24;
 export const DINO_MAX_SCORE = 99999;
 export const DINO_TOP_LIMIT = 10;
@@ -54,10 +56,26 @@ function restHeaders(key) {
   };
 }
 
+export function hashCallerIp(ip) {
+  if (!ip) {
+    return null;
+  }
+  const pepper = process.env.DINO_IP_PEPPER || "dino-honeypot";
+  return crypto
+    .createHash("sha256")
+    .update(`${pepper}:${ip}`)
+    .digest("hex")
+    .slice(0, 32);
+}
+
+export function isHackerScore(score) {
+  return Number.isInteger(score) && score >= DINO_HACKER_THRESHOLD;
+}
+
 export async function fetchTopScores(limit = DINO_TOP_LIMIT) {
   const { url, key } = supabaseConfig();
   const params = new URLSearchParams({
-    select: "nickname,score,created_at",
+    select: "nickname,score,created_at,flagged",
     order: "score.desc,created_at.asc",
     limit: String(limit),
   });
@@ -75,7 +93,7 @@ export async function fetchTopScores(limit = DINO_TOP_LIMIT) {
 export async function fetchLastScores(limit = DINO_TOP_LIMIT) {
   const { url, key } = supabaseConfig();
   const params = new URLSearchParams({
-    select: "nickname,score,created_at",
+    select: "nickname,score,created_at,flagged",
     order: "created_at.desc",
     limit: String(limit),
   });
@@ -90,7 +108,13 @@ export async function fetchLastScores(limit = DINO_TOP_LIMIT) {
   return res.json();
 }
 
-export async function insertScore({ nickname, score }) {
+export async function insertScore({
+  nickname,
+  score,
+  ipHash = null,
+  userAgent = null,
+  flagged = false,
+}) {
   const { url, key } = supabaseConfig();
   const res = await fetch(`${url}/rest/v1/dino_scores`, {
     method: "POST",
@@ -98,7 +122,13 @@ export async function insertScore({ nickname, score }) {
       ...restHeaders(key),
       Prefer: "return=minimal",
     },
-    body: JSON.stringify({ nickname, score }),
+    body: JSON.stringify({
+      nickname,
+      score,
+      ...(ipHash ? { ip_hash: ipHash } : {}),
+      ...(userAgent ? { user_agent: userAgent } : {}),
+      ...(flagged ? { flagged: true } : {}),
+    }),
   });
   if (!res.ok) {
     throw new Error(`supabase insert failed: ${res.status}`);

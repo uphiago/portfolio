@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import {
-  DINO_HACKER_THRESHOLD,
+  hashCallerIp,
   insertScore,
   isRankingConfigured,
+  isHackerScore,
   normalizeScore,
   sanitizeNickname,
 } from "@/src/lib/dinoRanking";
@@ -43,6 +44,9 @@ export async function POST(request) {
   }
 
   const key = getClientKey(request);
+  const ipHash = hashCallerIp(key);
+  const userAgent = request.headers.get("user-agent");
+  const flagged = isHackerScore(score);
   const now = Date.now();
   if (now - (attempts.get(key) || 0) < DINO_SCORE_RATE_LIMIT_MS) {
     return NextResponse.json(
@@ -53,10 +57,16 @@ export async function POST(request) {
   attempts.set(key, now);
 
   try {
-    await insertScore({ nickname, score });
+    await insertScore({
+      nickname,
+      score,
+      ipHash,
+      userAgent,
+      flagged,
+    });
     return NextResponse.json({
       ok: true,
-      hacker: score >= DINO_HACKER_THRESHOLD,
+      hacker: flagged,
     });
   } catch (error) {
     console.error("dino score insert failed", error);
