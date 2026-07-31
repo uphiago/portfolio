@@ -510,10 +510,9 @@
     color: var(--m-ink-2);
   }
   .mfi-modal .dino-rank-list .flag {
-    margin-left: 4px;
-    width: 12px;
-    height: 12px;
-    vertical-align: -1px;
+    margin-left: 5px;
+    font-size: 12px;
+    line-height: 1;
   }
   .mfi-modal .dino-rank-list li.empty .nm,
   .mfi-modal .dino-rank-list li.empty .sc {

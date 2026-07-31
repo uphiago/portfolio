@@ -80,13 +80,17 @@ export function RankingModal({ open, onClose, nickname, scores: initialScores })
             const isMe =
               nickname &&
               entry.nickname?.toLowerCase() === nickname.toLowerCase();
+            const isFlagged = entry.flagged === true;
             return (
               <li
                 key={`${entry.nickname}-${entry.score}-${index}`}
                 className={isMe ? "me" : ""}
               >
                 <span className={`rk top${rank}`}>{rank}</span>
-                <span className="nm">{entry.nickname}</span>
+                <span className="nm">
+                  {entry.nickname}
+                  {isFlagged && <span className="flag" title="flagged">🏴‍☠️</span>}
+                </span>
                 <span className="sc">{entry.score}</span>
               </li>
             );
