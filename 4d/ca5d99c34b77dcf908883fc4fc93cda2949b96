@@ -1,0 +1,32 @@
+supabase/migrations/20260731120010_harden_dino_scores.sql
+  s_94786c0d0ffb5f::t_184d20443632f5 1-10
+tests/dino-ranking.test.js
+  s_94786c0d0ffb5f::t_184d20443632f5 56,65-76
+  s_94786c0d0ffb5f::t_1e78b965f875f4 10,42-51
+  s_94786c0d0ffb5f::t_0a71542f947334 52-53
+  s_94786c0d0ffb5f::t_8cc92a95e389cb 77-78
+src/lib/dinoRanking.js
+  s_94786c0d0ffb5f::t_1e78b965f875f4 36-45
+  s_94786c0d0ffb5f::t_184d20443632f5 10-15
+.env.example
+  s_94786c0d0ffb5f::t_184d20443632f5 19-21
+src/components/landing/cards/DinoGame.jsx
+  s_94786c0d0ffb5f::t_525e8890b06f68 59-60
+  s_94786c0d0ffb5f::t_1e78b965f875f4 6,76-77,110-116
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.18",
+  "base_commit_sha": "4dca5d99c34b77dcf908883fc4fc93cda2949b96",
+  "prompts": {},
+  "sessions": {
+    "s_94786c0d0ffb5f": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fb90a-a374-7770-8b21-a36e971dc34c",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": null
+    }
+  }
+}
