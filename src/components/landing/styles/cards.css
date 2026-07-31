@@ -331,7 +331,9 @@
     image-rendering: pixelated;
   }
   .mfi .dino-game .controller {
-    display: none;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
   }
   .mfi .dino-hint {
     position: absolute;
@@ -497,7 +499,9 @@
   }
   .mfi-modal .dino-rank-list .flag {
     margin-left: 4px;
-    color: #d97706;
+    width: 12px;
+    height: 12px;
+    vertical-align: -1px;
   }
   .mfi-modal .dino-rank-list li.empty .nm,
   .mfi-modal .dino-rank-list li.empty .sc {
