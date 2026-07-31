@@ -1,0 +1,23 @@
+tests/portfolio-landing.test.jsx
+  s_94786c0d0ffb5f::t_f5cbaa901991a8 13,30-46
+src/components/landing/cards/RankingModal.jsx
+  s_94786c0d0ffb5f::t_8a09181dd11eff 11-12,15,17-42
+src/components/landing/styles/cards.css
+  s_94786c0d0ffb5f::t_8a09181dd11eff 298,302,306,440-443
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.18",
+  "base_commit_sha": "2c5448a5e02ee425a97ae82ed9950f87b6834e56",
+  "prompts": {},
+  "sessions": {
+    "s_94786c0d0ffb5f": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fb90a-a374-7770-8b21-a36e971dc34c",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
