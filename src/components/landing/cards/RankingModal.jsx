@@ -89,14 +89,13 @@ export function RankingModal({ open, onClose, nickname, scores: initialScores })
                 className={isMe ? "me" : ""}
               >
                 <span className={`rk top${rank}`}>{rank}</span>
-                <span className="nm">{entry.nickname}</span>
-                <span className="sc">
-                  {entry.score}
-                  {isFlagged && entry.note && (
+                <span className="nm">
+                  {entry.nickname}
+                  {isFlagged && (
                     <span
                       className="flag-tip"
-                      aria-label={entry.note}
-                      title={entry.note}
+                      aria-label={entry.note || "flagged"}
+                      title={entry.note || "flagged — likely tampered"}
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
@@ -104,19 +103,11 @@ export function RankingModal({ open, onClose, nickname, scores: initialScores })
                         src="/incognito.png"
                         alt="flagged"
                       />
-                      <span className="flag-note mono">{entry.note}</span>
+                      {entry.note && <span className="flag-note mono">{entry.note}</span>}
                     </span>
                   )}
-                  {isFlagged && !entry.note && (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      className="flag"
-                      src="/incognito.png"
-                      alt="flagged"
-                      title="flagged — likely tampered"
-                    />
-                  )}
                 </span>
+                <span className="sc">{entry.score}</span>
               </li>
             );
           })
