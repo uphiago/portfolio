@@ -10,6 +10,7 @@ import { MidfiV1 } from "@/src/components/landing/MidfiV1";
 import { ContactModal } from "@/src/components/landing/modals/ContactModal";
 import { ArticleModal, getArticleScrollDelta } from "@/src/components/landing/modals/ArticleModal";
 import { VideoModal } from "@/src/components/landing/modals/VideoModal";
+import { RankingModal } from "@/src/components/landing/cards/RankingModal";
 import { MUSIC_DEFAULT_VOLUME, MUSIC_FADE_MS, MUSIC_FADE_STEPS } from "@/src/components/landing/cards/MusicPlayer";
 import { ARTICLES, VIDEOS } from "@/src/components/landing/data";
 import { getArticleBySlug, parseBlogMarkdown } from "@/src/components/landing/blog";
@@ -26,6 +27,23 @@ import {
 } from "@/src/lib/newsletterSheet";
 
 describe("MidfiV1", () => {
+  it("renders the dino top 10 with exactly 10 rows (1 to 10)", () => {
+    const html = renderToStaticMarkup(
+      <RankingModal
+        open
+        scores={[{ nickname: "red", score: 100 }]}
+        nickname="red"
+      />
+    );
+
+    const rows = html.match(/<li/g) || [];
+    expect(rows.length).toBe(10);
+    expect(html).toContain(">red<");
+    expect(html).toContain(">100<");
+    expect(html).toContain("class=\"empty\"");
+    expect(html).not.toContain("live");
+  });
+
   it("keeps the root title when generating metadata for a blog post", async () => {
     const metadata = await generateMetadata({
       searchParams: Promise.resolve({ post: "pentest-playbook" }),
@@ -181,9 +199,12 @@ describe("MidfiV1", () => {
     expect(html).not.toContain("operator-first");
     expect(html).not.toContain("attending");
     expect(html).toContain("reels");
-    expect(html).toContain("reels-soon");
-    expect(html).toContain("work in progress");
-    expect(html).toContain("soon");
+    expect(html).toContain("dino-game");
+    expect(html).toContain("dino-trophy");
+    expect(html).toContain("offline-resources-1x");
+    expect(html).toContain("last 10");
+    expect(html).not.toContain("work in progress");
+    expect(html).not.toContain("reels-soon");
     expect(html).not.toContain("drag-row");
     expect(html).not.toContain("drag-tile");
     expect(html).not.toContain("Open Instagram reel");
@@ -218,7 +239,7 @@ describe("MidfiV1", () => {
     const html = renderToStaticMarkup(
       <MidfiV1 articles={[
         { id: "01", title: "Newest article", date: "2026-07-30", html: "<p>New</p>" },
-        { id: "02", title: "Updated article", date: "2026-06-01", lastmod: "2026-07-29", html: "<p>Updated</p>" },
+        { id: "02", title: "Updated article", date: "2026-06-01", lastmod: "2026-07-29", showUpdated: true, html: "<p>Updated</p>" },
         { id: "03", title: "Unchanged article", date: "2026-05-01", html: "<p>Unchanged</p>" },
       ]} />
     );
