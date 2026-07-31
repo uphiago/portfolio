@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import {
+  fetchPersonalBest,
   insertScore,
   isRankingConfigured,
   isHackerScore,
@@ -54,6 +55,11 @@ export async function POST(request) {
   attempts.set(key, now);
 
   try {
+    const personalBest = await fetchPersonalBest(nickname);
+    if (personalBest > 0 && score <= personalBest) {
+      return NextResponse.json({ ok: true, skipped: true }, { status: 200 });
+    }
+
     await insertScore({ nickname, score, flagged });
     return NextResponse.json({
       ok: true,

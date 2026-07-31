@@ -141,7 +141,6 @@ describe("dinoRanking lib", () => {
     expect(body.nickname).toBe("haxor");
     expect(body.flagged).toBe(true);
   });
-  });
 });
 
 describe("GET /api/dino/scores", () => {
@@ -213,7 +212,12 @@ describe("POST /api/dino/score", () => {
   it("inserts a valid score and rate-limits the same client", async () => {
     process.env.SUPABASE_URL = "https://x.supabase.co";
     process.env.SUPABASE_PUBLISHABLE_KEY = "key-1";
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, status: 201 }));
+    vi.stubGlobal("fetch", vi.fn((url) => {
+      if (String(url).includes("eq.")) {
+        return Promise.resolve({ ok: true, json: async () => [] });
+      }
+      return Promise.resolve({ ok: true, status: 201 });
+    }));
 
     const request = (ip) =>
       new Request("http://localhost/api/dino/score", {
@@ -230,7 +234,12 @@ describe("POST /api/dino/score", () => {
   it("flags suspiciously high scores", async () => {
     process.env.SUPABASE_URL = "https://x.supabase.co";
     process.env.SUPABASE_PUBLISHABLE_KEY = "key-1";
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, status: 201 }));
+    vi.stubGlobal("fetch", vi.fn((url) => {
+      if (String(url).includes("eq.")) {
+        return Promise.resolve({ ok: true, json: async () => [] });
+      }
+      return Promise.resolve({ ok: true, status: 201 });
+    }));
 
     const low = await POST(
       new Request("http://localhost/api/dino/score", {
@@ -255,18 +264,24 @@ describe("POST /api/dino/score", () => {
   it("passes flagged to the db for high scores", async () => {
     process.env.SUPABASE_URL = "https://x.supabase.co";
     process.env.SUPABASE_PUBLISHABLE_KEY = "key-1";
-    const fetchMock = vi.fn().mockResolvedValue({ ok: true, status: 201 });
+    const fetchMock = vi.fn((url) => {
+      if (String(url).includes("eq.")) {
+        return Promise.resolve({ ok: true, json: async () => [] });
+      }
+      return Promise.resolve({ ok: true, status: 201 });
+    });
     vi.stubGlobal("fetch", fetchMock);
 
     await POST(
       new Request("http://localhost/api/dino/score", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nickname: "good", score: 50000 }),
+        body: JSON.stringify({ nickname: "good", score: DINO_HACKER_THRESHOLD }),
       })
     );
 
-    const [, options] = fetchMock.mock.calls[0];
+    // calls[0] is personal-best query, calls[1] is the insert
+    const [, options] = fetchMock.mock.calls[1];
     const body = JSON.parse(options.body);
     expect(body.flagged).toBe(true);
     expect(body.nickname).toBe("good");

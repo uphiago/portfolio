@@ -3,7 +3,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Trophy } from "lucide-react";
 import { BaseModal } from "../modals/BaseModal";
-import { DINO_HACKER_THRESHOLD } from "@/src/lib/dinoRanking";
 
 export function RankingModal({ open, onClose, nickname, scores: initialScores }) {
   const [scores, setScores] = useState(initialScores || []);
@@ -81,21 +80,13 @@ export function RankingModal({ open, onClose, nickname, scores: initialScores })
             const isMe =
               nickname &&
               entry.nickname?.toLowerCase() === nickname.toLowerCase();
-            const isFlagged =
-              entry.flagged === true || entry.score >= DINO_HACKER_THRESHOLD;
             return (
               <li
                 key={`${entry.nickname}-${entry.score}-${index}`}
                 className={isMe ? "me" : ""}
               >
                 <span className={`rk top${rank}`}>{rank}</span>
-                <span className="nm">
-                  {entry.nickname}
-                  {isFlagged && (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img className="flag" src="/incognito.png" alt="hacker" title="hacker" />
-                  )}
-                </span>
+                <span className="nm">{entry.nickname}</span>
                 <span className="sc">{entry.score}</span>
               </li>
             );

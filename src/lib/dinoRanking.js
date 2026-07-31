@@ -106,3 +106,23 @@ export async function insertScore({ nickname, score, flagged = false }) {
     throw new Error(`supabase insert failed: ${res.status}`);
   }
 }
+
+export async function fetchPersonalBest(nickname) {
+  const { url, key } = supabaseConfig();
+  const params = new URLSearchParams({
+    select: "score",
+    nickname: `eq.${encodeURIComponent(nickname)}`,
+    order: "score.desc",
+    limit: "1",
+  });
+
+  const res = await fetch(`${url}/rest/v1/dino_scores?${params}`, {
+    headers: restHeaders(key),
+    cache: "no-store",
+  });
+  if (!res.ok) {
+    return 0;
+  }
+  const rows = await res.json();
+  return rows.length > 0 ? rows[0].score : 0;
+}
