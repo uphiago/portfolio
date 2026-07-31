@@ -1,26 +1,11 @@
 // Dino game top 10 ranking -> Supabase (PostgREST, publishable key + RLS).
-// No tracking. The honeypot is playful — flagged entries get a funny note.
 
 export const DINO_MAX_NICKNAME = 24;
 export const DINO_MAX_SCORE = 99999;
 export const DINO_TOP_LIMIT = 10;
 
-// Playful honeypot: the legit game tops out far below. Scores over this
-// threshold get flagged and stored with a random ASCII easter-egg note.
+// Scores >= 10k get flagged as tampered.
 export const DINO_HACKER_THRESHOLD = 10000;
-
-// The honeypot note — one custom ASCII art stored in the DB forever.
-// Shown as a tooltip on the flagged icon in the ranking modal.
-const HONEYPOT_NOTE = [
-  "       ╔═══╗",
-  "       ║ .╔╝  pikolo is not",
-  "       ║ ╔╝   happy with you",
-  "     ╔═╝╔╝",
-  "    ╔╝ ╔╝",
-  "    ║  ║",
-  "    ║ ╔╝",
-  "    ╚═╝",
-].join("\n");
 
 function supabaseConfig() {
   return {
@@ -74,7 +59,7 @@ function restHeaders(key) {
 export async function fetchTopScores(limit = DINO_TOP_LIMIT) {
   const { url, key } = supabaseConfig();
   const params = new URLSearchParams({
-    select: "nickname,score,created_at,flagged,note",
+    select: "nickname,score,created_at,flagged",
     order: "score.desc,created_at.asc",
     limit: String(limit),
   });
@@ -92,7 +77,7 @@ export async function fetchTopScores(limit = DINO_TOP_LIMIT) {
 export async function fetchLastScores(limit = DINO_TOP_LIMIT) {
   const { url, key } = supabaseConfig();
   const params = new URLSearchParams({
-    select: "nickname,score,created_at,flagged,note",
+    select: "nickname,score,created_at,flagged",
     order: "created_at.desc",
     limit: String(limit),
   });
@@ -108,7 +93,6 @@ export async function fetchLastScores(limit = DINO_TOP_LIMIT) {
 }
 
 export async function insertScore({ nickname, score, flagged = false }) {
-  const note = flagged ? HONEYPOT_NOTE : null;
   const { url, key } = supabaseConfig();
   const res = await fetch(`${url}/rest/v1/dino_scores`, {
     method: "POST",
@@ -116,7 +100,7 @@ export async function insertScore({ nickname, score, flagged = false }) {
       ...restHeaders(key),
       Prefer: "return=minimal",
     },
-    body: JSON.stringify({ nickname, score, flagged, note }),
+    body: JSON.stringify({ nickname, score, flagged }),
   });
   if (!res.ok) {
     throw new Error(`supabase insert failed: ${res.status}`);

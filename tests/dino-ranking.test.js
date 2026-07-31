@@ -93,7 +93,7 @@ describe("dinoRanking lib", () => {
     expect(url).toContain("score.desc");
     expect(url).toContain("created_at.asc");
     expect(url).toContain("limit=10");
-    expect(url).toContain("flagged%2Cnote");
+    expect(url).toContain("flagged");
     expect(options.headers.apikey).toBe("key-1");
     expect(options.headers.Authorization).toBe("Bearer key-1");
     expect(options.cache).toBe("no-store");
@@ -125,10 +125,10 @@ describe("dinoRanking lib", () => {
     const [url, options] = fetchMock.mock.calls[0];
     expect(url).toBe("https://x.supabase.co/rest/v1/dino_scores");
     expect(options.method).toBe("POST");
-    expect(JSON.parse(options.body)).toEqual({ nickname: "red", score: 777, flagged: false, note: null });
+    expect(JSON.parse(options.body)).toEqual({ nickname: "red", score: 777, flagged: false });
   });
 
-  it("stores the honeypot note when the score is flagged", async () => {
+  it("flags the score when over threshold", async () => {
     process.env.SUPABASE_URL = "https://x.supabase.co";
     process.env.SUPABASE_PUBLISHABLE_KEY = "key-1";
     const fetchMock = vi.fn().mockResolvedValue({ ok: true, status: 201 });
@@ -140,9 +140,7 @@ describe("dinoRanking lib", () => {
     const body = JSON.parse(options.body);
     expect(body.nickname).toBe("haxor");
     expect(body.flagged).toBe(true);
-    expect(typeof body.note).toBe("string");
-    expect(body.note).toContain("pikolo is not");
-    expect(body.note).toContain("happy with you");
+  });
   });
 });
 
@@ -254,7 +252,7 @@ describe("POST /api/dino/score", () => {
     expect((await high.json()).hacker).toBe(true);
   });
 
-  it("passes flagged + note to the db for honeypot scores", async () => {
+  it("passes flagged to the db for high scores", async () => {
     process.env.SUPABASE_URL = "https://x.supabase.co";
     process.env.SUPABASE_PUBLISHABLE_KEY = "key-1";
     const fetchMock = vi.fn().mockResolvedValue({ ok: true, status: 201 });
@@ -271,9 +269,7 @@ describe("POST /api/dino/score", () => {
     const [, options] = fetchMock.mock.calls[0];
     const body = JSON.parse(options.body);
     expect(body.flagged).toBe(true);
-    expect(typeof body.note).toBe("string");
-    expect(body.note).toContain("pikolo");
     expect(body.nickname).toBe("good");
-    expect(body.score).toBe(50000);
+    expect(body.score).toBe(DINO_HACKER_THRESHOLD);
   });
 });
