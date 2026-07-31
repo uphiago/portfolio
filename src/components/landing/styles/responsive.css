@@ -56,10 +56,6 @@
       width: 100%;
       aspect-ratio: 16 / 9;
     }
-    .mfi .reels-soon {
-      min-height: 220px;
-      flex: none;
-    }
     .mfi .drag-tile-info {
       padding-bottom: 12px;
     }
