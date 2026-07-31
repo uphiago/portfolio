@@ -510,6 +510,7 @@
          * Update the game status to started.
          */
         startGame: function () {
+            this.adjustDimensions();
             this.setArcadeMode();
             this.runningTime = 0;
             this.playingIntro = false;
