@@ -1,0 +1,21 @@
+content/posts/2026/ai/pentest-recon.md
+  s_7f910ca5a6437e::t_d279e5a17adb83 68-69,72
+  s_7f910ca5a6437e::t_2fd138e62351dd 103
+  s_7f910ca5a6437e::t_d5c8ee081232d3 209-211
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.19",
+  "base_commit_sha": "dd2f3348552cb72007788db9c06ab6ced899214d",
+  "prompts": {},
+  "sessions": {
+    "s_7f910ca5a6437e": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_0caa4e880ffec6N0giTZ5u2Rjf",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
