@@ -48,10 +48,6 @@ export function RankingModal({ open, onClose, nickname, scores: initialScores })
             <Trophy size={14} strokeWidth={1.7} />
             dino
           </span>
-          {flaggedCount > 0 && (
-            <span className="dino-modal-sub mono">🏴‍☠️ {flaggedCount}</span>
-          )}
-          <span className="dino-modal-sub mono">latest qualifying runs</span>
         </div>
 
         <div className="dino-rank-cols mono">
@@ -103,6 +99,7 @@ export function RankingModal({ open, onClose, nickname, scores: initialScores })
       </ol>
 
       <div className="dino-modal-foot mono">
+        latest qualifying runs{flaggedCount > 0 ? ` · 🏴‍☠️ ${flaggedCount} caught` : ""}
       </div>
       </div>
     </BaseModal>
