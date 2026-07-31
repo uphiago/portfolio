@@ -16,10 +16,10 @@ const HONEYPOT_NOTE = [
   "       ║ .╔╝  pikolo is not",
   "       ║ ╔╝   happy with you",
   "     ╔═╝╔╝",
-  "    ╔╝ ╔╝    server-side",
-  "    ║  ║     validation wins",
+  "    ╔╝ ╔╝",
+  "    ║  ║",
   "    ║ ╔╝",
-  "    ╚═╝      — dino honeypot ★",
+  "    ╚═╝",
 ].join("\n");
 
 function supabaseConfig() {
