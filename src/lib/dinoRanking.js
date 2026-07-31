@@ -7,7 +7,7 @@ export const DINO_TOP_LIMIT = 10;
 
 // Playful honeypot: the legit game tops out far below. Scores over this
 // threshold get flagged and stored with a random ASCII easter-egg note.
-export const DINO_HACKER_THRESHOLD = 50000;
+export const DINO_HACKER_THRESHOLD = 5000;
 
 // The honeypot note — one custom ASCII art stored in the DB forever.
 // Shown as a tooltip on the flagged icon in the ranking modal.
