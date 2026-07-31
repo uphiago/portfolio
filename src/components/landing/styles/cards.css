@@ -225,13 +225,13 @@
   .mfi .footer-dot {
     color: var(--m-ink-faint);
   }
-  .mfi .footer-stats {
+  .mfi .footer .footer-stats {
     width: 14px;
     height: 14px;
   }
-  .mfi .footer-stats svg {
-    width: 12px;
-    height: 12px;
+  .mfi .footer .footer-stats svg {
+    width: 11px;
+    height: 11px;
   }
 
   /* Reels rail */

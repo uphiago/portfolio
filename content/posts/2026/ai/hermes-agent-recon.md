@@ -1,9 +1,10 @@
 +++
 author = "@uphiago"
-title = "Hermes Barbarossa: Orchestrating Isolated Workers"
+title = "Hermes Barbarossa: Orchestrating Workers"
 slug = "hermes-barbarossa"
 date = 2026-06-28T00:00:00-03:00
 lastmod = 2026-07-29T00:00:00-03:00
+show_updated = true
 description = "A practical guide to Barbarossa: typed MCP capabilities, isolated workers, durable jobs, Codex engineering, image tools, and explicit network routing."
 tags = [
   "agents",

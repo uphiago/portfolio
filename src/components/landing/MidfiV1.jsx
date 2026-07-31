@@ -54,7 +54,7 @@ export function MidfiV1({ articles = ARTICLES, music = DEFAULT_MUSIC }) {
             <span className="footer-dot">·</span>
             <span>2026 hiago<span style={{color:"var(--m-ink-soft)"}}>.sh</span></span>
             <a href="https://cloud.umami.is/share/NatKsfXwWLsGotHM" target="_blank" rel="noreferrer" className="social footer-stats" title="View Analytics">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M3 3v18h18" />
                 <path d="m19 9-5 5-4-4-3 3" />
               </svg>

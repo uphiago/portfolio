@@ -92,6 +92,7 @@ export function parseBlogMarkdown(sourcePath, markdown) {
     ...(date ? { date } : {}),
     ...(lastmod ? { lastmod } : {}),
     ...(author ? { author } : {}),
+    ...(frontmatter.show_updated ? { showUpdated: true } : {}),
     tags: frontmatter.tags || [],
     html: renderMarkdownHtml(body),
     rawMarkdown: body,

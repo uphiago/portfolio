@@ -29,7 +29,7 @@ export const Ico = {
     </svg>
   ),
   x: (
-    <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
       <path d="M11.95 2H14l-4.55 5.2L14.8 14h-4.2L7.3 9.7 3.5 14H1.45l4.85-5.55L1 2h4.3l3 3.95L11.95 2Zm-.7 10.7h1.15L4.85 3.2H3.6l7.65 9.5Z"/>
     </svg>
   ),

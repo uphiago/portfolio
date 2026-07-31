@@ -38,6 +38,10 @@
       grid-template-columns: 24px minmax(0, 1fr) 16px;
       padding: 9px 8px;
     }
+    .mfi .star-row .idx {
+      font-size: 11px;
+      color: var(--m-ink-soft);
+    }
     .mfi .music-panel {
       border-left: 0;
       border-top: 1px solid var(--m-line);
@@ -64,11 +68,33 @@
       overflow-wrap: anywhere;
     }
     .mfi .footer {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 6px;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
       padding-top: 12px;
       line-height: 1.5;
+      font-size: 12px;
+      color: var(--m-ink-soft);
+    }
+    .mfi .footer-left {
+      white-space: nowrap;
+    }
+    .mfi .footer .social {
+      width: 40px;
+      height: 40px;
+    }
+    .mfi .footer .social svg {
+      width: 18px;
+      height: 18px;
+    }
+    .mfi .footer .footer-stats svg {
+      width: 11px;
+      height: 11px;
+    }
+    .mfi .footer .footer-stats {
+      width: 14px;
+      height: 14px;
     }
     .mfi .hero-contact-card {
       align-items: flex-start;
@@ -201,11 +227,28 @@
       gap: 10px;
     }
     .mfi .footer {
-      font-size: 10px;
+      font-size: 12px;
+      color: var(--m-ink-soft);
       margin-top: 10px;
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
+    }
+    .mfi .footer .social {
+      width: 40px;
+      height: 40px;
+    }
+    .mfi .footer .social svg {
+      width: 18px;
+      height: 18px;
+    }
+    .mfi .footer .footer-stats svg {
+      width: 11px;
+      height: 11px;
+    }
+    .mfi .footer .footer-stats {
+      width: 14px;
+      height: 14px;
     }
   }

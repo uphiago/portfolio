@@ -18,7 +18,7 @@ export function WriteupsCard({ ARTICLES, setOpenArticle, music }) {
         <div className="wlist">
           {ARTICLES.map((a, i) => {
             const isNew = i === 0;
-            const isUpdated = !isNew && a.lastmod && a.lastmod !== a.date;
+            const isUpdated = !isNew && a.showUpdated;
             const rowContent = (
               <>
               <span className="idx">{String(ARTICLES.length - i).padStart(2, "0")}</span>
