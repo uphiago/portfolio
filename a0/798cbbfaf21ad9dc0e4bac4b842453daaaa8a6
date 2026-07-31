@@ -3,6 +3,8 @@ content/posts/2026/ai/pentest-recon.md
   s_b289a61e8ec1ec::t_8c87f3e21fb805 605
   s_b289a61e8ec1ec::t_67e3790afde1fc 314-317
   s_b289a61e8ec1ec::t_a05a2677781e14 708-712
+src/components/landing/styles/cards.css
+  s_94786c0d0ffb5f::t_ffd3ff8a554e62 282-283,286,288-289
 ---
 {
   "schema_version": "authorship/3.0.0",
@@ -10,6 +12,14 @@ content/posts/2026/ai/pentest-recon.md
   "base_commit_sha": "a0798cbbfaf21ad9dc0e4bac4b842453daaaa8a6",
   "prompts": {},
   "sessions": {
+    "s_94786c0d0ffb5f": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fb90a-a374-7770-8b21-a36e971dc34c",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    },
     "s_b289a61e8ec1ec": {
       "agent_id": {
         "tool": "opencode",

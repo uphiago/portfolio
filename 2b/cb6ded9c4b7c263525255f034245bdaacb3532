@@ -7,6 +7,16 @@ content/posts/2026/ai/pentest-recon.md
   s_b289a61e8ec1ec::t_63191ad16afad1 808,814-846
   s_b289a61e8ec1ec::t_21e5e16426f5c2 589,592-593,595-596,598,601,604
   s_b289a61e8ec1ec::t_bd0e5bf03a344b 667-669
+  s_b289a61e8ec1ec::t_697587f34861a3 891
+  s_b289a61e8ec1ec::t_f821556f8842c3 589,592-593,595-596,598,601,604
+  s_b289a61e8ec1ec::t_7e02fe5e705562 137
+  s_b289a61e8ec1ec::t_6d8025ed940b4b 957-970
+  s_b289a61e8ec1ec::t_60559d36dd16d3 611-618,619-622
+  s_b289a61e8ec1ec::t_6eee1ab035d8c6 667-669
+  s_b289a61e8ec1ec::t_78a5ba7054c626 808,814-846
+  s_b289a61e8ec1ec::t_fa717e4517828c 884,886
+src/components/landing/styles/cards.css
+  s_94786c0d0ffb5f::t_6ba418cc1de104 270-272,280,295,299
 ---
 {
   "schema_version": "authorship/3.0.0",
@@ -14,6 +24,14 @@ content/posts/2026/ai/pentest-recon.md
   "base_commit_sha": "2bcb6ded9c4b7c263525255f034245bdaacb3532",
   "prompts": {},
   "sessions": {
+    "s_94786c0d0ffb5f": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fb90a-a374-7770-8b21-a36e971dc34c",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    },
     "s_b289a61e8ec1ec": {
       "agent_id": {
         "tool": "opencode",
