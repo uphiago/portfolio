@@ -1,0 +1,23 @@
+src/lib/dinoRanking.js
+  s_1f45da4076bcb1::t_72ec7001c93b27 97-103
+tests/dino-ranking.test.js
+  s_1f45da4076bcb1::t_dc02cf8e6c3142 125-126
+  s_1f45da4076bcb1::t_d54d0beea310ab 140
+  s_1f45da4076bcb1::t_b5b798afba9ad5 284-285
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.19",
+  "base_commit_sha": "ee240b5fc8c6d48af77f9834255c011e60efba3a",
+  "prompts": {},
+  "sessions": {
+    "s_1f45da4076bcb1": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_0703e5918ffeF2kIBL4FvuJCv2",
+        "model": "deepseek-v4-flash-free"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
