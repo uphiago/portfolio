@@ -1,0 +1,19 @@
+docs/superpowers/specs/2026-07-31-dino-game-ranking-design.md
+  s_94786c0d0ffb5f::t_0610374947b854 1-58
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.18",
+  "base_commit_sha": "1ffb43687038813076d9b2c0df6475799abbbc33",
+  "prompts": {},
+  "sessions": {
+    "s_94786c0d0ffb5f": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fb90a-a374-7770-8b21-a36e971dc34c",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
