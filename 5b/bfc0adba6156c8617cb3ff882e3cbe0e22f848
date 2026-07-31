@@ -1,0 +1,19 @@
+src/components/landing/cards/RankingModal.jsx
+  s_1f45da4076bcb1::t_f39c7feb01aa64 102
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.19",
+  "base_commit_sha": "5bbfc0adba6156c8617cb3ff882e3cbe0e22f848",
+  "prompts": {},
+  "sessions": {
+    "s_1f45da4076bcb1": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_0703e5918ffeF2kIBL4FvuJCv2",
+        "model": "deepseek-v4-flash-free"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
