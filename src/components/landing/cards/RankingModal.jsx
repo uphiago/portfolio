@@ -58,24 +58,26 @@ export function RankingModal({ open, onClose, nickname, scores: initialScores })
       </div>
 
       <ol className="dino-rank-list">
-        {loading && rows.every((r) => !r) ? (
-          <li className="empty">
-            <span className="rk">—</span>
-            <span className="nm">loading…</span>
-            <span className="sc">—</span>
-          </li>
-        ) : (
-          rows.map((entry, index) => {
-            const rank = index + 1;
-            if (!entry) {
-              return (
-                <li key={`empty-${index}`} className="empty">
-                  <span className="rk">{rank}</span>
-                  <span className="nm">—</span>
-                  <span className="sc">—</span>
-                </li>
-              );
-            }
+        {rows.map((entry, index) => {
+          const rank = index + 1;
+          if (loading) {
+            return (
+              <li key={`empty-${index}`} className="empty">
+                <span className="rk">{rank}</span>
+                <span className="nm">—</span>
+                <span className="sc">—</span>
+              </li>
+            );
+          }
+          if (!entry) {
+            return (
+              <li key={`empty-${index}`} className="empty">
+                <span className="rk">{rank}</span>
+                <span className="nm">—</span>
+                <span className="sc">—</span>
+              </li>
+            );
+          }
             const isMe =
               nickname &&
               entry.nickname?.toLowerCase() === nickname.toLowerCase();
@@ -118,7 +120,7 @@ export function RankingModal({ open, onClose, nickname, scores: initialScores })
               </li>
             );
           })
-        )}
+        }
       </ol>
 
       <div className="dino-modal-foot mono">

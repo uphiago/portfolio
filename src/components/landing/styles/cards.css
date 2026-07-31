@@ -297,7 +297,8 @@
   .mfi .dino-trophy:hover {
     color: #cfcdc5;
   }
-  .mfi .dino-trophy:focus-visible {
+  .mfi .dino-trophy:focus-visible,
+  .mfi .card.dark .dino-trophy:focus-visible {
     outline: none;
     box-shadow: none;
     color: #cfcdc5;
