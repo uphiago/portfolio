@@ -390,6 +390,9 @@
 
             this.outerContainerEl.appendChild(this.containerEl);
 
+            // Scale to fit the card from the very first frame (no jump on start).
+            this.setArcadeModeContainerScale();
+
             if (IS_MOBILE) {
                 this.createTouchController();
             }
