@@ -1,0 +1,25 @@
+src/components/landing/styles/cards.css
+  s_1f45da4076bcb1::t_fdbe8252507d5a 521,525-526
+tests/dino-ranking.test.js
+  s_1f45da4076bcb1::t_a5c1993995a6b2 275
+  s_1f45da4076bcb1::t_83d06bdaca0884 131,144-145
+src/lib/dinoRanking.js
+  s_1f45da4076bcb1::t_30e75312eda5b2 12-23
+  s_1f45da4076bcb1::t_96abee4a88a838 111
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.19",
+  "base_commit_sha": "d27602b0c020d1b1a48cbf8a72b5214d463d3592",
+  "prompts": {},
+  "sessions": {
+    "s_1f45da4076bcb1": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_0703e5918ffeF2kIBL4FvuJCv2",
+        "model": "deepseek-v4-flash-free"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
