@@ -1,0 +1,20 @@
+src/components/landing/styles/cards.css
+  s_1f45da4076bcb1::t_c65dfaac7cd88d 295,300-302
+  s_1f45da4076bcb1::t_1d99a315091eed 303-304
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.19",
+  "base_commit_sha": "24c25ed27b3f5dc03cc5226556b8c0f87de5a990",
+  "prompts": {},
+  "sessions": {
+    "s_1f45da4076bcb1": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_0703e5918ffeF2kIBL4FvuJCv2",
+        "model": "deepseek-v4-flash-free"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
