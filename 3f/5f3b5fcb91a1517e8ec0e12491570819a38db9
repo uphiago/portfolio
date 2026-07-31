@@ -1,0 +1,25 @@
+src/components/landing/cards/DinoGame.jsx
+  s_94786c0d0ffb5f::t_2df2c5c85be6b8 1-251
+src/components/landing/cards/RankingModal.jsx
+  s_94786c0d0ffb5f::t_072366924bccf7 1-72
+src/components/landing/cards/VideoCard.jsx
+  s_94786c0d0ffb5f::t_65640f0df23baf 2,7
+src/components/landing/styles/cards.css
+  s_94786c0d0ffb5f::t_30c3a7c28dfd8c 269-304,310-363,365-372,374-404,407-411,413-437,440-443,445-455,457-514
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.19",
+  "base_commit_sha": "3f5f3b5fcb91a1517e8ec0e12491570819a38db9",
+  "prompts": {},
+  "sessions": {
+    "s_94786c0d0ffb5f": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fb90a-a374-7770-8b21-a36e971dc34c",
+        "model": "unknown"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
