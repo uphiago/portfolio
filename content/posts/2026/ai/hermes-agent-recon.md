@@ -1,6 +1,6 @@
 +++
 author = "@uphiago"
-title = "Hermes Barbarossa Orchestrating Workers"
+title = "Hermes Orchestrating Workers"
 slug = "hermes-barbarossa"
 date = 2026-06-28T00:00:00-03:00
 lastmod = 2026-07-29T00:00:00-03:00
