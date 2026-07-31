@@ -1,0 +1,28 @@
+src/components/landing/cards/DinoGame.jsx
+  s_1f45da4076bcb1::t_77d0e9a9025c8c 57
+  s_1f45da4076bcb1::t_0af99aad6ecf42 95-98
+  s_1f45da4076bcb1::t_7d28a03f56d554 222-224
+tests/dino-ranking.test.js
+  s_1f45da4076bcb1::t_2570310bf2f18f 95-96,114
+  s_1f45da4076bcb1::t_05276587581eed 125
+  s_1f45da4076bcb1::t_2b0a50a6820e0e 283-284
+  s_1f45da4076bcb1::t_12065db2e8487e 139
+src/lib/dinoRanking.js
+  s_1f45da4076bcb1::t_845089264c8342 59-68,74,84-85,93,103-104
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.19",
+  "base_commit_sha": "fc918b14b06a770526558ebff307ada8fb6a4372",
+  "prompts": {},
+  "sessions": {
+    "s_1f45da4076bcb1": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_0703e5918ffeF2kIBL4FvuJCv2",
+        "model": "deepseek-v4-flash-free"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
