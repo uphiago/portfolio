@@ -1,0 +1,19 @@
+content/posts/2026/ai/hermes-agent-recon.md
+  s_b289a61e8ec1ec::t_c4fecf4a8bdf97 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.18",
+  "base_commit_sha": "54b1d94ba3a809c37bc4b9829a7b7f16ddd0974a",
+  "prompts": {},
+  "sessions": {
+    "s_b289a61e8ec1ec": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_04b0da549ffeJ8Ig7pf6lfBde6",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
