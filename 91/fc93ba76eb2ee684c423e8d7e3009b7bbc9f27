@@ -1,0 +1,25 @@
+supabase/migrations/20260731120020_identify_flags.sql
+  s_1f45da4076bcb1::t_b3f68aac91a2c7 8,10,14
+src/lib/dinoRanking.js
+  s_1f45da4076bcb1::t_84ce5ee4f00c59 10
+src/components/landing/cards/RankingModal.jsx
+  s_1f45da4076bcb1::t_7bfd011123e969 95-96
+src/components/landing/styles/cards.css
+  s_1f45da4076bcb1::t_42276bd921671f 519,521-526
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.19",
+  "base_commit_sha": "91fc93ba76eb2ee684c423e8d7e3009b7bbc9f27",
+  "prompts": {},
+  "sessions": {
+    "s_1f45da4076bcb1": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_0703e5918ffeF2kIBL4FvuJCv2",
+        "model": "deepseek-v4-flash-free"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
