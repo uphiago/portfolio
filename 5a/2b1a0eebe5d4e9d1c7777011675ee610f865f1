@@ -1,0 +1,29 @@
+app/api/dino/scores/route.js
+  s_94786c0d0ffb5f::t_20fdb89a18b49f 4,15,19-23,26
+tests/portfolio-landing.test.jsx
+  s_94786c0d0ffb5f::t_20fdb89a18b49f 205
+src/lib/dinoRanking.js
+  s_94786c0d0ffb5f::t_20fdb89a18b49f 72-89
+src/components/landing/cards/RankingModal.jsx
+  s_94786c0d0ffb5f::t_20fdb89a18b49f 15
+src/components/landing/cards/DinoGame.jsx
+  s_94786c0d0ffb5f::t_20fdb89a18b49f 50,68,70,72,76,78,115,198
+tests/dino-ranking.test.js
+  s_94786c0d0ffb5f::t_bf92da1cc441bc 6,100-114,139,142-150,156-157
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.18",
+  "base_commit_sha": "5a2b1a0eebe5d4e9d1c7777011675ee610f865f1",
+  "prompts": {},
+  "sessions": {
+    "s_94786c0d0ffb5f": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fb90a-a374-7770-8b21-a36e971dc34c",
+        "model": "deepseek-v4-flash"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
