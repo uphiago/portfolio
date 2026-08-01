@@ -95,7 +95,7 @@ export function RankingModal({ open, onClose, nickname, scores: initialScores })
       </ol>
 
       <div className="dino-modal-foot mono">
-        🏴‍☠️ {flaggedCount} caught — 50k+ flagged
+        🏴‍☠️ {flaggedCount} caught · 50k+ flagged
       </div>
       </div>
     </BaseModal>
