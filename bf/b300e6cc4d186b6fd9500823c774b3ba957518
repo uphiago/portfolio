@@ -1,0 +1,23 @@
+src/components/landing/styles/cards.css
+  s_1f45da4076bcb1::t_739af65ffa4e57 527-528
+  s_1f45da4076bcb1::t_22ee3315348f3f 416,424,426
+src/components/landing/cards/RankingModal.jsx
+  s_1f45da4076bcb1::t_8fb225afa86ddc 98
+  s_1f45da4076bcb1::t_fb0e6f8d95f06b 46
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.19",
+  "base_commit_sha": "bfb300e6cc4d186b6fd9500823c774b3ba957518",
+  "prompts": {},
+  "sessions": {
+    "s_1f45da4076bcb1": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_0703e5918ffeF2kIBL4FvuJCv2",
+        "model": "deepseek-v4-flash-free"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
