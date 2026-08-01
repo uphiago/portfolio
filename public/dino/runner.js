@@ -699,8 +699,7 @@
                     }
                 }
 
-                if (this.crashed && e.type == Runner.events.TOUCHSTART &&
-                    e.currentTarget == this.containerEl) {
+                if (this.crashed && e.type == Runner.events.TOUCHSTART) {
                     this.restart();
                 }
             }
@@ -738,8 +737,8 @@
                 var deltaTime = getTimeStamp() - this.time;
 
                 if (Runner.keycodes.RESTART[keyCode] || this.isLeftClickOnCanvas(e) ||
-                    (deltaTime >= this.config.GAMEOVER_CLEAR_TIME &&
-                        Runner.keycodes.JUMP[keyCode])) {
+                    ((deltaTime >= this.config.GAMEOVER_CLEAR_TIME &&
+                        (Runner.keycodes.JUMP[keyCode] || e.type == Runner.events.TOUCHEND)))) {
                     this.restart();
                 }
             } else if (this.paused && isjumpKey) {

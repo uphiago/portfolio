@@ -30,7 +30,9 @@
     border: 0; background: transparent;
     cursor: pointer; display: flex; align-items: center; justify-content: center;
     font-family: var(--font-mono); font-size: 12px;
+    color: var(--m-ink);
     transition: background .15s ease, color .15s ease;
+    -webkit-appearance: none;
   }
   .mfi-modal .x:hover { background: transparent; color: var(--m-ink); }
   .mfi-modal .row {
