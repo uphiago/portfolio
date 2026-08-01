@@ -370,10 +370,11 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 3px;
     font-family: var(--font-mono);
-    font-size: 12px;
-    padding: 1px 5px;
+    font-size: 16px;
+    padding: 0 5px;
     outline: none;
     line-height: 1;
+    height: 18px;
   }
   .mfi .dino-name input:focus {
     border-color: rgba(241, 239, 232, 0.44);
@@ -385,10 +386,11 @@
     border-radius: 3px;
     font-family: var(--font-mono);
     font-size: 11px;
-    padding: 3px 7px;
+    padding: 2px 7px;
     cursor: pointer;
     white-space: nowrap;
     line-height: 1;
+    height: 18px;
   }
   .mfi .dino-hack {
     position: absolute;
