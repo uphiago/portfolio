@@ -1,0 +1,24 @@
+public/dino/runner.js
+  s_1f45da4076bcb1::t_16224eaed1b051 702
+  s_1f45da4076bcb1::t_8f2a105e5be6c3 740-741
+src/components/landing/styles/modals.css
+  s_1f45da4076bcb1::t_575b2d43bc8b1e 33,35
+src/components/landing/styles/cards.css
+  s_1f45da4076bcb1::t_cf3091dbb1e947 379
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.19",
+  "base_commit_sha": "7f04b1ca7d2941f8419a059db35e7bef2a9859c1",
+  "prompts": {},
+  "sessions": {
+    "s_1f45da4076bcb1": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_0703e5918ffeF2kIBL4FvuJCv2",
+        "model": "deepseek-v4-flash-free"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
