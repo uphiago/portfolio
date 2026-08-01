@@ -358,16 +358,9 @@
     pointer-events: none;
   }
   .mfi .dino-name {
-    position: absolute;
-    right: 8px;
-    bottom: 8px;
-    z-index: 4;
     display: flex;
+    align-items: center;
     gap: 5px;
-    padding: 4px;
-    background: #11100d;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 3px;
   }
   .mfi .dino-name input {
     width: 96px;
@@ -376,7 +369,7 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 3px;
     font-family: var(--font-mono);
-    font-size: 16px;
+    font-size: 14px;
     padding: 5px 7px;
     outline: none;
   }

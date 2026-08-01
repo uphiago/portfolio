@@ -174,6 +174,20 @@ export function DinoGame() {
           <Trophy size={13} strokeWidth={1.7} />
           latest
         </button>
+        {askName && (
+          <form className="dino-name" onSubmit={handleNicknameSubmit}>
+            <input
+              maxLength={NICKNAME_MAX}
+              value={nameDraft}
+              onChange={(event) => setNameDraft(event.target.value)}
+              placeholder="nickname"
+              aria-label="Nickname for the ranking"
+            />
+            <button type="submit" disabled={submitting}>
+              save
+            </button>
+          </form>
+        )}
       </div>
 
       <div className="dino-game-holder">
@@ -190,22 +204,6 @@ export function DinoGame() {
             <div className="dino-hint" aria-hidden="true">
               press space · tap to start
             </div>
-          )}
-
-          {askName && (
-            <form className="dino-name" onSubmit={handleNicknameSubmit}>
-              <input
-                autoFocus
-                maxLength={NICKNAME_MAX}
-                value={nameDraft}
-                onChange={(event) => setNameDraft(event.target.value)}
-                placeholder="nickname"
-                aria-label="Nickname for the ranking"
-              />
-              <button type="submit" disabled={submitting}>
-                save score
-              </button>
-            </form>
           )}
 
         </div>
