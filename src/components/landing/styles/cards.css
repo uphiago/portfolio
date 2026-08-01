@@ -293,6 +293,7 @@
     padding: 4px 0;
     cursor: pointer;
     outline: none;
+    flex-shrink: 0;
   }
   .mfi .dino-trophy:hover {
     color: #cfcdc5;
@@ -361,17 +362,19 @@
     display: flex;
     align-items: center;
     gap: 5px;
+    margin-right: auto;
   }
   .mfi .dino-name input {
-    width: 96px;
+    width: 86px;
     background: transparent;
     color: #f1efe8;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 3px;
     font-family: var(--font-mono);
     font-size: 14px;
-    padding: 5px 7px;
+    padding: 1px 5px;
     outline: none;
+    line-height: 1;
   }
   .mfi .dino-name input:focus {
     border-color: rgba(241, 239, 232, 0.44);
@@ -383,9 +386,10 @@
     border-radius: 3px;
     font-family: var(--font-mono);
     font-size: 11px;
-    padding: 5px 8px;
+    padding: 2px 6px;
     cursor: pointer;
     white-space: nowrap;
+    line-height: 1;
   }
   .mfi .dino-hack {
     position: absolute;

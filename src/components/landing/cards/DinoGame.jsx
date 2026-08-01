@@ -170,10 +170,6 @@ export function DinoGame() {
   return (
     <div className="dino-game-stage">
       <div className="dino-bar">
-        <button type="button" className="dino-trophy" onClick={() => setRankOpen(true)} onKeyDown={(e) => { e.key === " " && e.preventDefault(); }}>
-          <Trophy size={13} strokeWidth={1.7} />
-          latest
-        </button>
         {askName && (
           <form className="dino-name" onSubmit={handleNicknameSubmit}>
             <input
@@ -188,6 +184,10 @@ export function DinoGame() {
             </button>
           </form>
         )}
+        <button type="button" className="dino-trophy" onClick={() => setRankOpen(true)} onKeyDown={(e) => { e.key === " " && e.preventDefault(); }}>
+          <Trophy size={13} strokeWidth={1.7} />
+          latest
+        </button>
       </div>
 
       <div className="dino-game-holder">
