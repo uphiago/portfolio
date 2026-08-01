@@ -364,7 +364,7 @@
     gap: 5px;
   }
   .mfi .dino-name input {
-    width: 86px;
+    width: 115px;
     background: transparent;
     color: #f1efe8;
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -374,7 +374,10 @@
     padding: 0 5px;
     outline: none;
     line-height: 1;
-    height: 18px;
+    height: 24px;
+    transform: scale(0.75);
+    transform-origin: left center;
+    margin-right: -20px;
   }
   .mfi .dino-name input:focus {
     border-color: rgba(241, 239, 232, 0.44);
