@@ -43,7 +43,7 @@ export function RankingModal({ open, onClose, nickname, scores: initialScores })
       {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
       <div onKeyDown={(e) => { e.key === " " && e.stopPropagation(); }}>
         <div className="dino-modal-head">
-          <span className="dino-modal-title mono">recent runs · 🏴‍☠️ = honeypot 50k+</span>
+          <span className="dino-modal-title mono">recent runs</span>
         </div>
 
         <div className="dino-rank-cols mono">
@@ -95,7 +95,7 @@ export function RankingModal({ open, onClose, nickname, scores: initialScores })
       </ol>
 
       <div className="dino-modal-foot mono">
-        🏴‍☠️ {flaggedCount} caught
+        🏴‍☠️ {flaggedCount} caught · = honeypot 50k+
       </div>
       </div>
     </BaseModal>

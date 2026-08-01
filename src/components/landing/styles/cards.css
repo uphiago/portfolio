@@ -413,7 +413,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    margin: 0 0 12px;
+    margin: 0 0 10px;
     padding-right: 28px;
   }
   .mfi-modal .dino-modal-title {
@@ -421,9 +421,9 @@
     align-items: center;
     gap: 8px;
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: 11px;
     letter-spacing: 0.03em;
-    color: var(--m-ink);
+    color: var(--m-ink-soft);
   }
   .mfi-modal .dino-modal-title svg {
     width: 14px;
@@ -524,8 +524,8 @@
     color: var(--m-green);
   }
   .mfi-modal .dino-modal-foot {
-    margin-top: 12px;
-    padding-top: 10px;
+    margin-top: 8px;
+    padding-top: 8px;
     border-top: 1px solid var(--m-line);
     font-size: 10px;
     color: var(--m-ink-faint);
