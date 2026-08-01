@@ -99,7 +99,7 @@ export function RankingModal({ open, onClose, nickname, scores: initialScores })
       </ol>
 
       <div className="dino-modal-foot mono">
-        latest qualifying runs{flaggedCount > 0 ? ` · 🏴‍☠️ ${flaggedCount} caught` : ""}
+        latest qualifying runs · 🏴‍☠️ {flaggedCount} caught
       </div>
       </div>
     </BaseModal>
