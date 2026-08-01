@@ -38,12 +38,12 @@ export function RankingModal({ open, onClose, nickname, scores: initialScores })
   const flaggedCount = scores.filter((s) => s.flagged === true).length;
 
   return (
-    <BaseModal onClose={onClose} label="Dino top 10 ranking">
+    <BaseModal onClose={onClose} label="Dino latest runs">
       {/* Prevent space from bubbling to the document (dino game listens there). */}
       {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
       <div onKeyDown={(e) => { e.key === " " && e.stopPropagation(); }}>
         <div className="dino-modal-head">
-          <span className="dino-modal-title mono">recent runs</span>
+          <span className="dino-modal-title mono">latest runs · try harder, get flagged</span>
         </div>
 
         <div className="dino-rank-cols mono">
@@ -52,50 +52,52 @@ export function RankingModal({ open, onClose, nickname, scores: initialScores })
         <span className="sc">score</span>
       </div>
 
-      <ol className="dino-rank-list">
-        {rows.map((entry, index) => {
-          const rank = index + 1;
-          if (loading) {
-            return (
-              <li key={`empty-${index}`} className="empty">
-                <span className="rk">{rank}</span>
-                <span className="nm">—</span>
-                <span className="sc">—</span>
-              </li>
-            );
+      <div className="dino-rank-scroll">
+        <ol className="dino-rank-list">
+          {rows.map((entry, index) => {
+            const rank = index + 1;
+            if (loading) {
+              return (
+                <li key={`empty-${index}`} className="empty">
+                  <span className="rk">{rank}</span>
+                  <span className="nm">—</span>
+                  <span className="sc">—</span>
+                </li>
+              );
+            }
+            if (!entry) {
+              return (
+                <li key={`empty-${index}`} className="empty">
+                  <span className="rk">{rank}</span>
+                  <span className="nm">—</span>
+                  <span className="sc">—</span>
+                </li>
+              );
+            }
+              const isMe =
+                nickname &&
+                entry.nickname?.toLowerCase() === nickname.toLowerCase();
+              const isFlagged = entry.flagged === true;
+              return (
+                <li
+                  key={`${entry.nickname}-${entry.score}-${index}`}
+                  className={isMe ? "me" : ""}
+                >
+                  <span className={`rk top${rank}`}>{rank}</span>
+                  <span className="nm">
+                    {entry.nickname}
+                    {isFlagged && <span className="flag" title="flagged">🏴‍☠️</span>}
+                  </span>
+                  <span className="sc">{entry.score}</span>
+                </li>
+              );
+            })
           }
-          if (!entry) {
-            return (
-              <li key={`empty-${index}`} className="empty">
-                <span className="rk">{rank}</span>
-                <span className="nm">—</span>
-                <span className="sc">—</span>
-              </li>
-            );
-          }
-            const isMe =
-              nickname &&
-              entry.nickname?.toLowerCase() === nickname.toLowerCase();
-            const isFlagged = entry.flagged === true;
-            return (
-              <li
-                key={`${entry.nickname}-${entry.score}-${index}`}
-                className={isMe ? "me" : ""}
-              >
-                <span className={`rk top${rank}`}>{rank}</span>
-                <span className="nm">
-                  {entry.nickname}
-                  {isFlagged && <span className="flag" title="flagged">🏴‍☠️</span>}
-                </span>
-                <span className="sc">{entry.score}</span>
-              </li>
-            );
-          })
-        }
-      </ol>
+        </ol>
+        </div>
 
       <div className="dino-modal-foot mono">
-        🏴‍☠️ {flaggedCount} caught · 50k+ flagged
+        🏴‍☠️ {flaggedCount} flagged · 50k+
       </div>
       </div>
     </BaseModal>
