@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
-import { Trophy } from "lucide-react";
 import { BaseModal } from "../modals/BaseModal";
 
 export function RankingModal({ open, onClose, nickname, scores: initialScores }) {
@@ -44,10 +43,7 @@ export function RankingModal({ open, onClose, nickname, scores: initialScores })
       {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
       <div onKeyDown={(e) => { e.key === " " && e.stopPropagation(); }}>
         <div className="dino-modal-head">
-          <span className="dino-modal-title">
-            <Trophy size={14} strokeWidth={1.7} />
-            dino
-          </span>
+          <span className="dino-modal-title mono">recent runs</span>
         </div>
 
         <div className="dino-rank-cols mono">
@@ -99,7 +95,7 @@ export function RankingModal({ open, onClose, nickname, scores: initialScores })
       </ol>
 
       <div className="dino-modal-foot mono">
-        latest qualifying runs · 🏴‍☠️ {flaggedCount} caught
+        🏴‍☠️ {flaggedCount} caught
       </div>
       </div>
     </BaseModal>
