@@ -80,12 +80,19 @@ export function RankingModal({ open, onClose, nickname, scoreboard: initialScore
   const isLoading = status === "loading";
 
   return (
-    <BaseModal onClose={onClose} label="Dino scores">
+    <BaseModal
+      onClose={onClose}
+      label="Dino scores"
+      modalClass="mfi-modal dino-ranking-modal"
+    >
       {/* Prevent game controls from receiving keys used inside the dialog. */}
       {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
-      <div onKeyDown={(event) => event.stopPropagation()}>
+      <div
+        className="dino-ranking-content"
+        onKeyDown={(event) => event.stopPropagation()}
+      >
         <div className="dino-modal-head">
-          <span className="dino-modal-title mono">scores · one run per player</span>
+          <span className="dino-modal-title mono">scores</span>
           {view === "top" && (
             <button
               type="button"
@@ -181,9 +188,9 @@ export function RankingModal({ open, onClose, nickname, scoreboard: initialScore
           ) : status === "disabled" ? (
             "scores offline"
           ) : view === "recent" ? (
-            `latest runs · ${flaggedCount} pirate${flaggedCount === 1 ? "" : "s"}`
+            `latest runs · 🏴‍☠️ ${flaggedCount} pirate${flaggedCount === 1 ? "" : "s"}`
           ) : showPirates ? (
-            `top scores · ${flaggedCount} pirate${flaggedCount === 1 ? "" : "s"}`
+            `top scores · 🏴‍☠️ ${flaggedCount} pirate${flaggedCount === 1 ? "" : "s"}`
           ) : (
             "top scores · pirates hidden"
           )}

@@ -46,6 +46,9 @@ describe("MidfiV1", () => {
     expect(html).toContain(">100<");
     expect(html).toContain("class=\"empty\"");
     expect(html).toContain('aria-live="polite"');
+    expect(html).toContain("dino-ranking-modal");
+    expect(html).toContain(">scores<");
+    expect(html).not.toContain("one run per player");
   });
 
   it("switches between recent and top 10 and filters pirates", async () => {
@@ -68,6 +71,7 @@ describe("MidfiV1", () => {
     });
 
     expect(rootElement.textContent).toContain("pirate");
+    expect(rootElement.querySelector(".dino-modal-foot").textContent).toContain("🏴‍☠️ 1 pirate");
     expect(rootElement.querySelector('[role="tab"][aria-selected="true"]').textContent).toBe("recent");
 
     await act(async () => {
