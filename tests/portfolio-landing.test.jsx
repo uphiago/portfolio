@@ -87,8 +87,10 @@ describe("MidfiV1", () => {
 
     const pirateToggle = rootElement.querySelector('[aria-label="Hide pirate scores"]');
     expect(pirateToggle.getAttribute("aria-pressed")).toBe("true");
+    expect(pirateToggle.textContent).toContain("pirates on");
     await act(async () => pirateToggle.click());
 
+    expect(rootElement.querySelector('[aria-label="Show pirate scores"]').textContent).toContain("pirates off");
     expect(rootElement.querySelector(".dino-rank-list li")).toBe(stableFirstRow);
     expect(rootElement.querySelector(".dino-rank-list li .rk")).toBe(stableFirstRank);
     expect(rootElement.textContent).not.toContain("60000");

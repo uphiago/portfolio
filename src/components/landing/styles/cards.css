@@ -459,26 +459,35 @@
     color: var(--m-ink-faint);
   }
   .mfi-modal .dino-pirate-toggle {
-    width: 19px;
+    width: auto;
     height: 23px;
-    display: grid;
-    place-items: center;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
     flex: none;
     border: 0;
     border-radius: 0;
     background: transparent;
     color: var(--m-ink-faint);
     cursor: pointer;
-    font-size: 12px;
+    font-family: var(--font-mono);
+    font-size: 10px;
     line-height: 1;
     padding: 0;
-    opacity: 0.46;
-    transition: opacity 0.15s ease;
+    opacity: 0.7;
+    transition: opacity 0.15s ease, color 0.15s ease;
   }
   .mfi-modal .dino-pirate-toggle:hover,
   .mfi-modal .dino-pirate-toggle.active {
     opacity: 1;
+    color: var(--m-ink-soft);
     background: transparent;
+  }
+  .mfi-modal .dino-pirate-label {
+    text-underline-offset: 2px;
+  }
+  .mfi-modal .dino-pirate-toggle:hover .dino-pirate-label {
+    text-decoration: underline;
   }
   .mfi-modal .dino-pirate-toggle:focus-visible,
   .mfi-modal .dino-rank-tabs button:focus-visible,

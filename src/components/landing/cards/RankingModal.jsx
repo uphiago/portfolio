@@ -117,7 +117,10 @@ export function RankingModal({ open, onClose, nickname, scoreboard: initialScore
               title={showPirates ? "Hide pirate scores" : "Show pirate scores"}
               onClick={() => setShowPirates((visible) => !visible)}
             >
-              🏴‍☠️
+              <span aria-hidden="true">🏴‍☠️</span>
+              <span className="dino-pirate-label">
+                pirates {showPirates ? "on" : "off"}
+              </span>
             </button>
           )}
         </div>
