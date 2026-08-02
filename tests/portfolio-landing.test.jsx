@@ -51,6 +51,13 @@ describe("MidfiV1", () => {
     expect(html).not.toContain("one run per player");
   });
 
+  it("keeps emoji from changing scoreboard row height on iOS", () => {
+    const css = readFileSync("src/components/landing/styles/cards.css", "utf8");
+
+    expect(css).toMatch(/\.dino-rank-list li \{[^}]*height: 31px;/s);
+    expect(css).toMatch(/\.dino-rank-list \.flag \{[^}]*display: inline-flex;[^}]*height: 14px;/s);
+  });
+
   it("switches between recent and top 10 and filters pirates", async () => {
     const rootElement = document.createElement("div");
     document.body.appendChild(rootElement);
