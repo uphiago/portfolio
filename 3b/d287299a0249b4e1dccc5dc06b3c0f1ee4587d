@@ -1,0 +1,21 @@
+supabase/migrations/20260802120000_dino_scoreboard.sql
+  s_ca67b08826dd73::t_3d5ffc26fa0475 1-302
+tests/dino-ranking.test.js
+  s_ca67b08826dd73::t_301d85db88c0ea 2,21-37
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "3bd287299a0249b4e1dccc5dc06b3c0f1ee4587d",
+  "prompts": {},
+  "sessions": {
+    "s_ca67b08826dd73": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fafd4-7976-7f41-894c-999f03702ca2",
+        "model": "unknown"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
