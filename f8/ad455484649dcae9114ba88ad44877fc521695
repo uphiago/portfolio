@@ -1,0 +1,25 @@
+app/api/dino/score/route.js
+  s_ca67b08826dd73::t_f4f874e83d7275 5-6,34,37,39-42,58-59
+app/api/dino/scores/route.js
+  s_ca67b08826dd73::t_a33e14396f4b0f 4,14-20,24-25,28-34
+src/lib/dinoRanking.js
+  s_ca67b08826dd73::t_87bc449a1670fa 7,25-35,116-143
+tests/dino-ranking.test.js
+  s_ca67b08826dd73::t_c83916f7a392e8 4-8,19,47-70,185-217,226-228,231,234-239,245,270,285,287-290,305,307-311,333,335-338,344-345,349,351-352
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "f8ad455484649dcae9114ba88ad44877fc521695",
+  "prompts": {},
+  "sessions": {
+    "s_ca67b08826dd73": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fafd4-7976-7f41-894c-999f03702ca2",
+        "model": "unknown"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
