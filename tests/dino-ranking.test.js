@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { readFileSync } from "node:fs";
 
 import {
   DINO_MAX_NICKNAME,
@@ -16,6 +17,23 @@ import { POST } from "@/app/api/dino/score/route";
 import { GET } from "@/app/api/dino/scores/route";
 
 const ORIGINAL_ENV = { ...process.env };
+
+describe("dino scoreboard migration", () => {
+  it("defines database-owned honeypot and scoreboard invariants", () => {
+    const sql = readFileSync(
+      "supabase/migrations/20260802120000_dino_scoreboard.sql",
+      "utf8"
+    ).toLowerCase();
+
+    expect(sql).toContain("create or replace function public.submit_dino_score");
+    expect(sql).toContain("create or replace function public.get_dino_scoreboard");
+    expect(sql).toContain("grant insert (nickname, score)");
+    expect(sql).toContain("p_score >= 50000");
+    expect(sql).toContain("pg_advisory_xact_lock");
+    expect(sql).toContain('collate "c"');
+    expect(sql).toContain("submission_source = 'anonymous'");
+  });
+});
 
 afterEach(() => {
   vi.unstubAllGlobals();
