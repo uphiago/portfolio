@@ -1,0 +1,23 @@
+src/components/landing/cards/RankingModal.jsx
+  s_ca67b08826dd73::t_4bcfafd15715c4 120-123
+src/components/landing/styles/cards.css
+  s_ca67b08826dd73::t_154e4c485433dd 462,464-466,473-474,477-478,483,486-491
+tests/portfolio-landing.test.jsx
+  s_ca67b08826dd73::t_9dd33d016648af 90,93
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "74f0c32bd202f2b7658064429877fe0fed1df36e",
+  "prompts": {},
+  "sessions": {
+    "s_ca67b08826dd73": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fafd4-7976-7f41-894c-999f03702ca2",
+        "model": "unknown"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
