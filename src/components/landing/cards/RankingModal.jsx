@@ -90,7 +90,6 @@ export function RankingModal({ open, onClose, nickname, scoreboard: initialScore
   if (!open) return null;
 
   const rows = Array.from({ length: 10 }, (_, index) => scores[index] || null);
-  const flaggedCount = scores.filter((entry) => entry.flagged === true).length;
   const isLoading = status === "loading";
   const isBusy = isLoading || status === "refreshing";
 
@@ -109,19 +108,22 @@ export function RankingModal({ open, onClose, nickname, scoreboard: initialScore
         <div className="dino-modal-head">
           <span className="dino-modal-title mono">scores</span>
           {view === "top" && (
-            <button
-              type="button"
-              className={`dino-pirate-toggle${showPirates ? " active" : ""}`}
-              aria-label={showPirates ? "Hide pirate scores" : "Show pirate scores"}
-              aria-pressed={showPirates}
-              title={showPirates ? "Hide pirate scores" : "Show pirate scores"}
-              onClick={() => setShowPirates((visible) => !visible)}
-            >
-              <span aria-hidden="true">🏴‍☠️</span>
-              <span className="dino-pirate-label">
-                pirates {showPirates ? "on" : "off"}
-              </span>
-            </button>
+            <>
+              <span className="dino-modal-separator" aria-hidden="true">·</span>
+              <button
+                type="button"
+                className={`dino-pirate-toggle${showPirates ? " active" : ""}`}
+                aria-label={showPirates ? "Hide pirate scores" : "Show pirate scores"}
+                aria-pressed={showPirates}
+                title={showPirates ? "Hide pirate scores" : "Show pirate scores"}
+                onClick={() => setShowPirates((visible) => !visible)}
+              >
+                <span aria-hidden="true">🏴‍☠️</span>
+                <span className="dino-pirate-label">
+                  {showPirates ? "on" : "off"}
+                </span>
+              </button>
+            </>
           )}
         </div>
 
@@ -179,8 +181,8 @@ export function RankingModal({ open, onClose, nickname, scoreboard: initialScore
                     {visibleEntry?.nickname || "—"}
                     <span
                       className="flag"
-                      title={visibleEntry?.flagged === true ? "pirate score" : undefined}
-                      aria-label={visibleEntry?.flagged === true ? "pirate score" : undefined}
+                      title={visibleEntry?.flagged === true ? "Yo Ho 🦉" : undefined}
+                      aria-label={visibleEntry?.flagged === true ? "Yo Ho 🦉" : undefined}
                     >
                       {visibleEntry?.flagged === true ? "🏴‍☠️" : ""}
                     </span>
@@ -203,9 +205,9 @@ export function RankingModal({ open, onClose, nickname, scoreboard: initialScore
           ) : status === "disabled" ? (
             "scores offline"
           ) : view === "recent" ? (
-            `latest runs · 🏴‍☠️ ${flaggedCount} pirate${flaggedCount === 1 ? "" : "s"}`
+            "latest runs"
           ) : showPirates ? (
-            `top scores · 🏴‍☠️ ${flaggedCount} pirate${flaggedCount === 1 ? "" : "s"}`
+            "top scores"
           ) : (
             "top scores · pirates hidden"
           )}

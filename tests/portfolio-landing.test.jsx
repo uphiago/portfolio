@@ -71,7 +71,7 @@ describe("MidfiV1", () => {
     });
 
     expect(rootElement.textContent).toContain("pirate");
-    expect(rootElement.querySelector(".dino-modal-foot").textContent).toContain("🏴‍☠️ 1 pirate");
+    expect(rootElement.querySelector(".dino-modal-foot").textContent).toBe("latest runs");
     expect(rootElement.querySelector('[role="tab"][aria-selected="true"]').textContent).toBe("recent");
 
     const stableList = rootElement.querySelector(".dino-rank-list");
@@ -87,10 +87,11 @@ describe("MidfiV1", () => {
 
     const pirateToggle = rootElement.querySelector('[aria-label="Hide pirate scores"]');
     expect(pirateToggle.getAttribute("aria-pressed")).toBe("true");
-    expect(pirateToggle.textContent).toContain("pirates on");
+    expect(pirateToggle.textContent).toBe("🏴‍☠️on");
+    expect(rootElement.querySelector(".dino-modal-head").textContent).toContain("scores·🏴‍☠️on");
     await act(async () => pirateToggle.click());
 
-    expect(rootElement.querySelector('[aria-label="Show pirate scores"]').textContent).toContain("pirates off");
+    expect(rootElement.querySelector('[aria-label="Show pirate scores"]').textContent).toBe("🏴‍☠️off");
     expect(rootElement.querySelector(".dino-rank-list li")).toBe(stableFirstRow);
     expect(rootElement.querySelector(".dino-rank-list li .rk")).toBe(stableFirstRank);
     expect(rootElement.textContent).not.toContain("60000");

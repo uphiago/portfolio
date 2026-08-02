@@ -458,6 +458,11 @@
     font-size: 10px;
     color: var(--m-ink-faint);
   }
+  .mfi-modal .dino-modal-separator {
+    color: var(--m-ink-faint);
+    font-family: var(--font-mono);
+    font-size: 10px;
+  }
   .mfi-modal .dino-pirate-toggle {
     width: auto;
     height: 23px;
@@ -482,12 +487,6 @@
     opacity: 1;
     color: var(--m-ink-soft);
     background: transparent;
-  }
-  .mfi-modal .dino-pirate-label {
-    text-underline-offset: 2px;
-  }
-  .mfi-modal .dino-pirate-toggle:hover .dino-pirate-label {
-    text-decoration: underline;
   }
   .mfi-modal .dino-pirate-toggle:focus-visible,
   .mfi-modal .dino-rank-tabs button:focus-visible,
