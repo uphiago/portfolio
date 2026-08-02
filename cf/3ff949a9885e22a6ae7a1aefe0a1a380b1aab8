@@ -1,0 +1,21 @@
+src/components/landing/cards/RankingModal.jsx
+  s_ca67b08826dd73::t_d7874721e1e58f 184-185
+tests/portfolio-landing.test.jsx
+  s_ca67b08826dd73::t_11e0275efcbcf0 74
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "cf3ff949a9885e22a6ae7a1aefe0a1a380b1aab8",
+  "prompts": {},
+  "sessions": {
+    "s_ca67b08826dd73": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fafd4-7976-7f41-894c-999f03702ca2",
+        "model": "unknown"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
