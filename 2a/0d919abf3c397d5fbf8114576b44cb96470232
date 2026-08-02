@@ -1,0 +1,23 @@
+src/lib/dinoRanking.js
+  s_ca67b08826dd73::t_234930e36fe926 25-27,160-177
+src/lib/dinoRankingServer.js
+  s_ca67b08826dd73::t_1d5ece4b821e46 2-6,34-36
+tests/dino-ranking.test.js
+  s_ca67b08826dd73::t_5095b3e3ba1fc5 122-129,240-257
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "2a0d919abf3c397d5fbf8114576b44cb96470232",
+  "prompts": {},
+  "sessions": {
+    "s_ca67b08826dd73": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fafd4-7976-7f41-894c-999f03702ca2",
+        "model": "unknown"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
