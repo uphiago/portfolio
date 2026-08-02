@@ -3,12 +3,13 @@ import { readFileSync } from "node:fs";
 import { generateKeyPairSync } from "node:crypto";
 import { act } from "react";
 import { createRoot } from "react-dom/client";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { generateMetadata } from "@/app/page";
 import { MidfiV1 } from "@/src/components/landing/MidfiV1";
 import { ContactModal } from "@/src/components/landing/modals/ContactModal";
 import { ArticleModal, getArticleScrollDelta } from "@/src/components/landing/modals/ArticleModal";
+import { BaseModal } from "@/src/components/landing/modals/BaseModal";
 import { VideoModal } from "@/src/components/landing/modals/VideoModal";
 import { RankingModal } from "@/src/components/landing/cards/RankingModal";
 import { MUSIC_DEFAULT_VOLUME, MUSIC_FADE_MS, MUSIC_FADE_STEPS } from "@/src/components/landing/cards/MusicPlayer";
@@ -25,6 +26,14 @@ import {
   normalizeGooglePrivateKey,
   resolveGoogleCredentials,
 } from "@/src/lib/newsletterSheet";
+
+beforeEach(() => {
+  vi.spyOn(window, "scrollTo").mockImplementation(() => {});
+});
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 describe("MidfiV1", () => {
   it("renders the dino scoreboard with exactly 10 stable rows", () => {
@@ -626,6 +635,79 @@ npx skills add repo
       root.unmount();
     });
     document.body.removeChild(rootElement);
+  });
+
+  it("locks background scroll and restores its position after close", async () => {
+    const rootElement = document.createElement("div");
+    document.body.appendChild(rootElement);
+    const root = createRoot(rootElement);
+    const originalBodyStyle = document.body.getAttribute("style");
+    const originalHtmlStyle = document.documentElement.getAttribute("style");
+    const originalScrollY = Object.getOwnPropertyDescriptor(window, "scrollY");
+    const scrollTo = window.scrollTo;
+    let mounted = false;
+
+    document.body.style.position = "relative";
+    document.documentElement.style.overflow = "auto";
+    Object.defineProperty(window, "scrollY", { configurable: true, value: 240 });
+
+    try {
+      await act(async () => {
+        root.render(<BaseModal onClose={() => {}}>modal</BaseModal>);
+      });
+      mounted = true;
+
+      expect(document.body.style.position).toBe("fixed");
+      expect(document.body.style.top).toBe("-240px");
+      expect(document.body.style.width).toBe("100%");
+      expect(document.body.style.overflow).toBe("hidden");
+      expect(document.documentElement.style.overflow).toBe("hidden");
+
+      await act(async () => root.unmount());
+      mounted = false;
+
+      expect(document.body.style.position).toBe("relative");
+      expect(document.documentElement.style.overflow).toBe("auto");
+      expect(scrollTo).toHaveBeenCalledWith(0, 240);
+    } finally {
+      if (originalScrollY) Object.defineProperty(window, "scrollY", originalScrollY);
+      if (originalBodyStyle === null) document.body.removeAttribute("style");
+      else document.body.setAttribute("style", originalBodyStyle);
+      if (originalHtmlStyle === null) document.documentElement.removeAttribute("style");
+      else document.documentElement.setAttribute("style", originalHtmlStyle);
+      if (mounted) await act(async () => root.unmount());
+      if (rootElement.isConnected) document.body.removeChild(rootElement);
+    }
+  });
+
+  it("keeps background scroll locked until the last modal closes", async () => {
+    const rootElement = document.createElement("div");
+    document.body.appendChild(rootElement);
+    const root = createRoot(rootElement);
+
+    try {
+      await act(async () => {
+        root.render(
+          <>
+            <BaseModal key="first" onClose={() => {}}>first</BaseModal>
+            <BaseModal key="second" onClose={() => {}}>second</BaseModal>
+          </>
+        );
+      });
+
+      await act(async () => {
+        root.render(<BaseModal key="second" onClose={() => {}}>second</BaseModal>);
+      });
+
+      expect(document.body.style.position).toBe("fixed");
+      expect(document.body.style.overflow).toBe("hidden");
+    } finally {
+      await act(async () => root.unmount());
+      document.body.removeChild(rootElement);
+    }
+
+    expect(document.body.style.position).toBe("");
+    expect(document.body.style.overflow).toBe("");
   });
 
   it("renders contact as direct copy and external-link actions without a form", () => {
