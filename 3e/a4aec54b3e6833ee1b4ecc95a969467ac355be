@@ -1,0 +1,21 @@
+src/components/landing/styles/cards.css
+  s_ca67b08826dd73::t_7d3e7f0899907f 323
+tests/portfolio-landing.test.jsx
+  s_ca67b08826dd73::t_742fe77adecab4 61-67
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "3ea4aec54b3e6833ee1b4ecc95a969467ac355be",
+  "prompts": {},
+  "sessions": {
+    "s_ca67b08826dd73": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fafd4-7976-7f41-894c-999f03702ca2",
+        "model": "unknown"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
