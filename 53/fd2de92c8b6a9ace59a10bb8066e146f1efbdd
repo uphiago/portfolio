@@ -1,0 +1,19 @@
+docs/superpowers/specs/2026-08-02-dino-scoreboard-design.md
+  s_ca67b08826dd73::t_d6bbe20c5773c4 1-177
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "53fd2de92c8b6a9ace59a10bb8066e146f1efbdd",
+  "prompts": {},
+  "sessions": {
+    "s_ca67b08826dd73": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fafd4-7976-7f41-894c-999f03702ca2",
+        "model": "unknown"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
