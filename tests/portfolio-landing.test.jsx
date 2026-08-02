@@ -58,6 +58,13 @@ describe("MidfiV1", () => {
     expect(css).toMatch(/\.dino-rank-list \.flag \{[^}]*display: inline-flex;[^}]*height: 14px;/s);
   });
 
+  it("reserves the dino stage height before the runner loads", () => {
+    const css = readFileSync("src/components/landing/styles/cards.css", "utf8");
+
+    expect(css).toMatch(/\.dino-game-wrap \{[^}]*min-height: 150px;/s);
+    expect(css).toMatch(/\.dino-game \.runner-container \{[^}]*height: 150px;/s);
+  });
+
   it("switches between recent and top 10 and filters pirates", async () => {
     const rootElement = document.createElement("div");
     document.body.appendChild(rootElement);

@@ -320,6 +320,7 @@
   .mfi .dino-game-wrap {
     position: relative;
     width: 100%;
+    min-height: 150px;
   }
   .mfi .dino-game-wrap > img,
   .mfi .dino-game-wrap .icon-offline {
