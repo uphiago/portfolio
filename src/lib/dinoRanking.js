@@ -22,6 +22,9 @@ export function isRankingConfigured() {
 }
 
 export function getScoreSubmissionMode() {
+  if (process.env.SUPABASE_URL && process.env.SUPABASE_SECRET_KEY) {
+    return "secret_key";
+  }
   if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
     return "service_role";
   }
@@ -150,6 +153,24 @@ export async function submitDinoScore({ nickname, score }) {
   });
   if (!res.ok) {
     throw new Error(`supabase score submission failed: ${res.status}`);
+  }
+  return res.json();
+}
+
+export async function submitDinoScoreWithSecret({ nickname, score }) {
+  const url = process.env.SUPABASE_URL || "";
+  const key = process.env.SUPABASE_SECRET_KEY || "";
+  const res = await fetch(`${url}/rest/v1/rpc/submit_dino_score`, {
+    method: "POST",
+    headers: {
+      apikey: key,
+      "Content-Type": "application/json",
+    },
+    cache: "no-store",
+    body: JSON.stringify({ p_nickname: nickname, p_score: score }),
+  });
+  if (!res.ok) {
+    throw new Error(`supabase secret score submission failed: ${res.status}`);
   }
   return res.json();
 }

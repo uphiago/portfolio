@@ -1,5 +1,9 @@
 import { Pool } from "pg";
-import { getScoreSubmissionMode, submitDinoScore } from "./dinoRanking";
+import {
+  getScoreSubmissionMode,
+  submitDinoScore,
+  submitDinoScoreWithSecret,
+} from "./dinoRanking";
 
 function createPool() {
   const connection = new URL(process.env.SUPABASE_POOLER_CONNECTION);
@@ -27,6 +31,9 @@ function databasePool() {
 
 export async function submitDinoScoreServer({ nickname, score }) {
   const mode = getScoreSubmissionMode();
+  if (mode === "secret_key") {
+    return submitDinoScoreWithSecret({ nickname, score });
+  }
   if (mode === "service_role") {
     return submitDinoScore({ nickname, score });
   }

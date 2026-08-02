@@ -119,6 +119,14 @@ describe("dinoRanking lib", () => {
     expect(dinoRanking.getScoreSubmissionMode()).toBeNull();
   });
 
+  it("prefers a modern Supabase secret key for server submissions", () => {
+    process.env.SUPABASE_URL = "https://example.supabase.co";
+    process.env.SUPABASE_SECRET_KEY = "sb_secret_server_only";
+    process.env.SUPABASE_SERVICE_ROLE_KEY = "legacy-service-key";
+
+    expect(dinoRanking.getScoreSubmissionMode()).toBe("secret_key");
+  });
+
   it("prefers the service role key over the publishable key", () => {
     process.env.SUPABASE_URL = "https://x.supabase.co";
     process.env.SUPABASE_PUBLISHABLE_KEY = "sb_publishable_123";
@@ -228,6 +236,24 @@ describe("dinoRanking lib", () => {
     const [url, options] = fetchMock.mock.calls[0];
     expect(url).toBe("https://x.supabase.co/rest/v1/rpc/submit_dino_score");
     expect(JSON.parse(options.body)).toEqual({ p_nickname: " Hiago  🦖 ", p_score: 123 });
+  });
+
+  it("submits with a secret key only in the apikey header", async () => {
+    process.env.SUPABASE_URL = "https://x.supabase.co";
+    process.env.SUPABASE_SECRET_KEY = "sb_secret_server_only";
+    process.env.SUPABASE_PUBLISHABLE_KEY = "sb_publishable_public";
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ inserted: true, hacker: false }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await dinoRanking.submitDinoScoreWithSecret({ nickname: "red", score: 321 });
+
+    const [url, options] = fetchMock.mock.calls[0];
+    expect(url).toBe("https://x.supabase.co/rest/v1/rpc/submit_dino_score");
+    expect(options.headers.apikey).toBe("sb_secret_server_only");
+    expect(options.headers.Authorization).toBeUndefined();
   });
 });
 
