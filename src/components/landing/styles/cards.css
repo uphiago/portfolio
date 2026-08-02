@@ -462,6 +462,8 @@
     color: var(--m-ink-faint);
     font-family: var(--font-mono);
     font-size: 10px;
+    position: relative;
+    top: 1px;
   }
   .mfi-modal .dino-pirate-toggle {
     width: auto;
