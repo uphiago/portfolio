@@ -211,6 +211,41 @@
         RESTART: { '13': 1 }  // Enter
     };
 
+    /** @const */
+    var MIN_KEYBOARD_VISIBLE_HEIGHT = 50;
+
+    /**
+     * Whether a keyboard event belongs to a native interactive control.
+     * @param {?EventTarget} target
+     * @return {boolean}
+     */
+    Runner.isInteractiveTarget = function (target) {
+        return Boolean(target && target.closest && target.closest(
+            'a[href], button, input, textarea, select, [contenteditable], ' +
+            '[role="dialog"]'));
+    };
+
+    /**
+     * Whether enough of the game is visible to claim keyboard jump controls.
+     * @param {?Element} element
+     * @return {boolean}
+     */
+    Runner.isVisibleForKeyboard = function (element) {
+        if (!element) {
+            return false;
+        }
+
+        var rect = element.getBoundingClientRect();
+        var viewportHeight = window.innerHeight ||
+            document.documentElement.clientHeight;
+        var visibleHeight = Math.max(0, Math.min(rect.bottom, viewportHeight) -
+            Math.max(rect.top, 0));
+        var requiredHeight = Math.min(MIN_KEYBOARD_VISIBLE_HEIGHT,
+            Math.max(0, rect.height));
+
+        return requiredHeight > 0 && visibleHeight >= requiredHeight;
+    };
+
 
     /**
      * Runner event names.
@@ -669,20 +704,26 @@
          * @param {Event} e
          */
         onKeyDown: function (e) {
-            // Ignore keys while typing in form fields.
             var target = e.target;
-            if (target && (target.tagName == 'INPUT' || target.tagName == 'TEXTAREA' ||
-                target.tagName == 'SELECT' || target.isContentEditable)) {
+            if (e.defaultPrevented || Runner.isInteractiveTarget(target)) {
                 return;
             }
 
-            // Prevent native page scrolling whilst tapping on mobile.
-            if (IS_MOBILE && this.playing) {
+            var isJumpKey = e.type == Runner.events.KEYDOWN &&
+                Runner.keycodes.JUMP[e.keyCode];
+
+            // Claim keyboard jump keys only while the game is visible. This
+            // prevents the first jump from scrolling narrow desktop layouts,
+            // without taking Space/ArrowUp away from normal page navigation.
+            if (isJumpKey) {
+                if (!Runner.isVisibleForKeyboard(this.outerContainerEl)) {
+                    return;
+                }
                 e.preventDefault();
             }
 
             if (e.target != this.detailsButton) {
-                if (!this.crashed && (Runner.keycodes.JUMP[e.keyCode] ||
+                if (!this.crashed && (isJumpKey ||
                     e.type == Runner.events.TOUCHSTART)) {
                     if (!this.playing) {
                         this.loadSounds();
@@ -723,6 +764,15 @@
          */
         onKeyUp: function (e) {
             var keyCode = String(e.keyCode);
+            var isKeyboardJumpKey = e.type == Runner.events.KEYUP &&
+                Runner.keycodes.JUMP[keyCode];
+
+            if (e.defaultPrevented || Runner.isInteractiveTarget(e.target) ||
+                (isKeyboardJumpKey &&
+                    !Runner.isVisibleForKeyboard(this.outerContainerEl))) {
+                return;
+            }
+
             var isjumpKey = Runner.keycodes.JUMP[keyCode] ||
                 e.type == Runner.events.TOUCHEND ||
                 e.type == Runner.events.MOUSEDOWN;
