@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { BaseModal } from "../modals/BaseModal";
 
 const EMPTY_SCOREBOARD = {
@@ -21,16 +21,21 @@ function normalizeScoreboard(value) {
   };
 }
 
+function hasScoreboardRows(scoreboard) {
+  return Object.values(scoreboard).some((rows) => rows.length > 0);
+}
+
 export function RankingModal({ open, onClose, nickname, scoreboard: initialScoreboard }) {
-  const [scoreboard, setScoreboard] = useState(() =>
-    normalizeScoreboard(initialScoreboard)
-  );
+  const initialValue = normalizeScoreboard(initialScoreboard);
+  const [scoreboard, setScoreboard] = useState(initialValue);
+  const scoreboardRef = useRef(initialValue);
   const [view, setView] = useState("recent");
   const [showPirates, setShowPirates] = useState(true);
   const [status, setStatus] = useState(initialScoreboard ? "ready" : "loading");
 
   const fetchScores = useCallback(async (signal) => {
-    setStatus("loading");
+    const hasCachedScores = hasScoreboardRows(scoreboardRef.current);
+    setStatus(hasCachedScores ? "refreshing" : "loading");
     try {
       const res = await fetch("/api/dino/scores", {
         cache: "no-store",
@@ -40,12 +45,19 @@ export function RankingModal({ open, onClose, nickname, scoreboard: initialScore
       if (!res.ok || !data?.ok) {
         throw new Error("scoreboard request failed");
       }
-      setScoreboard(normalizeScoreboard(data));
+      const nextScoreboard = normalizeScoreboard(data);
+      scoreboardRef.current = nextScoreboard;
+      setScoreboard(nextScoreboard);
       setStatus(data.disabled ? "disabled" : "ready");
     } catch (error) {
       if (error?.name !== "AbortError") {
-        setScoreboard(EMPTY_SCOREBOARD);
-        setStatus("error");
+        if (hasCachedScores) {
+          setStatus("stale");
+        } else {
+          scoreboardRef.current = EMPTY_SCOREBOARD;
+          setScoreboard(EMPTY_SCOREBOARD);
+          setStatus("error");
+        }
       }
     }
   }, []);
@@ -56,7 +68,9 @@ export function RankingModal({ open, onClose, nickname, scoreboard: initialScore
     setView("recent");
     setShowPirates(true);
     if (initialScoreboard) {
-      setScoreboard(normalizeScoreboard(initialScoreboard));
+      const nextScoreboard = normalizeScoreboard(initialScoreboard);
+      scoreboardRef.current = nextScoreboard;
+      setScoreboard(nextScoreboard);
       setStatus("ready");
       return undefined;
     }
@@ -78,6 +92,7 @@ export function RankingModal({ open, onClose, nickname, scoreboard: initialScore
   const rows = Array.from({ length: 10 }, (_, index) => scores[index] || null);
   const flaggedCount = scores.filter((entry) => entry.flagged === true).length;
   const isLoading = status === "loading";
+  const isBusy = isLoading || status === "refreshing";
 
   return (
     <BaseModal
@@ -140,37 +155,34 @@ export function RankingModal({ open, onClose, nickname, scoreboard: initialScore
           id="dino-score-list"
           className="dino-rank-scroll"
           role="tabpanel"
-          aria-busy={isLoading}
+          aria-busy={isBusy}
         >
-          <ol className="dino-rank-list" key={`${view}-${showPirates}`}>
+          <ol className="dino-rank-list">
             {rows.map((entry, index) => {
               const rank = index + 1;
-              if (isLoading || !entry) {
-                return (
-                  <li key={`empty-${index}`} className="empty">
-                    <span className="rk">{rank}</span>
-                    <span className="nm">—</span>
-                    <span className="sc">—</span>
-                  </li>
-                );
-              }
-
-              const isMe = Boolean(nickname && entry.nickname === nickname);
+              const visibleEntry = isLoading ? null : entry;
+              const isMe = Boolean(
+                nickname && visibleEntry?.nickname === nickname
+              );
               return (
                 <li
-                  key={`${entry.nickname}-${entry.score}-${index}`}
-                  className={isMe ? "me" : ""}
+                  key={`rank-${index}`}
+                  className={visibleEntry ? (isMe ? "me" : "") : "empty"}
                 >
-                  <span className={`rk top${rank}`}>{rank}</span>
-                  <span className="nm" title={entry.nickname}>
-                    {entry.nickname}
-                    {entry.flagged === true && (
-                      <span className="flag" title="pirate score" aria-label="pirate score">
-                        🏴‍☠️
-                      </span>
-                    )}
+                  <span className={`rk${visibleEntry ? ` top${rank}` : ""}`}>
+                    {rank}
                   </span>
-                  <span className="sc">{entry.score}</span>
+                  <span className="nm" title={visibleEntry?.nickname}>
+                    {visibleEntry?.nickname || "—"}
+                    <span
+                      className="flag"
+                      title={visibleEntry?.flagged === true ? "pirate score" : undefined}
+                      aria-label={visibleEntry?.flagged === true ? "pirate score" : undefined}
+                    >
+                      {visibleEntry?.flagged === true ? "🏴‍☠️" : ""}
+                    </span>
+                  </span>
+                  <span className="sc">{visibleEntry?.score ?? "—"}</span>
                 </li>
               );
             })}
@@ -178,9 +190,9 @@ export function RankingModal({ open, onClose, nickname, scoreboard: initialScore
         </div>
 
         <div className="dino-modal-foot mono" aria-live="polite">
-          {status === "error" ? (
+          {status === "error" || status === "stale" ? (
             <>
-              scores unavailable ·{" "}
+              {status === "stale" ? "showing cached scores" : "scores unavailable"} ·{" "}
               <button type="button" onClick={() => fetchScores()}>
                 retry
               </button>

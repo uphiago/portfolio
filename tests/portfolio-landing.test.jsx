@@ -74,21 +74,72 @@ describe("MidfiV1", () => {
     expect(rootElement.querySelector(".dino-modal-foot").textContent).toContain("🏴‍☠️ 1 pirate");
     expect(rootElement.querySelector('[role="tab"][aria-selected="true"]').textContent).toBe("recent");
 
+    const stableList = rootElement.querySelector(".dino-rank-list");
+    const stableFirstRow = stableList.querySelector("li");
+    const stableFirstRank = stableFirstRow.querySelector(".rk");
     await act(async () => {
       rootElement.querySelector('[role="tab"][data-view="top"]').click();
     });
+    expect(rootElement.querySelector(".dino-rank-list")).toBe(stableList);
+    expect(rootElement.querySelector(".dino-rank-list li")).toBe(stableFirstRow);
+    expect(rootElement.querySelector(".dino-rank-list li .rk")).toBe(stableFirstRank);
     expect(rootElement.textContent).toContain("pirate");
 
     const pirateToggle = rootElement.querySelector('[aria-label="Hide pirate scores"]');
     expect(pirateToggle.getAttribute("aria-pressed")).toBe("true");
     await act(async () => pirateToggle.click());
 
+    expect(rootElement.querySelector(".dino-rank-list li")).toBe(stableFirstRow);
+    expect(rootElement.querySelector(".dino-rank-list li .rk")).toBe(stableFirstRank);
     expect(rootElement.textContent).not.toContain("60000");
     expect(rootElement.textContent).toContain("red");
     expect(rootElement.textContent).toContain("900");
 
     await act(async () => root.unmount());
     document.body.removeChild(rootElement);
+  });
+
+  it("keeps cached scores visible while reopening and refreshing", async () => {
+    const rootElement = document.createElement("div");
+    document.body.appendChild(rootElement);
+    const root = createRoot(rootElement);
+    const pendingRefresh = new Promise(() => {});
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          ok: true,
+          recent: [{ nickname: "cached-player", score: 321, flagged: false }],
+          topWithPirates: [],
+          topLegitimate: [],
+        }),
+      })
+      .mockReturnValueOnce(pendingRefresh);
+    vi.stubGlobal("fetch", fetchMock);
+
+    try {
+      await act(async () => {
+        root.render(<RankingModal open nickname="cached-player" />);
+      });
+      await vi.waitFor(() => {
+        expect(rootElement.textContent).toContain("cached-player");
+      });
+
+      await act(async () => {
+        root.render(<RankingModal open={false} nickname="cached-player" />);
+      });
+      await act(async () => {
+        root.render(<RankingModal open nickname="cached-player" />);
+      });
+
+      expect(rootElement.textContent).toContain("cached-player");
+      expect(rootElement.querySelector("#dino-score-list").getAttribute("aria-busy")).toBe("true");
+    } finally {
+      await act(async () => root.unmount());
+      vi.unstubAllGlobals();
+      document.body.removeChild(rootElement);
+    }
   });
 
   it("keeps the root title when generating metadata for a blog post", async () => {
