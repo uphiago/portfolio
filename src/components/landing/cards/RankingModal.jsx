@@ -181,8 +181,8 @@ export function RankingModal({ open, onClose, nickname, scoreboard: initialScore
                     {visibleEntry?.nickname || "—"}
                     <span
                       className="flag"
-                      title={visibleEntry?.flagged === true ? "Yo Ho 🦉" : undefined}
-                      aria-label={visibleEntry?.flagged === true ? "Yo Ho 🦉" : undefined}
+                      title={visibleEntry?.flagged === true ? "Yo Ho 🦜" : undefined}
+                      aria-label={visibleEntry?.flagged === true ? "Yo Ho 🦜" : undefined}
                     >
                       {visibleEntry?.flagged === true ? "🏴‍☠️" : ""}
                     </span>

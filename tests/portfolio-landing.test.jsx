@@ -71,6 +71,7 @@ describe("MidfiV1", () => {
     });
 
     expect(rootElement.textContent).toContain("pirate");
+    expect(rootElement.querySelector(".flag").title).toBe("Yo Ho 🦜");
     expect(rootElement.querySelector(".dino-modal-foot").textContent).toBe("latest runs");
     expect(rootElement.querySelector('[role="tab"][aria-selected="true"]').textContent).toBe("recent");
 
