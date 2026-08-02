@@ -1,0 +1,25 @@
+src/components/landing/cards/DinoGame.jsx
+  s_ca67b08826dd73::t_f12b3178486698 5,47,51-52,98-100,104,114-120,123,126,140-141,177-180,183-184,189-193,198
+src/components/landing/cards/RankingModal.jsx
+  s_ca67b08826dd73::t_abda2e3cb56fad 3,6-10,12-33,35-38,40-48,54-61,64-76,79-80,83-84,86,88-100,103-124,126-151,158,160-164,169-170,173-190
+src/components/landing/styles/cards.css
+  s_ca67b08826dd73::t_d2acf7677dc885 365,399-407,426,428,449-504,540-544,613-627
+tests/portfolio-landing.test.jsx
+  s_ca67b08826dd73::t_82c3e8a9f4f0e1 30,34-38,48-87,248
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "b27a955d3c3e3f6f465af460a985e5fd1ff50574",
+  "prompts": {},
+  "sessions": {
+    "s_ca67b08826dd73": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fafd4-7976-7f41-894c-999f03702ca2",
+        "model": "unknown"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
