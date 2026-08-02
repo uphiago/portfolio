@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import {
-  isRankingConfigured,
+  getScoreSubmissionMode,
   normalizeScore,
-  submitDinoScore,
   validateNickname,
 } from "@/src/lib/dinoRanking";
+import { submitDinoScoreServer } from "@/src/lib/dinoRankingServer";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -23,7 +23,7 @@ function getClientKey(request) {
 }
 
 export async function POST(request) {
-  if (!isRankingConfigured()) {
+  if (!getScoreSubmissionMode()) {
     return NextResponse.json(
       { ok: false, error: "disabled" },
       { status: 503 }
@@ -55,7 +55,10 @@ export async function POST(request) {
   attempts.set(key, now);
 
   try {
-    const result = await submitDinoScore({ nickname: nickname.value, score });
+    const result = await submitDinoScoreServer({
+      nickname: nickname.value,
+      score,
+    });
     return NextResponse.json({ ok: true, ...result });
   } catch (error) {
     console.error("dino score insert failed", error);

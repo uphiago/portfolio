@@ -21,6 +21,19 @@ export function isRankingConfigured() {
   return Boolean(url && key);
 }
 
+export function getScoreSubmissionMode() {
+  if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    return "service_role";
+  }
+  if (
+    process.env.SUPABASE_POOLER_CONNECTION &&
+    process.env.SUPABASE_DB_PASSWORD
+  ) {
+    return "database";
+  }
+  return null;
+}
+
 export function sanitizeNickname(value) {
   return validateNickname(value).value || "";
 }

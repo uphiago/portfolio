@@ -105,6 +105,20 @@ describe("dinoRanking lib", () => {
     expect(isRankingConfigured()).toBe(true);
   });
 
+  it("uses the database pooler when local score submission has no service key", () => {
+    process.env.SUPABASE_URL = "https://example.supabase.co";
+    delete process.env.SUPABASE_SERVICE_ROLE_KEY;
+    process.env.SUPABASE_POOLER_CONNECTION =
+      "postgresql://postgres.project@pooler.example.com:6543/postgres?sslmode=require";
+    process.env.SUPABASE_DB_PASSWORD = "password-with-%";
+
+    expect(dinoRanking.getScoreSubmissionMode()).toBe("database");
+
+    delete process.env.SUPABASE_POOLER_CONNECTION;
+    delete process.env.SUPABASE_DB_PASSWORD;
+    expect(dinoRanking.getScoreSubmissionMode()).toBeNull();
+  });
+
   it("prefers the service role key over the publishable key", () => {
     process.env.SUPABASE_URL = "https://x.supabase.co";
     process.env.SUPABASE_PUBLISHABLE_KEY = "sb_publishable_123";
@@ -260,7 +274,7 @@ describe("POST /api/dino/score", () => {
 
   it("rejects invalid payloads", async () => {
     process.env.SUPABASE_URL = "https://x.supabase.co";
-    process.env.SUPABASE_PUBLISHABLE_KEY = "key-1";
+    process.env.SUPABASE_SERVICE_ROLE_KEY = "service-key";
 
     const badPayloads = [
       { nickname: "   ", score: 10 },
