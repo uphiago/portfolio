@@ -1,104 +1,193 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { BaseModal } from "../modals/BaseModal";
 
-export function RankingModal({ open, onClose, nickname, scores: initialScores }) {
-  const [scores, setScores] = useState(initialScores || []);
-  const [loading, setLoading] = useState(!initialScores);
+const EMPTY_SCOREBOARD = {
+  recent: [],
+  topWithPirates: [],
+  topLegitimate: [],
+};
 
-  const fetchScores = useCallback(async () => {
-    setLoading(true);
+function normalizeScoreboard(value) {
+  return {
+    recent: Array.isArray(value?.recent) ? value.recent : [],
+    topWithPirates: Array.isArray(value?.topWithPirates)
+      ? value.topWithPirates
+      : [],
+    topLegitimate: Array.isArray(value?.topLegitimate)
+      ? value.topLegitimate
+      : [],
+  };
+}
+
+export function RankingModal({ open, onClose, nickname, scoreboard: initialScoreboard }) {
+  const [scoreboard, setScoreboard] = useState(() =>
+    normalizeScoreboard(initialScoreboard)
+  );
+  const [view, setView] = useState("recent");
+  const [showPirates, setShowPirates] = useState(true);
+  const [status, setStatus] = useState(initialScoreboard ? "ready" : "loading");
+
+  const fetchScores = useCallback(async (signal) => {
+    setStatus("loading");
     try {
-      const res = await fetch("/api/dino/scores", { cache: "no-store" });
+      const res = await fetch("/api/dino/scores", {
+        cache: "no-store",
+        signal,
+      });
       const data = await res.json();
-      if (data?.ok && !data.disabled) {
-        setScores(data.scores || []);
-      } else {
-        setScores([]);
+      if (!res.ok || !data?.ok) {
+        throw new Error("scoreboard request failed");
       }
-    } catch {
-      setScores([]);
-    } finally {
-      setLoading(false);
+      setScoreboard(normalizeScoreboard(data));
+      setStatus(data.disabled ? "disabled" : "ready");
+    } catch (error) {
+      if (error?.name !== "AbortError") {
+        setScoreboard(EMPTY_SCOREBOARD);
+        setStatus("error");
+      }
     }
   }, []);
 
   useEffect(() => {
-    if (open && !initialScores) {
-      fetchScores();
-    }
-  }, [open, initialScores, fetchScores]);
+    if (!open) return undefined;
 
-  if (!open) {
-    return null;
-  }
+    setView("recent");
+    setShowPirates(true);
+    if (initialScoreboard) {
+      setScoreboard(normalizeScoreboard(initialScoreboard));
+      setStatus("ready");
+      return undefined;
+    }
+
+    const controller = new AbortController();
+    fetchScores(controller.signal);
+    return () => controller.abort();
+  }, [open, initialScoreboard, fetchScores]);
+
+  const scores = useMemo(() => {
+    if (view === "recent") return scoreboard.recent;
+    return showPirates
+      ? scoreboard.topWithPirates
+      : scoreboard.topLegitimate;
+  }, [scoreboard, showPirates, view]);
+
+  if (!open) return null;
 
   const rows = Array.from({ length: 10 }, (_, index) => scores[index] || null);
-  const flaggedCount = scores.filter((s) => s.flagged === true).length;
+  const flaggedCount = scores.filter((entry) => entry.flagged === true).length;
+  const isLoading = status === "loading";
 
   return (
-    <BaseModal onClose={onClose} label="Dino latest runs">
-      {/* Prevent space from bubbling to the document (dino game listens there). */}
+    <BaseModal onClose={onClose} label="Dino scores">
+      {/* Prevent game controls from receiving keys used inside the dialog. */}
       {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
-      <div onKeyDown={(e) => { e.key === " " && e.stopPropagation(); }}>
+      <div onKeyDown={(event) => event.stopPropagation()}>
         <div className="dino-modal-head">
-          <span className="dino-modal-title mono">latest runs · try harder, get flagged</span>
+          <span className="dino-modal-title mono">scores · one run per player</span>
+          {view === "top" && (
+            <button
+              type="button"
+              className={`dino-pirate-toggle${showPirates ? " active" : ""}`}
+              aria-label={showPirates ? "Hide pirate scores" : "Show pirate scores"}
+              aria-pressed={showPirates}
+              title={showPirates ? "Hide pirate scores" : "Show pirate scores"}
+              onClick={() => setShowPirates((visible) => !visible)}
+            >
+              🏴‍☠️
+            </button>
+          )}
         </div>
 
-        <div className="dino-rank-cols mono">
-        <span className="rk">#</span>
-        <span className="nm">player</span>
-        <span className="sc">score</span>
-      </div>
+        <div className="dino-rank-tabs mono" role="tablist" aria-label="Score views">
+          <button
+            type="button"
+            role="tab"
+            data-view="recent"
+            aria-selected={view === "recent"}
+            aria-controls="dino-score-list"
+            onClick={() => setView("recent")}
+          >
+            recent
+          </button>
+          <button
+            type="button"
+            role="tab"
+            data-view="top"
+            aria-selected={view === "top"}
+            aria-controls="dino-score-list"
+            onClick={() => setView("top")}
+          >
+            top 10
+          </button>
+        </div>
 
-      <div className="dino-rank-scroll">
-        <ol className="dino-rank-list">
-          {rows.map((entry, index) => {
-            const rank = index + 1;
-            if (loading) {
-              return (
-                <li key={`empty-${index}`} className="empty">
-                  <span className="rk">{rank}</span>
-                  <span className="nm">—</span>
-                  <span className="sc">—</span>
-                </li>
-              );
-            }
-            if (!entry) {
-              return (
-                <li key={`empty-${index}`} className="empty">
-                  <span className="rk">{rank}</span>
-                  <span className="nm">—</span>
-                  <span className="sc">—</span>
-                </li>
-              );
-            }
-              const isMe =
-                nickname &&
-                entry.nickname?.toLowerCase() === nickname.toLowerCase();
-              const isFlagged = entry.flagged === true;
+        <div className="dino-rank-cols mono" aria-hidden="true">
+          <span className="rk">#</span>
+          <span className="nm">player</span>
+          <span className="sc">score</span>
+        </div>
+
+        <div
+          id="dino-score-list"
+          className="dino-rank-scroll"
+          role="tabpanel"
+          aria-busy={isLoading}
+        >
+          <ol className="dino-rank-list" key={`${view}-${showPirates}`}>
+            {rows.map((entry, index) => {
+              const rank = index + 1;
+              if (isLoading || !entry) {
+                return (
+                  <li key={`empty-${index}`} className="empty">
+                    <span className="rk">{rank}</span>
+                    <span className="nm">—</span>
+                    <span className="sc">—</span>
+                  </li>
+                );
+              }
+
+              const isMe = Boolean(nickname && entry.nickname === nickname);
               return (
                 <li
                   key={`${entry.nickname}-${entry.score}-${index}`}
                   className={isMe ? "me" : ""}
                 >
                   <span className={`rk top${rank}`}>{rank}</span>
-                  <span className="nm">
+                  <span className="nm" title={entry.nickname}>
                     {entry.nickname}
-                    {isFlagged && <span className="flag" title="flagged">🏴‍☠️</span>}
+                    {entry.flagged === true && (
+                      <span className="flag" title="pirate score" aria-label="pirate score">
+                        🏴‍☠️
+                      </span>
+                    )}
                   </span>
                   <span className="sc">{entry.score}</span>
                 </li>
               );
-            })
-          }
-        </ol>
+            })}
+          </ol>
         </div>
 
-      <div className="dino-modal-foot mono">
-        🏴‍☠️ {flaggedCount} flagged · 50k+
-      </div>
+        <div className="dino-modal-foot mono" aria-live="polite">
+          {status === "error" ? (
+            <>
+              scores unavailable ·{" "}
+              <button type="button" onClick={() => fetchScores()}>
+                retry
+              </button>
+            </>
+          ) : status === "disabled" ? (
+            "scores offline"
+          ) : view === "recent" ? (
+            `latest runs · ${flaggedCount} pirate${flaggedCount === 1 ? "" : "s"}`
+          ) : showPirates ? (
+            `top scores · ${flaggedCount} pirate${flaggedCount === 1 ? "" : "s"}`
+          ) : (
+            "top scores · pirates hidden"
+          )}
+        </div>
       </div>
     </BaseModal>
   );

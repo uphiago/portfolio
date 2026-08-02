@@ -362,6 +362,7 @@
     display: flex;
     align-items: center;
     gap: 5px;
+    position: relative;
   }
   .mfi .dino-name input {
     width: 115px;
@@ -395,6 +396,15 @@
     line-height: 1;
     height: 18px;
   }
+  .mfi .dino-name-error {
+    position: absolute;
+    top: 25px;
+    right: 0;
+    color: #ffb4a8;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    white-space: nowrap;
+  }
   .mfi .dino-hack {
     position: absolute;
     left: 8px;
@@ -413,10 +423,9 @@
   .mfi-modal .dino-modal-head {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 8px;
-    margin: 0 0 12px;
-    padding: 0 0 10px;
-    border-bottom: 1px solid var(--m-line);
+    margin: 0 34px 10px 0;
   }
   .mfi-modal .dino-modal-title {
     display: inline-flex;
@@ -436,6 +445,62 @@
   .mfi-modal .dino-modal-sub {
     font-size: 10px;
     color: var(--m-ink-faint);
+  }
+  .mfi-modal .dino-pirate-toggle {
+    width: 27px;
+    height: 23px;
+    display: grid;
+    place-items: center;
+    flex: none;
+    border: 1px solid var(--m-line-strong);
+    border-radius: 3px;
+    background: transparent;
+    color: var(--m-ink-faint);
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 1;
+    opacity: 0.46;
+    transition: opacity 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+  }
+  .mfi-modal .dino-pirate-toggle:hover,
+  .mfi-modal .dino-pirate-toggle.active {
+    opacity: 1;
+    border-color: rgba(30, 26, 20, 0.28);
+    background: rgba(30, 26, 20, 0.04);
+  }
+  .mfi-modal .dino-pirate-toggle:focus-visible,
+  .mfi-modal .dino-rank-tabs button:focus-visible,
+  .mfi-modal .dino-modal-foot button:focus-visible {
+    outline: 1px solid var(--m-ink-soft);
+    outline-offset: 2px;
+  }
+  .mfi-modal .dino-rank-tabs {
+    display: flex;
+    gap: 18px;
+    border-bottom: 1px solid var(--m-line);
+    margin-bottom: 8px;
+  }
+  .mfi-modal .dino-rank-tabs button {
+    position: relative;
+    border: 0;
+    background: transparent;
+    color: var(--m-ink-faint);
+    cursor: pointer;
+    font: inherit;
+    font-size: 11px;
+    padding: 5px 0 8px;
+  }
+  .mfi-modal .dino-rank-tabs button[aria-selected="true"] {
+    color: var(--m-ink);
+  }
+  .mfi-modal .dino-rank-tabs button[aria-selected="true"]::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: -1px;
+    left: 0;
+    height: 1px;
+    background: var(--m-ink);
   }
   .mfi-modal .dino-rank-cols {
     display: flex;
@@ -472,6 +537,11 @@
     list-style: none;
     margin: 0;
     padding: 0;
+    animation: dino-rank-in 0.16s ease-out;
+  }
+  @keyframes dino-rank-in {
+    from { opacity: 0.35; transform: translateY(2px); }
+    to { opacity: 1; transform: translateY(0); }
   }
   .mfi-modal .dino-rank-list li {
     display: flex;
@@ -539,6 +609,21 @@
     border-top: 1px solid var(--m-line);
     font-size: 10px;
     color: var(--m-ink-faint);
+  }
+  .mfi-modal .dino-modal-foot button {
+    border: 0;
+    background: transparent;
+    color: var(--m-ink-soft);
+    cursor: pointer;
+    font: inherit;
+    padding: 0;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mfi-modal .dino-rank-list {
+      animation: none;
+    }
   }
   .mfi .shorts-stage {
     flex: 1;

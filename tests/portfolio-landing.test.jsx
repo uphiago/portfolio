@@ -27,11 +27,15 @@ import {
 } from "@/src/lib/newsletterSheet";
 
 describe("MidfiV1", () => {
-  it("renders the dino top 10 with exactly 10 rows (1 to 10)", () => {
+  it("renders the dino scoreboard with exactly 10 stable rows", () => {
     const html = renderToStaticMarkup(
       <RankingModal
         open
-        scores={[{ nickname: "red", score: 100 }]}
+        scoreboard={{
+          recent: [{ nickname: "red", score: 100, flagged: false }],
+          topWithPirates: [],
+          topLegitimate: [],
+        }}
         nickname="red"
       />
     );
@@ -41,7 +45,46 @@ describe("MidfiV1", () => {
     expect(html).toContain(">red<");
     expect(html).toContain(">100<");
     expect(html).toContain("class=\"empty\"");
-    expect(html).not.toContain("live");
+    expect(html).toContain('aria-live="polite"');
+  });
+
+  it("switches between recent and top 10 and filters pirates", async () => {
+    const rootElement = document.createElement("div");
+    document.body.appendChild(rootElement);
+    const root = createRoot(rootElement);
+
+    await act(async () => {
+      root.render(
+        <RankingModal
+          open
+          nickname="red"
+          scoreboard={{
+            recent: [{ nickname: "pirate", score: 60000, flagged: true }],
+            topWithPirates: [{ nickname: "pirate", score: 60000, flagged: true }],
+            topLegitimate: [{ nickname: "red", score: 900, flagged: false }],
+          }}
+        />
+      );
+    });
+
+    expect(rootElement.textContent).toContain("pirate");
+    expect(rootElement.querySelector('[role="tab"][aria-selected="true"]').textContent).toBe("recent");
+
+    await act(async () => {
+      rootElement.querySelector('[role="tab"][data-view="top"]').click();
+    });
+    expect(rootElement.textContent).toContain("pirate");
+
+    const pirateToggle = rootElement.querySelector('[aria-label="Hide pirate scores"]');
+    expect(pirateToggle.getAttribute("aria-pressed")).toBe("true");
+    await act(async () => pirateToggle.click());
+
+    expect(rootElement.textContent).not.toContain("60000");
+    expect(rootElement.textContent).toContain("red");
+    expect(rootElement.textContent).toContain("900");
+
+    await act(async () => root.unmount());
+    document.body.removeChild(rootElement);
   });
 
   it("keeps the root title when generating metadata for a blog post", async () => {
@@ -202,7 +245,7 @@ describe("MidfiV1", () => {
     expect(html).toContain("dino-game");
     expect(html).toContain("dino-trophy");
     expect(html).toContain("offline-resources-1x");
-    expect(html).toContain("top 10");
+    expect(html).toContain("scores");
     expect(html).not.toContain("work in progress");
     expect(html).not.toContain("reels-soon");
     expect(html).not.toContain("drag-row");

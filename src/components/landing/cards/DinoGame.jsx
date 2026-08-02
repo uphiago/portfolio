@@ -2,11 +2,11 @@
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Trophy } from "lucide-react";
+import { validateNickname } from "@/src/lib/dinoRanking";
 import { RankingModal } from "./RankingModal";
 
 const NICKNAME_KEY = "dino-nickname";
 const RUNNER_SRC = "/dino/runner.js";
-const NICKNAME_MAX = 24;
 
 function readNickname() {
   try {
@@ -22,10 +22,6 @@ function writeNickname(name) {
   } catch {
     // private mode / storage disabled — game still works
   }
-}
-
-function sanitizeNickname(value) {
-  return String(value || "").replace(/\s+/g, " ").trim().slice(0, NICKNAME_MAX);
 }
 
 function loadRunnerScript() {
@@ -46,33 +42,26 @@ function loadRunnerScript() {
 export function DinoGame() {
   const stageRef = useRef(null);
   const pendingScoreRef = useRef(null);
-  const topRef = useRef([]);
   const [nickname, setNickname] = useState("");
   const [nameDraft, setNameDraft] = useState("");
+  const [nameError, setNameError] = useState("");
   const [askName, setAskName] = useState(false);
   const [started, setStarted] = useState(false);
-  const [ranking, setRanking] = useState("loading"); // loading | ok | disabled
   const [submitting, setSubmitting] = useState(false);
-    const [rankOpen, setRankOpen] = useState(false);
-  const rankingRef = useRef(ranking);
+  const [rankOpen, setRankOpen] = useState(false);
+  const rankingRef = useRef("loading");
 
   const tryRefreshTop = useCallback(async () => {
     try {
       const res = await fetch("/api/dino/scores", { cache: "no-store" });
       const data = await res.json();
       if (data?.ok && !data.disabled) {
-        topRef.current = data.top || [];
         rankingRef.current = "ok";
-        setRanking("ok");
       } else {
-        topRef.current = [];
         rankingRef.current = "disabled";
-        setRanking("disabled");
       }
     } catch {
-      topRef.current = [];
       rankingRef.current = "disabled";
-      setRanking("disabled");
     }
   }, []);
 
@@ -106,11 +95,13 @@ export function DinoGame() {
         return;
       }
       const name = readNickname();
-      if (name) {
-        submitScore(name, score);
+      const validatedName = validateNickname(name);
+      if (!validatedName.error) {
+        submitScore(validatedName.value, score);
       } else {
         pendingScoreRef.current = score;
         setNameDraft("");
+        setNameError("");
         setAskName(true);
       }
     },
@@ -120,12 +111,19 @@ export function DinoGame() {
   const handleNicknameSubmit = useCallback(
     (event) => {
       event.preventDefault();
-      const name = sanitizeNickname(nameDraft);
-      if (!name) {
+      const validatedName = validateNickname(nameDraft);
+      if (validatedName.error) {
+        setNameError(
+          validatedName.error === "nickname_too_long"
+            ? "24 characters max"
+            : "enter a nickname"
+        );
         return;
       }
+      const name = validatedName.value;
       writeNickname(name);
       setNickname(name);
+      setNameError("");
       setAskName(false);
       const score = pendingScoreRef.current;
       if (score) {
@@ -139,6 +137,8 @@ export function DinoGame() {
     let disposed = false;
     let runner = null;
 
+    const savedNickname = validateNickname(readNickname());
+    if (!savedNickname.error) setNickname(savedNickname.value);
     tryRefreshTop();
 
     loadRunnerScript()
@@ -173,20 +173,29 @@ export function DinoGame() {
         {askName && (
           <form className="dino-name" onSubmit={handleNicknameSubmit}>
             <input
-              maxLength={NICKNAME_MAX}
               value={nameDraft}
-              onChange={(event) => setNameDraft(event.target.value)}
+              onChange={(event) => {
+                setNameDraft(event.target.value);
+                setNameError("");
+              }}
               placeholder="nickname"
               aria-label="Nickname for the ranking"
+              aria-invalid={Boolean(nameError)}
+              aria-describedby={nameError ? "dino-name-error" : undefined}
             />
             <button type="submit" disabled={submitting}>
               save
             </button>
+            {nameError && (
+              <span id="dino-name-error" className="dino-name-error" role="alert">
+                {nameError}
+              </span>
+            )}
           </form>
         )}
         <button type="button" className="dino-trophy" onClick={() => setRankOpen(true)} onKeyDown={(e) => { e.key === " " && e.preventDefault(); }}>
           <Trophy size={13} strokeWidth={1.7} />
-          latest
+          scores
         </button>
       </div>
 
