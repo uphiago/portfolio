@@ -4,8 +4,7 @@ export const DINO_MAX_NICKNAME = 24;
 export const DINO_MAX_SCORE = 99999;
 export const DINO_TOP_LIMIT = 10;
 
-// Scores >= 10k get flagged as tampered.
-export const DINO_HACKER_THRESHOLD = 49999;
+export const DINO_HACKER_THRESHOLD = 50000;
 
 function supabaseConfig() {
   return {
@@ -23,7 +22,17 @@ export function isRankingConfigured() {
 }
 
 export function sanitizeNickname(value) {
-  return String(value || "").replace(/\s+/g, " ").trim().slice(0, DINO_MAX_NICKNAME);
+  return validateNickname(value).value || "";
+}
+
+export function validateNickname(value) {
+  if (typeof value !== "string" || !/\S/u.test(value)) {
+    return { value: null, error: "nickname_blank" };
+  }
+  if (Array.from(value).length > DINO_MAX_NICKNAME) {
+    return { value: null, error: "nickname_too_long" };
+  }
+  return { value, error: null };
 }
 
 export function normalizeScore(value) {
@@ -102,6 +111,34 @@ export async function fetchLastScores(limit = DINO_TOP_LIMIT) {
   }
   const rows = await res.json();
   return dedupByNickname(rows).slice(0, limit);
+}
+
+export async function fetchScoreboard(limit = DINO_TOP_LIMIT) {
+  const { url, key } = supabaseConfig();
+  const res = await fetch(`${url}/rest/v1/rpc/get_dino_scoreboard`, {
+    method: "POST",
+    headers: restHeaders(key),
+    cache: "no-store",
+    body: JSON.stringify({ p_limit: limit }),
+  });
+  if (!res.ok) {
+    throw new Error(`supabase scoreboard failed: ${res.status}`);
+  }
+  return res.json();
+}
+
+export async function submitDinoScore({ nickname, score }) {
+  const { url, key } = supabaseConfig();
+  const res = await fetch(`${url}/rest/v1/rpc/submit_dino_score`, {
+    method: "POST",
+    headers: restHeaders(key),
+    cache: "no-store",
+    body: JSON.stringify({ p_nickname: nickname, p_score: score }),
+  });
+  if (!res.ok) {
+    throw new Error(`supabase score submission failed: ${res.status}`);
+  }
+  return res.json();
 }
 
 export async function insertScore({ nickname, score, flagged = false }) {

@@ -1,7 +1,11 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { readFileSync } from "node:fs";
 
-import {
+import * as dinoRanking from "@/src/lib/dinoRanking";
+import { POST } from "@/app/api/dino/score/route";
+import { GET } from "@/app/api/dino/scores/route";
+
+const {
   DINO_MAX_NICKNAME,
   DINO_MAX_SCORE,
   DINO_HACKER_THRESHOLD,
@@ -12,9 +16,7 @@ import {
   normalizeScore,
   qualifiesForTop10,
   sanitizeNickname,
-} from "@/src/lib/dinoRanking";
-import { POST } from "@/app/api/dino/score/route";
-import { GET } from "@/app/api/dino/scores/route";
+} = dinoRanking;
 
 const ORIGINAL_ENV = { ...process.env };
 
@@ -42,9 +44,30 @@ afterEach(() => {
 });
 
 describe("dinoRanking lib", () => {
-  it("sanitizes nicknames", () => {
-    expect(sanitizeNickname("  hiago   da silva  ")).toBe("hiago da silva");
-    expect(sanitizeNickname("x".repeat(60)).length).toBe(DINO_MAX_NICKNAME);
+  it("validates literal nicknames without rewriting them", () => {
+    expect(dinoRanking.validateNickname(" Hiago  🦖 ")).toEqual({
+      value: " Hiago  🦖 ",
+      error: null,
+    });
+    expect(dinoRanking.validateNickname("   ")).toEqual({
+      value: null,
+      error: "nickname_blank",
+    });
+    expect(dinoRanking.validateNickname("x".repeat(25))).toEqual({
+      value: null,
+      error: "nickname_too_long",
+    });
+    expect(dinoRanking.validateNickname("🦖".repeat(24)).error).toBeNull();
+  });
+
+  it("uses 50k as the pirate threshold", () => {
+    expect(dinoRanking.isHackerScore(49999)).toBe(false);
+    expect(dinoRanking.isHackerScore(50000)).toBe(true);
+  });
+
+  it("preserves valid nicknames and rejects invalid ones without truncating", () => {
+    expect(sanitizeNickname("  hiago   da silva  ")).toBe("  hiago   da silva  ");
+    expect(sanitizeNickname("x".repeat(DINO_MAX_NICKNAME + 1))).toBe("");
     expect(sanitizeNickname(undefined)).toBe("");
   });
 
@@ -159,6 +182,39 @@ describe("dinoRanking lib", () => {
     expect(body.nickname).toBe("haxor");
     expect(body.flagged).toBe(true);
   });
+
+  it("fetches all scoreboard views through one RPC", async () => {
+    process.env.SUPABASE_URL = "https://x.supabase.co";
+    process.env.SUPABASE_PUBLISHABLE_KEY = "key-1";
+    const scoreboard = {
+      recent: [{ nickname: " red ", score: 100, flagged: false }],
+      topWithPirates: [{ nickname: "pirate", score: 50000, flagged: true }],
+      topLegitimate: [{ nickname: " red ", score: 100, flagged: false }],
+    };
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => scoreboard });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(dinoRanking.fetchScoreboard(10)).resolves.toEqual(scoreboard);
+    const [url, options] = fetchMock.mock.calls[0];
+    expect(url).toBe("https://x.supabase.co/rest/v1/rpc/get_dino_scoreboard");
+    expect(options.method).toBe("POST");
+    expect(JSON.parse(options.body)).toEqual({ p_limit: 10 });
+  });
+
+  it("submits a literal nickname through the atomic RPC", async () => {
+    process.env.SUPABASE_URL = "https://x.supabase.co";
+    process.env.SUPABASE_SERVICE_ROLE_KEY = "service-key";
+    const result = { inserted: true, skipped: false, hacker: false, score: 123 };
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => result });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(
+      dinoRanking.submitDinoScore({ nickname: " Hiago  🦖 ", score: 123 })
+    ).resolves.toEqual(result);
+    const [url, options] = fetchMock.mock.calls[0];
+    expect(url).toBe("https://x.supabase.co/rest/v1/rpc/submit_dino_score");
+    expect(JSON.parse(options.body)).toEqual({ p_nickname: " Hiago  🦖 ", p_score: 123 });
+  });
 });
 
 describe("GET /api/dino/scores", () => {
@@ -167,28 +223,26 @@ describe("GET /api/dino/scores", () => {
     const res = await GET();
     const data = await res.json();
     expect(data.disabled).toBe(true);
-    expect(data.scores).toEqual([]);
+    expect(data.recent).toEqual([]);
+    expect(data.topWithPirates).toEqual([]);
+    expect(data.topLegitimate).toEqual([]);
   });
 
-  it("returns the last scores and the top scores when configured", async () => {
+  it("returns the three scoreboard views when configured", async () => {
     process.env.SUPABASE_URL = "https://x.supabase.co";
     process.env.SUPABASE_PUBLISHABLE_KEY = "key-1";
-    const last = [{ nickname: "red", score: 100 }];
-    const top = [{ nickname: "hiagod", score: 999 }];
-    vi.stubGlobal(
-      "fetch",
-      vi.fn((url) => {
-        const body = String(url).includes("created_at.desc") ? last : top;
-        return Promise.resolve({ ok: true, json: async () => body });
-      })
-    );
+    const scoreboard = {
+      recent: [{ nickname: "red", score: 100 }],
+      topWithPirates: [{ nickname: "pirate", score: 50000, flagged: true }],
+      topLegitimate: [{ nickname: "red", score: 100 }],
+    };
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => scoreboard }));
 
     const res = await GET();
     const data = await res.json();
     expect(data.ok).toBe(true);
     expect(data.disabled).toBeFalsy();
-    expect(data.scores).toEqual(last);
-    expect(data.top).toEqual(top);
+    expect(data).toMatchObject(scoreboard);
   });
 });
 
@@ -213,6 +267,7 @@ describe("POST /api/dino/score", () => {
       { nickname: "red", score: 0 },
       { nickname: "red", score: DINO_MAX_SCORE + 1 },
       { nickname: "red", score: "x" },
+      { nickname: "x".repeat(DINO_MAX_NICKNAME + 1), score: 10 },
       {},
     ];
 
@@ -227,14 +282,12 @@ describe("POST /api/dino/score", () => {
     }
   });
 
-  it("inserts a valid score and rate-limits the same client", async () => {
+  it("submits a valid score atomically and rate-limits the same client", async () => {
     process.env.SUPABASE_URL = "https://x.supabase.co";
-    process.env.SUPABASE_PUBLISHABLE_KEY = "key-1";
-    vi.stubGlobal("fetch", vi.fn((url) => {
-      if (String(url).includes("eq.")) {
-        return Promise.resolve({ ok: true, json: async () => [] });
-      }
-      return Promise.resolve({ ok: true, status: 201 });
+    process.env.SUPABASE_SERVICE_ROLE_KEY = "service-key";
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ inserted: true, skipped: false, hacker: false }),
     }));
 
     const request = (ip) =>
@@ -249,15 +302,13 @@ describe("POST /api/dino/score", () => {
     expect((await POST(request("5.6.7.8"))).status).toBe(200);
   });
 
-  it("flags suspiciously high scores", async () => {
+  it("returns the database pirate classification", async () => {
     process.env.SUPABASE_URL = "https://x.supabase.co";
-    process.env.SUPABASE_PUBLISHABLE_KEY = "key-1";
-    vi.stubGlobal("fetch", vi.fn((url) => {
-      if (String(url).includes("eq.")) {
-        return Promise.resolve({ ok: true, json: async () => [] });
-      }
-      return Promise.resolve({ ok: true, status: 201 });
-    }));
+    process.env.SUPABASE_SERVICE_ROLE_KEY = "service-key";
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ inserted: true, hacker: false }) })
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ inserted: true, hacker: true }) });
+    vi.stubGlobal("fetch", fetchMock);
 
     const low = await POST(
       new Request("http://localhost/api/dino/score", {
@@ -279,30 +330,25 @@ describe("POST /api/dino/score", () => {
     expect((await high.json()).hacker).toBe(true);
   });
 
-  it("passes flagged to the db for high scores", async () => {
+  it("preserves the literal nickname in the RPC payload", async () => {
     process.env.SUPABASE_URL = "https://x.supabase.co";
-    process.env.SUPABASE_PUBLISHABLE_KEY = "key-1";
-    const fetchMock = vi.fn((url) => {
-      if (String(url).includes("eq.")) {
-        return Promise.resolve({ ok: true, json: async () => [] });
-      }
-      return Promise.resolve({ ok: true, status: 201 });
+    process.env.SUPABASE_SERVICE_ROLE_KEY = "service-key";
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ inserted: true, skipped: false, hacker: false }),
     });
     vi.stubGlobal("fetch", fetchMock);
 
     await POST(
       new Request("http://localhost/api/dino/score", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nickname: "good", score: DINO_HACKER_THRESHOLD }),
+        method: "POST", headers: { "x-forwarded-for": "7.7.7.7", "Content-Type": "application/json" },
+        body: JSON.stringify({ nickname: " Hiago  🦖 ", score: 321 }),
       })
     );
 
-    // calls[0] is personal-best query, calls[1] is the insert
-    const [, options] = fetchMock.mock.calls[1];
+    const [url, options] = fetchMock.mock.calls[0];
     const body = JSON.parse(options.body);
-    expect(body.flagged).toBe(true);
-    expect(body.nickname).toBe("good");
-    expect(body.score).toBe(DINO_HACKER_THRESHOLD);
+    expect(url).toContain("/rpc/submit_dino_score");
+    expect(body).toEqual({ p_nickname: " Hiago  🦖 ", p_score: 321 });
   });
 });

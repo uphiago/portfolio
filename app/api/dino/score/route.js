@@ -1,11 +1,9 @@
 import { NextResponse } from "next/server";
 import {
-  fetchPersonalBest,
-  insertScore,
   isRankingConfigured,
-  isHackerScore,
   normalizeScore,
-  sanitizeNickname,
+  submitDinoScore,
+  validateNickname,
 } from "@/src/lib/dinoRanking";
 
 export const runtime = "nodejs";
@@ -33,18 +31,20 @@ export async function POST(request) {
   }
 
   const body = await request.json().catch(() => null);
-  const nickname = sanitizeNickname(body?.nickname);
+  const nickname = validateNickname(body?.nickname);
   const score = normalizeScore(body?.score);
 
-  if (!nickname || score === null) {
+  if (nickname.error || score === null) {
     return NextResponse.json(
-      { ok: false, error: "invalid_payload" },
+      {
+        ok: false,
+        error: nickname.error || "invalid_score",
+      },
       { status: 400 }
     );
   }
 
   const key = getClientKey(request);
-  const flagged = isHackerScore(score);
   const now = Date.now();
   if (now - (attempts.get(key) || 0) < DINO_SCORE_RATE_LIMIT_MS) {
     return NextResponse.json(
@@ -55,16 +55,8 @@ export async function POST(request) {
   attempts.set(key, now);
 
   try {
-    const personalBest = await fetchPersonalBest(nickname);
-    if (personalBest > 0 && score <= personalBest) {
-      return NextResponse.json({ ok: true, skipped: true }, { status: 200 });
-    }
-
-    await insertScore({ nickname, score, flagged });
-    return NextResponse.json({
-      ok: true,
-      hacker: flagged,
-    });
+    const result = await submitDinoScore({ nickname: nickname.value, score });
+    return NextResponse.json({ ok: true, ...result });
   } catch (error) {
     console.error("dino score insert failed", error);
     return NextResponse.json(
