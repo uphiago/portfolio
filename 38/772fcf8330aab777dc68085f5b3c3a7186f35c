@@ -1,0 +1,23 @@
+src/components/landing/modals/ContactModal.jsx
+  s_ca67b08826dd73::t_a2d5b79b48ee31 7
+tests/portfolio-landing.test.jsx
+  s_ca67b08826dd73::t_a2d5b79b48ee31 610-611,717
+src/components/landing/MidfiV1.jsx
+  s_ca67b08826dd73::t_7bd18cda9b93f8 55
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.23",
+  "base_commit_sha": "38772fcf8330aab777dc68085f5b3c3a7186f35c",
+  "prompts": {},
+  "sessions": {
+    "s_ca67b08826dd73": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019fafd4-7976-7f41-894c-999f03702ca2",
+        "model": "gpt-5.6-luna"
+      },
+      "human_author": "uphiago <hollyvolks@hotmail.com>"
+    }
+  }
+}
