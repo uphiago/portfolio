@@ -607,7 +607,8 @@ npx skills add repo
     expect(html).not.toContain('title="youtube"');
     expect(html).not.toContain('title="tiktok"');
     expect(html).not.toContain('class="brand-key"');
-    expect(html).toContain("2026 hiago");
+    expect(html).toContain("2026 hey");
+    expect(html).toContain("@hiago.sh");
     expect(html).not.toContain('class="mfi-topbar"');
     expect(html).toContain('class="footer-socials"');
     expect(html.indexOf('class="footer-socials"')).toBeGreaterThan(html.indexOf("<footer"));
@@ -713,7 +714,7 @@ npx skills add repo
   it("renders contact as direct copy and external-link actions without a form", () => {
     const html = renderToStaticMarkup(<ContactModal setContactOpen={() => {}} />);
 
-    expect(html).toContain("hfelipe.sh@gmail.com");
+    expect(html).toContain("hey@hiago.sh");
     expect(html).toContain("For projects, consulting, or technical conversations, reach me on LinkedIn or email.");
     expect(html).not.toContain("Need help turning messy infra");
     expect(html).toContain("São Paulo, Brasil");

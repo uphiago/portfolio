@@ -4,7 +4,7 @@ import { BaseModal } from "./BaseModal";
 
 export function ContactModal({ setContactOpen }) {
   const [emailCopied, setEmailCopied] = React.useState(false);
-  const email = "hfelipe.sh@gmail.com";
+  const email = "hey@hiago.sh";
 
   const copyEmail = async () => {
     try {
