@@ -607,8 +607,7 @@ npx skills add repo
     expect(html).not.toContain('title="youtube"');
     expect(html).not.toContain('title="tiktok"');
     expect(html).not.toContain('class="brand-key"');
-    expect(html).toContain("2026 hey");
-    expect(html).toContain("@hiago.sh");
+    expect(html).toContain("2026 hiago");
     expect(html).not.toContain('class="mfi-topbar"');
     expect(html).toContain('class="footer-socials"');
     expect(html.indexOf('class="footer-socials"')).toBeGreaterThan(html.indexOf("<footer"));
